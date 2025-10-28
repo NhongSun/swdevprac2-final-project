@@ -7,7 +7,7 @@ import { IBM_Plex_Sans_Thai } from "next/font/google";
 import type React from "react";
 import "./globals.css";
 
-const ibmPlexSansThai = IBM_Plex_Sans_Thai({ 
+const ibmPlexSansThai = IBM_Plex_Sans_Thai({
   subsets: ["latin", "thai"],
   weight: ["100", "200", "300", "400", "500", "600", "700"],
   display: "swap",
@@ -25,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${ibmPlexSansThai.className} min-h-dvh flex flex-col`}>
+      <body className={`${ibmPlexSansThai.className} flex min-h-dvh flex-col`}>
         <UserProvider>
           <LocaleProvider>
             <Navigation />
