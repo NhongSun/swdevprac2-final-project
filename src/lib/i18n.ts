@@ -99,14 +99,14 @@ export const translations = {
   },
   th: {
     // Navigation
-    "nav.exhibitions": "งานแสดงสินค้า",
+    "nav.exhibitions": "นิทรรศการ",
     "nav.myBookings": "การจองของฉัน",
     "nav.allBookings": "การจองทั้งหมด",
     "nav.profile": "โปรไฟล์",
 
     // Exhibition List
-    "exhibitions.title": "งานแสดงสินค้า",
-    "exhibitions.empty": "ไม่มีงานแสดงสินค้า",
+    "exhibitions.title": "นิทรรศการ",
+    "exhibitions.empty": "ไม่มีนิทรรศการ",
     "exhibitions.bookBooth": "จองบูธ",
     "exhibitions.viewDetails": "ดูรายละเอียด",
     "exhibitions.upcoming": "กำลังจะมาถึง",
@@ -114,7 +114,7 @@ export const translations = {
     "exhibitions.past": "ผ่านไปแล้ว",
 
     // Exhibition Detail
-    "exhibition.details": "รายละเอียดงานแสดงสินค้า",
+    "exhibition.details": "รายละเอียดนิทรรศการ",
     "exhibition.venue": "สถานที่",
     "exhibition.dates": "วันที่",
     "exhibition.duration": "ระยะเวลา",
@@ -124,7 +124,7 @@ export const translations = {
     // Booking Form
     "booking.create": "สร้างการจอง",
     "booking.edit": "แก้ไขการจอง",
-    "booking.exhibition": "งานแสดงสินค้า",
+    "booking.exhibition": "นิทรรศการ",
     "booking.boothType": "ประเภทบูธ",
     "booking.boothType.small": "เล็ก",
     "booking.boothType.big": "ใหญ่",
@@ -144,7 +144,7 @@ export const translations = {
     "bookings.empty": "ยังไม่มีการจอง",
     "bookings.createFirst": "สร้างการจองแรกของคุณ",
     "bookings.id": "รหัสการจอง",
-    "bookings.exhibition": "งานแสดงสินค้า",
+    "bookings.exhibition": "นิทรรศการ",
     "bookings.boothType": "ประเภทบูธ",
     "bookings.amount": "จำนวน",
     "bookings.owner": "เจ้าของ",
@@ -159,7 +159,7 @@ export const translations = {
     // Booking Detail
     "bookingDetail.title": "รายละเอียดการจอง",
     "bookingDetail.id": "รหัสการจอง",
-    "bookingDetail.exhibition": "งานแสดงสินค้า",
+    "bookingDetail.exhibition": "นิทรรศการ",
     "bookingDetail.boothType": "ประเภทบูธ",
     "bookingDetail.amount": "จำนวน",
     "bookingDetail.owner": "เจ้าของ",
@@ -182,7 +182,7 @@ export const translations = {
     "message.bookingDeleted": "ลบการจองสำเร็จ",
     "message.error": "เกิดข้อผิดพลาด กรุณาลองอีกครั้ง",
     "message.quotaExceeded": "เกินโควต้าหรือรวมต่อผู้ใช้ > 6",
-    "message.notFound": "ไม่พบการจองหรืองานแสดงสินค้า",
+    "message.notFound": "ไม่พบการจองหรือนิทรรศการ",
     "message.notAuthorized": "ไม่ได้รับอนุญาต",
 
     // Role
