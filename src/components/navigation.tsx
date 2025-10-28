@@ -32,14 +32,11 @@ export function Navigation() {
   ];
 
   return (
-    <nav className="sticky top-0 z-50 bg-card/95 border-b backdrop-blur-sm">
+    <nav className="bg-card/95 sticky top-0 z-50 border-b backdrop-blur-sm">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-8">
-            <Link
-              href="/"
-              className="flex gap-2 text-lg font-semibold"
-            >
+            <Link href="/" className="flex gap-2 text-lg font-semibold">
               <Calendar className="h-6 w-6" />
               <span>BoothBook</span>
             </Link>
