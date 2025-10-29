@@ -8,7 +8,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/locale-context";
-import { Calendar, Globe, LogIn, LogOut, Menu, User } from "lucide-react";
+import { cn } from "@/lib/utils";
+import {
+  Calendar,
+  Globe,
+  LogIn,
+  LogOut,
+  Menu,
+  User,
+  UserCog,
+} from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -29,6 +38,8 @@ export function Navigation() {
   const handleLogout = async () => {
     await signOut({ callbackUrl: "/" });
   };
+
+  const isAdmin = session?.user?.role === "admin";
 
   return (
     <nav className="bg-card/95 sticky top-0 z-50 border-b backdrop-blur-sm">
@@ -75,9 +86,21 @@ export function Navigation() {
             {session ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="gap-2 bg-transparent">
-                    <User className="h-4 w-4" />
+                  <Button
+                    variant="outline"
+                    className={cn("gap-2", {
+                      "border-orange-500 bg-orange-500/10 text-orange-600 hover:bg-orange-500/20 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300":
+                        isAdmin,
+                      "bg-transparent": !isAdmin,
+                    })}
+                  >
+                    {isAdmin ? (
+                      <UserCog className="h-4 w-4" />
+                    ) : (
+                      <User className="h-4 w-4" />
+                    )}
                     <span className="hidden sm:inline">
+                      {isAdmin ? "Admin " : ""}
                       {session.user?.name}
                     </span>
                   </Button>

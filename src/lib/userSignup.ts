@@ -13,7 +13,7 @@ export default async function userSignup(
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email, password, name, tel, role: "member" }),
+    body: JSON.stringify({ email, password, name, tel, role }),
   });
 
   if (!resp.ok) {
