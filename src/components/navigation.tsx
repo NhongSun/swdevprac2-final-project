@@ -1,6 +1,4 @@
 "use client";
-
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -10,26 +8,27 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/locale-context";
-import { useUser } from "@/lib/user-context";
-import { Calendar, Globe, Menu, User } from "lucide-react";
+import { Calendar, Globe, LogIn, LogOut, Menu, User } from "lucide-react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export function Navigation() {
   const pathname = usePathname();
-  const { user, switchRole } = useUser();
   const { locale, setLocale } = useLocale();
+  const { data: session } = useSession();
 
   const navItems = [
     { href: "/exhibitions", label: t("nav.exhibitions", locale) },
     {
       href: "/bookings",
-      label:
-        user.role === "admin"
-          ? t("nav.allBookings", locale)
-          : t("nav.myBookings", locale),
+      label: t("nav.myBookings", locale),
     },
   ];
+
+  const handleLogout = async () => {
+    await signOut({ callbackUrl: "/" });
+  };
 
   return (
     <nav className="bg-card/95 sticky top-0 z-50 border-b backdrop-blur-sm">
@@ -73,28 +72,33 @@ export function Navigation() {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Role Switcher (Dev Only) */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
+            {session ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="gap-2 bg-transparent">
+                    <User className="h-4 w-4" />
+                    <span className="hidden sm:inline">
+                      {session.user?.name}
+                    </span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={handleLogout}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    {t("nav.logout", locale)}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link href="/login">
                 <Button variant="outline" className="gap-2 bg-transparent">
-                  <User className="h-4 w-4" />
-                  <span className="hidden sm:inline">{user.name}</span>
-                  <Badge
-                    variant={user.role === "admin" ? "default" : "secondary"}
-                  >
-                    {t(`role.${user.role}`, locale)}
-                  </Badge>
+                  <LogIn className="h-4 w-4" />
+                  <span className="hidden sm:inline">
+                    {t("nav.login", locale)}
+                  </span>
                 </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => switchRole("member")}>
-                  {t("role.member", locale)}
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => switchRole("admin")}>
-                  {t("role.admin", locale)}
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+              </Link>
+            )}
 
             {/* Mobile Menu */}
             <DropdownMenu>
