@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/locale-context";
+import { signIn } from "next-auth/react";
 
 function RegisterForm() {
   const router = useRouter();
@@ -56,6 +57,12 @@ function RegisterForm() {
         formData.tel,
         "member",
       );
+
+      await signIn("credentials", {
+        redirect: false,
+        email: formData.email,
+        password: formData.password,
+      });
 
       toast.success("Registration successful!");
       router.push("/");

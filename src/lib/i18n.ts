@@ -85,6 +85,7 @@ export const translations = {
     "register.password": "Password",
     "register.submit": "Register",
     "register.submiting": "Registering...",
+    "register.adminDesc": "Register as an admin account",
 
     // Login
     "login.title": "Login",
@@ -198,6 +199,7 @@ export const translations = {
     "register.password": "รหัสผ่าน",
     "register.submit": "สมัคร",
     "register.submiting": "กำลังสมัคร...",
+    "register.adminDesc": "สมัครเป็นบัญชี admin",
 
     // Login
     "login.title": "เข้าสู่ระบบ",

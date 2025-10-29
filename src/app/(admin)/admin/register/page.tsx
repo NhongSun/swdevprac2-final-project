@@ -2,6 +2,7 @@
 
 import userSignup from "@/lib/userSignup";
 import { ArrowLeft } from "lucide-react";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Suspense, useState } from "react";
@@ -63,6 +64,12 @@ function RegisterForm() {
         "admin",
       );
 
+      await signIn("credentials", {
+        redirect: false,
+        email: formData.email,
+        password: formData.password,
+      });
+
       toast.success("Registration successful!");
       router.push("/");
     } catch (error) {
@@ -85,7 +92,7 @@ function RegisterForm() {
           <CardTitle className="text-2xl font-semibold">
             {t("register.title", locale)}
           </CardTitle>
-          <CardDescription>Admin</CardDescription>
+          <CardDescription>{t("register.adminDesc", locale)}</CardDescription>
         </CardHeader>
 
         <CardContent>
