@@ -7,6 +7,8 @@ export const translations = {
     "nav.myBookings": "My Bookings",
     "nav.allBookings": "All Bookings",
     "nav.profile": "Profile",
+    "nav.login": "Login",
+    "nav.logout": "Logout",
 
     // Exhibition List
     "exhibitions.title": "Exhibitions",
@@ -75,6 +77,25 @@ export const translations = {
       "Are you sure you want to delete this booking?",
     "bookingDetail.deleteWarning": "This action cannot be undone.",
 
+    // Register
+    "register.title": "Register",
+    "register.name": "Name",
+    "register.email": "Email",
+    "register.tel": "Telephone",
+    "register.password": "Password",
+    "register.submit": "Register",
+    "register.submiting": "Registering...",
+    "register.adminDesc": "Register as an admin account",
+
+    // Login
+    "login.title": "Login",
+    "login.email": "Email",
+    "login.password": "Password",
+    "login.submit": "Login",
+    "login.submiting": "Logging in...",
+    "login.noAccount": "Don't have an account?",
+    "login.registerHere": "Register here",
+
     // Common
     "common.loading": "Loading...",
     "common.error": "Error",
@@ -103,6 +124,8 @@ export const translations = {
     "nav.myBookings": "การจองของฉัน",
     "nav.allBookings": "การจองทั้งหมด",
     "nav.profile": "โปรไฟล์",
+    "nav.login": "เข้าสู่ระบบ",
+    "nav.logout": "ออกจากระบบ",
 
     // Exhibition List
     "exhibitions.title": "นิทรรศการ",
@@ -167,6 +190,25 @@ export const translations = {
     "bookingDetail.updatedAt": "อัปเดตเมื่อ",
     "bookingDetail.deleteConfirm": "คุณแน่ใจหรือไม่ว่าต้องการลบการจองนี้?",
     "bookingDetail.deleteWarning": "การดำเนินการนี้ไม่สามารถยกเลิกได้",
+
+    // Register
+    "register.title": "สมัครบัญชี",
+    "register.name": "ชื่อ",
+    "register.email": "อีเมล",
+    "register.tel": "เบอร์โทรศัพท์",
+    "register.password": "รหัสผ่าน",
+    "register.submit": "สมัคร",
+    "register.submiting": "กำลังสมัคร...",
+    "register.adminDesc": "สมัครเป็นบัญชี admin",
+
+    // Login
+    "login.title": "เข้าสู่ระบบ",
+    "login.email": "อีเมล",
+    "login.password": "รหัสผ่าน",
+    "login.submit": "เข้าสู่ระบบ",
+    "login.submiting": "กำลังเข้าสู่ระบบ...",
+    "login.noAccount": "ยังไม่มีบัญชี?",
+    "login.registerHere": "สมัครที่นี่",
 
     // Common
     "common.loading": "กำลังโหลด...",
