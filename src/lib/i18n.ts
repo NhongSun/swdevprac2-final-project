@@ -86,6 +86,9 @@ export const translations = {
     "register.submit": "Register",
     "register.submiting": "Registering...",
     "register.adminDesc": "Register as an admin account",
+    "register.role": "Role",
+    "register.role.member": "Member",
+    "register.role.admin": "Admin",
 
     // Login
     "login.title": "Login",
@@ -200,6 +203,9 @@ export const translations = {
     "register.submit": "สมัคร",
     "register.submiting": "กำลังสมัคร...",
     "register.adminDesc": "สมัครเป็นบัญชี admin",
+    "register.role": "บทบาท",
+    "register.role.member": "สมาชิก",
+    "register.role.admin": "ผู้ดูแลระบบ",
 
     // Login
     "login.title": "เข้าสู่ระบบ",
