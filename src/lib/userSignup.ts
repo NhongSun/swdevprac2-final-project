@@ -16,7 +16,6 @@ export default async function userSignup(
   });
 
   if (!resp.ok) {
-    console.log("Signup failed");
     throw new Error("Failed to login");
   }
 
