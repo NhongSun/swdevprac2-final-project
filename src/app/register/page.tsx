@@ -11,6 +11,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/locale-context";
@@ -24,6 +31,7 @@ function RegisterForm() {
     email: "",
     tel: "",
     password: "",
+    role: "member",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const { locale } = useLocale();
@@ -38,6 +46,7 @@ function RegisterForm() {
       newErrors.tel = "Phone number must contain 9–15 digits.";
     if (!formData.password || formData.password.length < 6)
       newErrors.password = "Password must be at least 6 characters.";
+    if (!formData.role) newErrors.role = "Role is required.";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -50,12 +59,12 @@ function RegisterForm() {
     try {
       setSubmitting(true);
 
-      await userSignup(
+      const response = await userSignup(
         formData.name,
         formData.email,
         formData.password,
         formData.tel,
-        "member",
+        formData.role as "member" | "admin",
       );
 
       await signIn("credentials", {
@@ -162,6 +171,34 @@ function RegisterForm() {
               />
               {errors.password && (
                 <p className="text-destructive text-sm">{errors.password}</p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="role">
+                {t("register.role", locale)}{" "}
+                <span className="text-destructive">*</span>
+              </Label>
+              <Select
+                value={formData.role}
+                onValueChange={(value) =>
+                  setFormData({ ...formData, role: value })
+                }
+              >
+                <SelectTrigger id="role">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="member">
+                    {t("register.role.member", locale)}
+                  </SelectItem>
+                  <SelectItem value="admin">
+                    {t("register.role.admin", locale)}
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+              {errors.role && (
+                <p className="text-destructive text-sm">{errors.role}</p>
               )}
             </div>
 
