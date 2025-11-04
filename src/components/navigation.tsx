@@ -6,6 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/locale-context";
 import { cn } from "@/lib/utils";
@@ -26,6 +27,7 @@ export function Navigation() {
   const pathname = usePathname();
   const { locale, setLocale } = useLocale();
   const { data: session } = useSession();
+  const isMobile = useIsMobile();
 
   const navItems = [
     { href: "/exhibitions", label: t("nav.exhibitions", locale) },
@@ -113,14 +115,18 @@ export function Navigation() {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Link href="/login">
-                <Button variant="outline" className="gap-2 bg-transparent">
+              <Button
+                variant={isMobile ? "ghost" : "outline"}
+                className="gap-2"
+                asChild
+              >
+                <Link href="/login">
                   <LogIn className="h-4 w-4" />
                   <span className="hidden sm:inline">
                     {t("nav.login", locale)}
                   </span>
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             )}
 
             {/* Mobile Menu */}

@@ -174,7 +174,7 @@ function NewBookingForm() {
             {/* Exhibition Info */}
             <div className="space-y-2">
               <Label>{t("booking.exhibition", locale)}</Label>
-              <Card>
+              <Card className="bg-background pt-0">
                 <CardContent className="pt-6">
                   <h3 className="mb-2 font-semibold">{exhibition.name}</h3>
                   <div className="text-muted-foreground flex flex-col gap-1 text-sm">

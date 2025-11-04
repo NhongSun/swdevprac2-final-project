@@ -147,7 +147,7 @@ export default function ExhibitionDetailPage() {
           )}
 
           {isPast && (
-            <Alert>
+            <Alert className="bg-background">
               <AlertCircle className="h-4 w-4" />
               <AlertDescription>
                 This exhibition has already passed. Booking is no longer

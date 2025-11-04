@@ -239,7 +239,7 @@ export default function BookingDetailPage() {
               <p className="text-muted-foreground mb-2 text-sm">
                 {t("bookingDetail.exhibition", locale)}
               </p>
-              <Card>
+              <Card className="bg-background pt-0">
                 <CardContent className="pt-6">
                   <h3 className="mb-2 font-semibold">{exhibition.name}</h3>
                   <div className="text-muted-foreground flex flex-col gap-1 text-sm">

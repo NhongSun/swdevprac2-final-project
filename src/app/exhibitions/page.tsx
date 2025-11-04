@@ -142,11 +142,7 @@ export default function ExhibitionsPage() {
               </CardContent>
 
               <CardFooter className="flex gap-2">
-                <Button
-                  asChild
-                  variant="outline"
-                  className="flex-1 bg-transparent"
-                >
+                <Button asChild variant="outline" className="flex-1">
                   <Link href={`/exhibitions/${exhibition._id}`}>
                     {t("exhibitions.viewDetails", locale)}
                   </Link>
