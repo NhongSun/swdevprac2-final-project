@@ -89,12 +89,12 @@ export function Navigation() {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
-                    variant="outline"
-                    className={cn("gap-2", {
-                      "border-orange-500 bg-orange-500/10 text-orange-600 hover:bg-orange-500/20 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300":
-                        isAdmin,
-                      "bg-transparent": !isAdmin,
-                    })}
+                    variant={isMobile ? "ghost" : "outline"}
+                    className={cn(
+                      "gap-2",
+                      isAdmin &&
+                        "border-orange-500 bg-orange-500/10 text-orange-600 hover:bg-orange-500/20 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300",
+                    )}
                   >
                     {isAdmin ? (
                       <UserCog className="h-4 w-4" />

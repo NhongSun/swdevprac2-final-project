@@ -5,8 +5,7 @@ export default async function userSignup(
   tel: string,
   role: "member" | "admin",
 ) {
-  const backendUrl = process.env.BACKEND_URL ?? "http://localhost:8000/api/v1";
-  console.log(JSON.stringify({ email, password, name, tel, role }));
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL!;
 
   const resp = await fetch(`${backendUrl}/auth/register`, {
     method: "POST",
