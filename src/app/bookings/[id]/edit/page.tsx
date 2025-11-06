@@ -14,22 +14,22 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Skeleton } from "@/components/ui/skeleton";
+import { bookingApi, getTotalBookedForUserAndExhibition } from "@/lib/api";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/locale-context";
-import { bookingApi, getTotalBookedForUserAndExhibition } from "@/lib/mock-api";
 import type { Booking, UpdateBookingInput } from "@/lib/types";
-import { useUser } from "@/lib/user-context";
 import { format } from "date-fns";
 import { ArrowLeft, Calendar, MapPin } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
 export default function EditBookingPage() {
   const params = useParams();
   const router = useRouter();
-  const { user } = useUser();
+  const { data: session, status } = useSession();
   const { locale } = useLocale();
 
   const [booking, setBooking] = useState<Booking | null>(null);
@@ -44,59 +44,92 @@ export default function EditBookingPage() {
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  useEffect(() => {
-    loadBooking();
+  const token = session?.user?.token ?? "";
+  const sessionUserId = session?.user?._id;
+  const isAdmin = session?.user?.role === "admin";
+  const bookingId = useMemo(() => {
+    const id = params.id;
+    return Array.isArray(id) ? id[0] : id;
   }, [params.id]);
 
-  async function loadBooking() {
-    try {
-      const data = await bookingApi.getById(params.id as string);
-
-      if (!data) {
-        toast.error(t("common.error", locale), {
-          description: t("message.notFound", locale),
-        });
-        router.push("/bookings");
-        return;
-      }
-
-      // Check permissions
-      if (user.role === "member" && data.user !== user._id) {
-        toast.error(t("common.error", locale), {
-          description: t("message.notAuthorized", locale),
-        });
-        router.push("/bookings");
-        return;
-      }
-
-      setBooking(data);
-      setFormData({
-        boothType: data.boothType,
-        amount: data.amount,
-      });
-
-      // Get total booked (excluding current booking)
-      const exhibitionId =
-        typeof data.exhibition === "object"
-          ? data.exhibition._id
-          : data.exhibition;
-      const userId = typeof data.user === "object" ? data.user._id : data.user;
-      const total = await getTotalBookedForUserAndExhibition(
-        userId,
-        exhibitionId,
-      );
-      setTotalBooked(total - data.amount); // Exclude current booking amount
-    } catch (error) {
-      console.error("Failed to load booking:", error);
+  useEffect(() => {
+    if (!bookingId || status !== "authenticated") return;
+    if (!token) {
+      setLoading(false);
       toast.error(t("common.error", locale), {
         description: t("message.error", locale),
       });
-    } finally {
-      setLoading(false);
+      return;
     }
-  }
 
-  const maxAllowed = 6 - totalBooked;
+    const loadBooking = async () => {
+      try {
+        setLoading(true);
+        const data = await bookingApi.getById(bookingId, token);
+
+        if (!data) {
+          toast.error(t("common.error", locale), {
+            description: t("message.notFound", locale),
+          });
+          router.push("/bookings");
+          return;
+        }
+
+        const ownerId =
+          typeof data.user === "object" ? data.user._id : data.user;
+
+        if (!ownerId) {
+          toast.error(t("common.error", locale), {
+            description: t("message.error", locale),
+          });
+          router.push("/bookings");
+          return;
+        }
+
+        if (!isAdmin && ownerId !== sessionUserId) {
+          toast.error(t("common.error", locale), {
+            description: t("message.notAuthorized", locale),
+          });
+          router.push("/bookings");
+          return;
+        }
+
+        setBooking(data);
+        setFormData({
+          boothType: data.boothType,
+          amount: data.amount,
+        });
+
+        const exhibitionId =
+          typeof data.exhibition === "object"
+            ? data.exhibition._id
+            : data.exhibition;
+
+        if (exhibitionId) {
+          const total = await getTotalBookedForUserAndExhibition(
+            ownerId,
+            exhibitionId,
+            token,
+          );
+          setTotalBooked(Math.max(0, total - data.amount));
+        } else {
+          setTotalBooked(0);
+        }
+      } catch (error) {
+        console.error("Failed to load booking:", error);
+        toast.error(t("common.error", locale), {
+          description:
+            error instanceof Error ? error.message : t("message.error", locale),
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadBooking();
+  }, [bookingId, status, token, locale, isAdmin, sessionUserId, router]);
+
+  const maxAllowed = Math.max(0, 6 - totalBooked);
 
   function validate(): boolean {
     const newErrors: Record<string, string> = {};
@@ -119,25 +152,32 @@ export default function EditBookingPage() {
     e.preventDefault();
 
     if (!validate() || !booking) return;
+    if (!token) {
+      toast.error(t("common.error", locale), {
+        description: t("message.error", locale),
+      });
+      return;
+    }
 
     try {
       setSubmitting(true);
-      await bookingApi.update(booking._id, formData, user._id, user.role);
+      await bookingApi.update(booking._id, formData, token);
       toast.success(t("common.success", locale), {
         description: t("message.bookingUpdated", locale),
       });
       router.push(`/bookings/${booking._id}`);
-    } catch (error: any) {
+    } catch (error) {
       console.error("Failed to update booking:", error);
       toast.error(t("common.error", locale), {
-        description: error.message || t("message.error", locale),
+        description:
+          error instanceof Error ? error.message : t("message.error", locale),
       });
     } finally {
       setSubmitting(false);
     }
   }
 
-  if (loading) {
+  if (loading || status === "loading") {
     return (
       <div className="container mx-auto max-w-2xl px-4 py-8">
         <Skeleton className="mb-6 h-10 w-32" />

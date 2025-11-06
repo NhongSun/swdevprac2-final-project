@@ -16,11 +16,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { bookingApi } from "@/lib/api";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/locale-context";
-import { bookingApi } from "@/lib/mock-api";
 import type { Booking } from "@/lib/types";
-import { useUser } from "@/lib/user-context";
 import { format } from "date-fns";
 import {
   AlertCircle,
@@ -30,59 +29,90 @@ import {
   Pencil,
   Trash2,
 } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
 export default function BookingDetailPage() {
   const params = useParams();
   const router = useRouter();
-  const { user } = useUser();
+  const { data: session, status } = useSession();
   const { locale } = useLocale();
   const [booking, setBooking] = useState<Booking | null>(null);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
 
-  useEffect(() => {
-    loadBooking();
+  const token = session?.user?.token ?? "";
+  const isAdmin = session?.user?.role === "admin";
+  const bookingId = useMemo(() => {
+    const id = params.id;
+    return Array.isArray(id) ? id[0] : id;
   }, [params.id]);
 
-  async function loadBooking() {
-    try {
-      const data = await bookingApi.getById(params.id as string);
-      setBooking(data);
-    } catch (error) {
-      console.error("Failed to load booking:", error);
-      toast.error(t("common.error", locale), {
-        description: t("message.notFound", locale),
-      });
-    } finally {
+  useEffect(() => {
+    if (!bookingId || status !== "authenticated") return;
+    if (!token) {
       setLoading(false);
+      toast.error(t("common.error", locale), {
+        description: t("message.error", locale),
+      });
+      return;
     }
-  }
 
-  async function handleDelete() {
+    const loadBooking = async () => {
+      try {
+        setLoading(true);
+        const data = await bookingApi.getById(bookingId, token);
+        if (!data) {
+          toast.error(t("common.error", locale), {
+            description: t("message.notFound", locale),
+          });
+        }
+        setBooking(data);
+      } catch (error) {
+        console.error("Failed to load booking:", error);
+        toast.error(t("common.error", locale), {
+          description:
+            error instanceof Error ? error.message : t("message.error", locale),
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadBooking();
+  }, [bookingId, status, token, locale]);
+
+  const handleDelete = useCallback(async () => {
     if (!booking) return;
+    if (!token) {
+      toast.error(t("common.error", locale), {
+        description: t("message.error", locale),
+      });
+      return;
+    }
 
     try {
       setDeleting(true);
-      await bookingApi.delete(booking._id, user._id, user.role);
+      await bookingApi.delete(booking._id, token);
       toast.success(t("common.success", locale), {
         description: t("message.bookingDeleted", locale),
       });
       router.push("/bookings");
-    } catch (error: any) {
+    } catch (error) {
       console.error("Failed to delete booking:", error);
       toast.error(t("common.error", locale), {
-        description: error.message || t("message.error", locale),
+        description:
+          error instanceof Error ? error.message : t("message.error", locale),
       });
     } finally {
       setDeleting(false);
     }
-  }
+  }, [booking, token, locale, router]);
 
-  if (loading) {
+  if (loading || status === "loading") {
     return (
       <div className="container mx-auto max-w-3xl px-4 py-8">
         <Skeleton className="mb-6 h-10 w-32" />
@@ -118,7 +148,10 @@ export default function BookingDetailPage() {
   const exhibition =
     typeof booking.exhibition === "object" ? booking.exhibition : null;
   const owner = typeof booking.user === "object" ? booking.user : null;
-  const canEdit = user.role === "admin" || booking.user === user._id;
+  const ownerId =
+    typeof booking.user === "object" ? booking.user._id : booking.user;
+  const canEdit =
+    !!session?.user && (isAdmin || (!!ownerId && ownerId === session.user._id));
 
   return (
     <div className="container mx-auto max-w-3xl px-4 py-8">

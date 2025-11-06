@@ -59,7 +59,7 @@ function RegisterForm() {
     try {
       setSubmitting(true);
 
-      const response = await userSignup(
+      await userSignup(
         formData.name,
         formData.email,
         formData.password,
@@ -75,7 +75,7 @@ function RegisterForm() {
 
       toast.success("Registration successful!");
       router.push("/");
-    } catch (error) {
+    } catch {
       toast.error("Something went wrong. Please try again.");
     } finally {
       setSubmitting(false);

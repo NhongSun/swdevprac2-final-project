@@ -15,17 +15,17 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Skeleton } from "@/components/ui/skeleton";
-import { t } from "@/lib/i18n";
-import { useLocale } from "@/lib/locale-context";
 import {
   bookingApi,
   exhibitionApi,
   getTotalBookedForUserAndExhibition,
-} from "@/lib/mock-api";
+} from "@/lib/api";
+import { t } from "@/lib/i18n";
+import { useLocale } from "@/lib/locale-context";
 import type { CreateBookingInput, Exhibition } from "@/lib/types";
-import { useUser } from "@/lib/user-context";
 import { format } from "date-fns";
 import { AlertCircle, ArrowLeft, Calendar, MapPin } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
@@ -34,7 +34,9 @@ import { toast } from "sonner";
 function NewBookingForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { user } = useUser();
+  const { data: session, status } = useSession();
+  const token = session?.user?.token ?? "";
+  const userId = session?.user?._id ?? "";
   const { locale } = useLocale();
 
   const [exhibition, setExhibition] = useState<Exhibition | null>(null);
@@ -51,17 +53,28 @@ function NewBookingForm() {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
-    async function loadData() {
-      const exhibitionId = searchParams.get("exhibitionId");
-      if (!exhibitionId) {
-        router.push("/exhibitions");
-        return;
-      }
+    if (status !== "authenticated") return;
 
+    if (!token || !userId) {
+      setLoading(false);
+      toast.error(t("common.error", locale), {
+        description: t("message.error", locale),
+      });
+      return;
+    }
+
+    const exhibitionId = searchParams.get("exhibitionId");
+    if (!exhibitionId) {
+      router.push("/exhibitions");
+      return;
+    }
+
+    const loadData = async () => {
       try {
+        setLoading(true);
         const [exhibitionData, booked] = await Promise.all([
           exhibitionApi.getById(exhibitionId),
-          getTotalBookedForUserAndExhibition(user._id, exhibitionId),
+          getTotalBookedForUserAndExhibition(userId, exhibitionId, token),
         ]);
 
         if (!exhibitionData) {
@@ -83,12 +96,12 @@ function NewBookingForm() {
       } finally {
         setLoading(false);
       }
-    }
+    };
 
     loadData();
-  }, [searchParams, user._id, router, locale]);
+  }, [status, token, userId, searchParams, router, locale]);
 
-  const maxAllowed = 6 - totalBooked;
+  const maxAllowed = Math.max(0, 6 - totalBooked);
 
   function validate(): boolean {
     const newErrors: Record<string, string> = {};
@@ -114,22 +127,26 @@ function NewBookingForm() {
 
     try {
       setSubmitting(true);
-      const booking = await bookingApi.create(formData, user._id);
+      if (!token) {
+        throw new Error(t("message.error", locale));
+      }
+      const booking = await bookingApi.create(formData, token);
       toast.success(t("common.success", locale), {
         description: t("message.bookingCreated", locale),
       });
       router.push(`/bookings/${booking._id}`);
-    } catch (error: any) {
+    } catch (error) {
       console.error("Failed to create booking:", error);
       toast.error(t("common.error", locale), {
-        description: error.message || t("message.error", locale),
+        description:
+          error instanceof Error ? error.message : t("message.error", locale),
       });
     } finally {
       setSubmitting(false);
     }
   }
 
-  if (loading) {
+  if (loading || status === "loading") {
     return (
       <div className="container mx-auto max-w-2xl px-4 py-8">
         <Skeleton className="mb-6 h-10 w-32" />

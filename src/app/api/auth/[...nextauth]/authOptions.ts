@@ -11,7 +11,7 @@ export const authOptions: AuthOptions = {
         password: { label: "Password", type: "password" },
       },
 
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         if (!credentials) return null;
 
         const user = await userLogin(credentials.email, credentials.password);
@@ -23,7 +23,6 @@ export const authOptions: AuthOptions = {
           // Returning null will display an error message to the user
           return null;
         }
-        return user;
       },
     }),
   ],
@@ -34,8 +33,8 @@ export const authOptions: AuthOptions = {
     async jwt({ token, user }) {
       return { ...token, ...user };
     },
-    async session({ session, token, user }) {
-      session.user = token as any;
+    async session({ session, token }) {
+      session.user = token as typeof session.user;
       return session;
     },
   },

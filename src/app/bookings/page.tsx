@@ -23,60 +23,71 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { bookingApi } from "@/lib/api";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/locale-context";
-import { bookingApi } from "@/lib/mock-api";
 import type { Booking } from "@/lib/types";
-import { useUser } from "@/lib/user-context";
 import { format } from "date-fns";
 import { Calendar, Eye, Pencil, Search, Trash2 } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export default function BookingsPage() {
-  const { user } = useUser();
   const { locale } = useLocale();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
+  const loadBookings = useCallback(
+    async (userToken: string) => {
+      try {
+        setLoading(true);
+        const data = await bookingApi.getAll(userToken);
+        setBookings(data);
+      } catch (error) {
+        console.error("Failed to load bookings:", error);
+        toast.error(t("common.error", locale), {
+          description:
+            error instanceof Error ? error.message : t("message.error", locale),
+        });
+      } finally {
+        setLoading(false);
+      }
+    },
+    [locale],
+  );
+
   useEffect(() => {
-    loadBookings();
-  }, [user]);
+    // We will get the token from the session in the future
+    const token = "";
+    loadBookings(token);
+  }, [locale, loadBookings]);
 
-  async function loadBookings() {
-    try {
-      setLoading(true);
-      const data = await bookingApi.getAll(user._id, user.role);
-      setBookings(data);
-    } catch (error) {
-      console.error("Failed to load bookings:", error);
-      toast.error(t("common.error", locale), {
-        description: t("message.error", locale),
-      });
-    } finally {
-      setLoading(false);
-    }
-  }
+  const handleDelete = useCallback(
+    async (id: string) => {
+      // We will get the token from the session in the future
+      const token = "";
 
-  async function handleDelete(id: string) {
-    try {
-      await bookingApi.delete(id, user._id, user.role);
-      toast.success(t("common.success", locale), {
-        description: t("message.bookingDeleted", locale),
-      });
-      loadBookings();
-    } catch (error) {
-      console.error("Failed to delete booking:", error);
-      toast.error(t("common.error", locale), {
-        description: t("message.error", locale),
-      });
-    } finally {
-      setDeleteId(null);
-    }
-  }
+      try {
+        await bookingApi.delete(id, token);
+        toast.success(t("common.success", locale), {
+          description: t("message.bookingDeleted", locale),
+        });
+        await loadBookings(token);
+      } catch (error) {
+        console.error("Failed to delete booking:", error);
+        toast.error(t("common.error", locale), {
+          description:
+            error instanceof Error ? error.message : t("message.error", locale),
+        });
+      } finally {
+        setDeleteId(null);
+      }
+    },
+    [locale, loadBookings],
+  );
 
   const filteredBookings = bookings.filter((booking) => {
     if (!searchQuery) return true;
@@ -115,11 +126,7 @@ export default function BookingsPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-3xl font-bold">
-          {user.role === "admin"
-            ? t("bookings.allTitle", locale)
-            : t("bookings.title", locale)}
-        </h1>
+        <h1 className="text-3xl font-bold">{t("bookings.title", locale)}</h1>
         <Button asChild>
           <Link href="/exhibitions">{t("exhibitions.bookBooth", locale)}</Link>
         </Button>
@@ -165,9 +172,6 @@ export default function BookingsPage() {
                     <TableHead>{t("bookings.exhibition", locale)}</TableHead>
                     <TableHead>{t("bookings.boothType", locale)}</TableHead>
                     <TableHead>{t("bookings.amount", locale)}</TableHead>
-                    {user.role === "admin" && (
-                      <TableHead>{t("bookings.owner", locale)}</TableHead>
-                    )}
                     <TableHead>{t("bookings.createdAt", locale)}</TableHead>
                     <TableHead className="text-right">
                       {t("bookings.actions", locale)}
@@ -180,8 +184,6 @@ export default function BookingsPage() {
                       typeof booking.exhibition === "object"
                         ? booking.exhibition
                         : null;
-                    const owner =
-                      typeof booking.user === "object" ? booking.user : null;
 
                     return (
                       <TableRow key={booking._id}>
@@ -215,20 +217,6 @@ export default function BookingsPage() {
                           </Badge>
                         </TableCell>
                         <TableCell>{booking.amount}</TableCell>
-                        {user.role === "admin" && (
-                          <TableCell>
-                            {owner ? (
-                              <div>
-                                <div className="font-medium">{owner.name}</div>
-                                <div className="text-muted-foreground text-sm">
-                                  {owner.email}
-                                </div>
-                              </div>
-                            ) : (
-                              "-"
-                            )}
-                          </TableCell>
-                        )}
                         <TableCell>
                           {format(new Date(booking.createdAt), "MMM dd, yyyy")}
                         </TableCell>

@@ -11,9 +11,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { exhibitionApi } from "@/lib/api";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/locale-context";
-import { exhibitionApi } from "@/lib/mock-api";
 import type { Exhibition } from "@/lib/types";
 import { format } from "date-fns";
 import { Calendar, MapPin } from "lucide-react";
