@@ -45,8 +45,6 @@ export default function EditBookingPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const token = session?.user?.token ?? "";
-  const sessionUserId = session?.user?._id;
-  const isAdmin = session?.user?.role === "admin";
   const bookingId = useMemo(() => {
     const id = params.id;
     return Array.isArray(id) ? id[0] : id;
@@ -77,8 +75,11 @@ export default function EditBookingPage() {
 
         const ownerId =
           typeof data.user === "object" ? data.user._id : data.user;
+        
+        const currentIsAdmin = session?.user?.role === "admin";
+        const currentUserId = session?.user?._id;
 
-        if (!ownerId) {
+        if (!ownerId && !currentIsAdmin) {
           toast.error(t("common.error", locale), {
             description: t("message.error", locale),
           });
@@ -86,7 +87,7 @@ export default function EditBookingPage() {
           return;
         }
 
-        if (!isAdmin && ownerId !== sessionUserId) {
+        if (!currentIsAdmin && ownerId && ownerId !== currentUserId) {
           toast.error(t("common.error", locale), {
             description: t("message.notAuthorized", locale),
           });
@@ -105,7 +106,7 @@ export default function EditBookingPage() {
             ? data.exhibition._id
             : data.exhibition;
 
-        if (exhibitionId) {
+        if (exhibitionId && ownerId) {
           const total = await getTotalBookedForUserAndExhibition(
             ownerId,
             exhibitionId,
@@ -127,7 +128,7 @@ export default function EditBookingPage() {
     };
 
     loadBooking();
-  }, [bookingId, status, token, locale, isAdmin, sessionUserId, router]);
+  }, [bookingId, status, token, locale, session?.user?.role, session?.user?._id, router]);
 
   const maxAllowed = Math.max(0, 6 - totalBooked);
 

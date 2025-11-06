@@ -10,8 +10,21 @@ type LocaleContextType = {
 
 const LocaleContext = createContext<LocaleContextType | undefined>(undefined);
 
-export function LocaleProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocale] = useState<Locale>("en");
+export const LOCALE_COOKIE_NAME = "NEXT_LOCALE";
+
+export function LocaleProvider({ 
+  children,
+  initialLocale = "en" 
+}: { 
+  children: ReactNode;
+  initialLocale?: Locale;
+}) {
+  const [locale, setLocaleState] = useState<Locale>(initialLocale);
+
+  const setLocale = (newLocale: Locale) => {
+    setLocaleState(newLocale);
+    document.cookie = `${LOCALE_COOKIE_NAME}=${newLocale}; path=/; max-age=31536000; SameSite=Lax`;
+  };
 
   return (
     <LocaleContext.Provider value={{ locale, setLocale }}>

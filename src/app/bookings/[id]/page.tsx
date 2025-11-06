@@ -227,7 +227,7 @@ export default function BookingDetailPage() {
                 {t("bookingDetail.boothType", locale)}
               </p>
               <Badge
-                variant={booking.boothType === "big" ? "default" : "secondary"}
+                className={booking.boothType === "big" ? "bg-sky-600 hover:bg-sky-700" : "bg-emerald-600 hover:bg-emerald-700"}
               >
                 {t(`booking.boothType.${booking.boothType}`, locale)}
               </Badge>

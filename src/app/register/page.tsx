@@ -73,10 +73,10 @@ function RegisterForm() {
         password: formData.password,
       });
 
-      toast.success("Registration successful!");
+      toast.success(t("message.registerSuccess", locale));
       router.push("/");
     } catch {
-      toast.error("Something went wrong. Please try again.");
+      toast.error(t("message.registerError", locale));
     } finally {
       setSubmitting(false);
     }

@@ -30,11 +30,13 @@ import type { Booking } from "@/lib/types";
 import { format } from "date-fns";
 import { Calendar, Eye, Pencil, Search, Trash2 } from "lucide-react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export default function BookingsPage() {
   const { locale } = useLocale();
+  const { data: session, status } = useSession();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
@@ -60,15 +62,23 @@ export default function BookingsPage() {
   );
 
   useEffect(() => {
-    // We will get the token from the session in the future
-    const token = "";
-    loadBookings(token);
-  }, [locale, loadBookings]);
+    if (status === "authenticated" && session?.user?.token) {
+      loadBookings(session.user.token);
+    } else if (status === "unauthenticated") {
+      setLoading(false);
+    }
+  }, [status, session, loadBookings]);
 
   const handleDelete = useCallback(
     async (id: string) => {
-      // We will get the token from the session in the future
-      const token = "";
+      if (!session?.user?.token) {
+        toast.error(t("common.error", locale), {
+          description: t("message.notAuthorized", locale),
+        });
+        return;
+      }
+
+      const token = session.user.token;
 
       try {
         await bookingApi.delete(id, token);
@@ -86,7 +96,7 @@ export default function BookingsPage() {
         setDeleteId(null);
       }
     },
-    [locale, loadBookings],
+    [locale, loadBookings, session],
   );
 
   const filteredBookings = bookings.filter((booking) => {
@@ -107,7 +117,7 @@ export default function BookingsPage() {
     );
   });
 
-  if (loading) {
+  if (loading || status === "loading") {
     return (
       <div className="container mx-auto px-4 py-8">
         <Skeleton className="mb-6 h-10 w-64" />
@@ -117,6 +127,26 @@ export default function BookingsPage() {
           </CardHeader>
           <CardContent>
             <Skeleton className="h-64 w-full" />
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  if (status === "unauthenticated") {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <Card>
+          <CardContent className="py-12 text-center">
+            <h3 className="mb-2 text-lg font-semibold">
+              {t("common.loginRequired", locale)}
+            </h3>
+            <p className="text-muted-foreground mb-4 text-sm">
+              {t("bookings.loginMessage", locale)}
+            </p>
+            <Button asChild>
+              <Link href="/login">{t("nav.login", locale)}</Link>
+            </Button>
           </CardContent>
         </Card>
       </div>
@@ -204,10 +234,10 @@ export default function BookingsPage() {
                         </TableCell>
                         <TableCell>
                           <Badge
-                            variant={
+                            className={
                               booking.boothType === "big"
-                                ? "default"
-                                : "secondary"
+                                ? "bg-sky-600 hover:bg-sky-700"
+                                : "bg-emerald-600 hover:bg-emerald-700"
                             }
                           >
                             {t(

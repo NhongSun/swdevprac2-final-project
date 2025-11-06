@@ -15,6 +15,7 @@ import { exhibitionApi } from "@/lib/api";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/locale-context";
 import type { Exhibition } from "@/lib/types";
+import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Calendar, MapPin } from "lucide-react";
 import Link from "next/link";
@@ -105,7 +106,7 @@ export default function ExhibitionsPage() {
             exhibition.durationDay,
           );
           const statusColors = {
-            upcoming: "default",
+            upcoming: "outline",
             active: "default",
             past: "secondary",
           } as const;
@@ -117,7 +118,13 @@ export default function ExhibitionsPage() {
                   <CardTitle className="text-xl text-balance">
                     {exhibition.name}
                   </CardTitle>
-                  <Badge variant={statusColors[status]}>
+                  <Badge 
+                    variant={statusColors[status]}
+                    className={cn({
+                      "bg-green-600 hover:bg-green-700": status === "active",
+                      "border-foreground/50": status === "upcoming",
+                    })}
+                  >
                     {t(`exhibitions.${status}`, locale)}
                   </Badge>
                 </div>
