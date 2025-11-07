@@ -14,8 +14,10 @@ import { exhibitionApi } from "@/lib/api";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/locale-context";
 import type { Exhibition } from "@/lib/types";
+import { getExhibitionStatus } from "@/lib/utils";
 import { format } from "date-fns";
 import { AlertCircle, ArrowLeft, Calendar, Clock, MapPin } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -23,8 +25,10 @@ import { useEffect, useState } from "react";
 export default function ExhibitionDetailPage() {
   const params = useParams();
   const { locale } = useLocale();
+  const { data: session } = useSession();
   const [exhibition, setExhibition] = useState<Exhibition | null>(null);
   const [loading, setLoading] = useState(true);
+  const isAdmin = session?.user?.role === "admin";
 
   useEffect(() => {
     async function loadExhibition() {
@@ -75,7 +79,10 @@ export default function ExhibitionDetailPage() {
     );
   }
 
-  const isPast = new Date(exhibition.startDate) < new Date();
+  const status = getExhibitionStatus(
+    exhibition.startDate,
+    exhibition.durationDay,
+  );
 
   return (
     <div className="container mx-auto max-w-4xl px-4 py-8">
@@ -146,23 +153,39 @@ export default function ExhibitionDetailPage() {
             </div>
           )}
 
-          {isPast && (
+          {status === "past" && (
             <Alert className="bg-background">
               <AlertCircle className="h-4 w-4" />
               <AlertDescription>
-                This exhibition has already passed. Booking is no longer
-                available.
+                {t("exhibition.statusPast", locale)}
               </AlertDescription>
             </Alert>
           )}
 
-          <div className="flex gap-3 pt-4">
-            <Button asChild size="lg" className="flex-1" disabled={isPast}>
-              <Link href={`/bookings/new?exhibitionId=${exhibition._id}`}>
-                {t("exhibitions.bookBooth", locale)}
-              </Link>
-            </Button>
-          </div>
+          {status === "active" && (
+            <Alert className="bg-background">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>
+                {t("exhibition.statusActive", locale)}
+              </AlertDescription>
+            </Alert>
+          )}
+
+          {!isAdmin && (
+            <div className="flex gap-3 pt-4">
+              {status !== "upcoming" ? (
+                <Button size="lg" className="flex-1" disabled>
+                  {t("exhibitions.bookBooth", locale)}
+                </Button>
+              ) : (
+                <Button asChild size="lg" className="flex-1">
+                  <Link href={`/bookings/new?exhibitionId=${exhibition._id}`}>
+                    {t("exhibitions.bookBooth", locale)}
+                  </Link>
+                </Button>
+              )}
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
