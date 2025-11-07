@@ -41,6 +41,7 @@ export default function BookingsPage() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const isAdmin = session?.user?.role === "admin";
 
   const loadBookings = useCallback(
     async (userToken: string) => {
@@ -156,10 +157,16 @@ export default function BookingsPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-3xl font-bold">{t("bookings.title", locale)}</h1>
-        <Button asChild>
-          <Link href="/exhibitions">{t("exhibitions.bookBooth", locale)}</Link>
-        </Button>
+        <h1 className="text-3xl font-bold">
+          {t(isAdmin ? "bookings.allTitle" : "bookings.title", locale)}
+        </h1>
+        {!isAdmin && (
+          <Button asChild>
+            <Link href="/exhibitions">
+              {t("exhibitions.bookBooth", locale)}
+            </Link>
+          </Button>
+        )}
       </div>
 
       <Card>
@@ -187,11 +194,13 @@ export default function BookingsPage() {
               <p className="text-muted-foreground mb-4 text-sm">
                 {t("bookings.createFirst", locale)}
               </p>
-              <Button asChild>
-                <Link href="/exhibitions">
-                  {t("exhibitions.bookBooth", locale)}
-                </Link>
-              </Button>
+              {!isAdmin && (
+                <Button asChild>
+                  <Link href="/exhibitions">
+                    {t("exhibitions.bookBooth", locale)}
+                  </Link>
+                </Button>
+              )}
             </div>
           ) : (
             <div className="overflow-x-auto">

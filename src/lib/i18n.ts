@@ -26,6 +26,8 @@ export const translations = {
     "exhibition.duration": "Duration",
     "exhibition.description": "Description",
     "exhibition.days": "days",
+    "exhibition.statusPast": "This exhibition has already passed. Booking is no longer available.",
+    "exhibition.statusActive": "This exhibition has already started. Booking is no longer available.",
 
     // Booking Form
     "booking.create": "Create Booking",
@@ -152,6 +154,8 @@ export const translations = {
     "exhibition.duration": "ระยะเวลา",
     "exhibition.description": "รายละเอียด",
     "exhibition.days": "วัน",
+    "exhibition.statusPast": "นิทรรศการนี้ผ่านไปแล้ว ไม่สามารถจองได้อีกต่อไป",
+    "exhibition.statusActive": "นิทรรศการนี้เริ่มแล้ว ไม่สามารถจองได้อีกต่อไป",
 
     // Booking Form
     "booking.create": "สร้างการจอง",

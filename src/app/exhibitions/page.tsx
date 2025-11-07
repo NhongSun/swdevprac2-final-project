@@ -19,12 +19,15 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Calendar, MapPin } from "lucide-react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 export default function ExhibitionsPage() {
   const { locale } = useLocale();
+  const { data: session } = useSession();
   const [exhibitions, setExhibitions] = useState<Exhibition[]>([]);
   const [loading, setLoading] = useState(true);
+  const isAdmin = session?.user?.role === "admin";
 
   useEffect(() => {
     async function loadExhibitions() {
@@ -154,11 +157,19 @@ export default function ExhibitionsPage() {
                     {t("exhibitions.viewDetails", locale)}
                   </Link>
                 </Button>
-                <Button asChild className="flex-1" disabled={status === "past"}>
-                  <Link href={`/bookings/new?exhibitionId=${exhibition._id}`}>
-                    {t("exhibitions.bookBooth", locale)}
-                  </Link>
-                </Button>
+                {!isAdmin && (
+                  status !== "upcoming" ? (
+                    <Button className="flex-1" disabled>
+                      {t("exhibitions.bookBooth", locale)}
+                    </Button>
+                  ) : (
+                    <Button asChild className="flex-1">
+                      <Link href={`/bookings/new?exhibitionId=${exhibition._id}`}>
+                        {t("exhibitions.bookBooth", locale)}
+                      </Link>
+                    </Button>
+                  )
+                )}
               </CardFooter>
             </Card>
           );

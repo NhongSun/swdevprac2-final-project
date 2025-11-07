@@ -15,6 +15,7 @@ const ibmPlexSansThai = IBM_Plex_Sans_Thai({
   subsets: ["latin", "thai"],
   weight: ["100", "200", "300", "400", "500", "600", "700"],
   display: "swap",
+  variable: "--font-ibm-plex-sans-thai",
 });
 
 export const metadata: Metadata = {
@@ -34,7 +35,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${ibmPlexSansThai.className} flex min-h-dvh flex-col`}>
+      <body className={`${ibmPlexSansThai.variable} font-sans flex min-h-dvh flex-col`}>
         <NextAuthProvider session={nextAuthSession}>
           <LocaleProvider initialLocale={initialLocale}>
             <Navigation />

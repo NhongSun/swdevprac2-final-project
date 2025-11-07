@@ -28,20 +28,19 @@ export function Navigation() {
   const { locale, setLocale } = useLocale();
   const { data: session } = useSession();
   const isMobile = useIsMobile();
+  const isAdmin = session?.user?.role === "admin";
 
   const navItems = [
     { href: "/exhibitions", label: t("nav.exhibitions", locale) },
     {
       href: "/bookings",
-      label: t("nav.myBookings", locale),
+      label: t(isAdmin ? "nav.allBookings" : "nav.myBookings", locale),
     },
   ];
 
   const handleLogout = async () => {
     await signOut({ callbackUrl: "/" });
   };
-
-  const isAdmin = session?.user?.role === "admin";
 
   return (
     <nav className="bg-card/95 sticky top-0 z-50 border-b backdrop-blur-sm">
