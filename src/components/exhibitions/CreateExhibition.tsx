@@ -6,14 +6,15 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { SafeImage } from "@/components/ui/safe-image";
 import { Textarea } from "@/components/ui/textarea";
 import { exhibitionApi } from "@/lib/api";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/locale-context";
 import type { CreateExhibitionFormData } from "@/lib/types";
+import { validateStartDateForm } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -43,7 +44,7 @@ export default function CreateExhibition() {
       router.replace("/");
       toast.error("You do not have permission to access this page.");
     }
-  }, []);
+  }, [status, session, router]);
 
   if (status === "loading") {
     return (
@@ -77,11 +78,14 @@ export default function CreateExhibition() {
       !formData.venue.trim() ||
       !formData.startDate
     ) {
-      toast.error("Please fill in all required fields");
+      toast.error(t("exhibition.form.requiredFields", locale));
       return;
     }
 
-    console.log("Submitting form data:", formData);
+    if (!validateStartDateForm(formData.startDate)) {
+      toast.error(t("exhibition.form.startDateFuture", locale));
+      return;
+    }
 
     setLoading(true);
     try {
@@ -246,7 +250,7 @@ export default function CreateExhibition() {
                 />
                 {formData.posterPicture && (
                   <div className="border-border relative mt-4 h-40 w-full overflow-hidden rounded-lg border">
-                    <Image
+                    <SafeImage
                       src={formData.posterPicture}
                       alt="Poster preview"
                       fill

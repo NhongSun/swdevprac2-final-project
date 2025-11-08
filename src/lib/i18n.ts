@@ -47,6 +47,8 @@ export const translations = {
     "exhibition.form.smallBoothQuota": "Small Booth Quota",
     "exhibition.form.bigBoothQuota": "Big Booth Quota",
     "exhibition.form.image": "Poster Image URL",
+    "exhibition.form.requiredFields": "Please fill in all required fields",
+    "exhibition.form.startDateFuture": "Start date must be in the future",
 
     // Edit Exhibition
     "exhibition.edit.title": "Edit Exhibition",
@@ -206,6 +208,8 @@ export const translations = {
     "exhibition.form.smallBoothQuota": "โควต้าบูธขนาดเล็ก",
     "exhibition.form.bigBoothQuota": "โควต้าบูธขนาดใหญ่",
     "exhibition.form.image": "URL โปสเตอร์",
+    "exhibition.form.requiredFields": "กรุณากรอกข้อมูลที่จำเป็นให้ครบ",
+    "exhibition.form.startDateFuture": "กรุณาเลือกวันเริ่มงานที่ยังไม่ถึง",
 
     // Edit Exhibition
     "exhibition.edit.title": "แก้ไขนิทรรศการ",

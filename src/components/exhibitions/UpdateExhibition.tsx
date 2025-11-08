@@ -6,15 +6,16 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { SafeImage } from "@/components/ui/safe-image";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { exhibitionApi } from "@/lib/api";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/locale-context";
 import type { CreateExhibitionFormData, Exhibition } from "@/lib/types";
+import { validateStartDateForm } from "@/lib/utils";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
@@ -143,7 +144,12 @@ export default function UpdateExhibition() {
       !formData.venue.trim() ||
       !formData.startDate
     ) {
-      toast.error("Please fill in all required fields");
+      toast.error(t("exhibition.form.requiredFields", locale));
+      return;
+    }
+
+    if (!validateStartDateForm(formData.startDate)) {
+      toast.error(t("exhibition.form.startDateFuture", locale));
       return;
     }
 
@@ -322,7 +328,7 @@ export default function UpdateExhibition() {
                 />
                 {formData.posterPicture && (
                   <div className="border-border relative mt-4 h-40 w-full overflow-hidden rounded-lg border">
-                    <Image
+                    <SafeImage
                       src={formData.posterPicture}
                       alt="Poster preview"
                       fill
