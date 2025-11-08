@@ -1,37 +1,59 @@
+export type UserRole = "admin" | "member";
+
+export type User = {
+  _id: string;
+  name: string;
+  email: string;
+  tel?: string;
+  role: UserRole;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
 export type Exhibition = {
   _id: string;
   name: string;
   description?: string;
   venue?: string;
-  startDate: string; // ISO
+  startDate: string;
   durationDay?: number;
   smallBoothQuota?: number;
   bigBoothQuota?: number;
+  posterPicture?: string;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
-// Booking (aligned with API)
+export type BookingUser = {
+  _id: string;
+  name: string;
+  email: string;
+  tel?: string;
+  role?: UserRole;
+};
+
+export type BookingExhibition = {
+  _id: string;
+  name: string;
+  description?: string;
+  venue?: string;
+  startDate: string;
+  durationDay?: number;
+  smallBoothQuota?: number;
+  bigBoothQuota?: number;
+  posterPicture?: string;
+};
+
 export type Booking = {
   _id: string;
-  user: string | { _id: string; name: string; email: string };
-  exhibition: string | Exhibition;
+  user: string | BookingUser;
+  exhibition: string | BookingExhibition;
   boothType: "small" | "big";
   amount: number;
   createdAt: string;
   updatedAt: string;
 };
 
-// User roles
-export type UserRole = "admin" | "member";
-
-// User context
-export type User = {
-  _id: string;
-  name: string;
-  email: string;
-  role: UserRole;
-};
-
-// Create booking input
 export type CreateBookingInput = {
   exhibition: string;
   boothType: "small" | "big";
@@ -42,6 +64,30 @@ export type CreateBookingInput = {
 export type UpdateBookingInput = {
   boothType: "small" | "big";
   amount: number;
+};
+
+export type ApiListResponse<T> = {
+  success: true;
+  count: number;
+  data: T[];
+  message?: string;
+};
+
+export type ApiItemResponse<T> = {
+  success: true;
+  data: T;
+  message?: string;
+};
+
+export type ApiMessageResponse = {
+  success: boolean;
+  message?: string;
+};
+
+export type ApiErrorResponse = {
+  success: false;
+  message?: string;
+  error?: string;
 };
 
 export type CreateExhibitionFormData = {

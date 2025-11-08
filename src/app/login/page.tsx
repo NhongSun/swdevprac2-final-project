@@ -53,9 +53,9 @@ function LoginForm() {
     setSubmitting(false);
 
     if (result?.error) {
-      toast.error("Invalid email or password");
+      toast.error(t("message.loginError", locale));
     } else {
-      toast.success("Login successful!");
+      toast.success(t("message.loginSuccess", locale));
       router.push("/");
     }
   }

@@ -23,60 +23,82 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { bookingApi } from "@/lib/api";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/locale-context";
-import { bookingApi } from "@/lib/mock-api";
 import type { Booking } from "@/lib/types";
-import { useUser } from "@/lib/user-context";
 import { format } from "date-fns";
 import { Calendar, Eye, Pencil, Search, Trash2 } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export default function BookingsPage() {
-  const { user } = useUser();
   const { locale } = useLocale();
+  const { data: session, status } = useSession();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const isAdmin = session?.user?.role === "admin";
+
+  const loadBookings = useCallback(
+    async (userToken: string) => {
+      try {
+        setLoading(true);
+        const data = await bookingApi.getAll(userToken);
+        setBookings(data);
+      } catch (error) {
+        console.error("Failed to load bookings:", error);
+        toast.error(t("common.error", locale), {
+          description:
+            error instanceof Error ? error.message : t("message.error", locale),
+        });
+      } finally {
+        setLoading(false);
+      }
+    },
+    [locale],
+  );
 
   useEffect(() => {
-    loadBookings();
-  }, [user]);
-
-  async function loadBookings() {
-    try {
-      setLoading(true);
-      const data = await bookingApi.getAll(user._id, user.role);
-      setBookings(data);
-    } catch (error) {
-      console.error("Failed to load bookings:", error);
-      toast.error(t("common.error", locale), {
-        description: t("message.error", locale),
-      });
-    } finally {
+    if (status === "authenticated" && session?.user?.token) {
+      loadBookings(session.user.token);
+    } else if (status === "unauthenticated") {
       setLoading(false);
     }
-  }
+  }, [status, session, loadBookings]);
 
-  async function handleDelete(id: string) {
-    try {
-      await bookingApi.delete(id, user._id, user.role);
-      toast.success(t("common.success", locale), {
-        description: t("message.bookingDeleted", locale),
-      });
-      loadBookings();
-    } catch (error) {
-      console.error("Failed to delete booking:", error);
-      toast.error(t("common.error", locale), {
-        description: t("message.error", locale),
-      });
-    } finally {
-      setDeleteId(null);
-    }
-  }
+  const handleDelete = useCallback(
+    async (id: string) => {
+      if (!session?.user?.token) {
+        toast.error(t("common.error", locale), {
+          description: t("message.notAuthorized", locale),
+        });
+        return;
+      }
+
+      const token = session.user.token;
+
+      try {
+        await bookingApi.delete(id, token);
+        toast.success(t("common.success", locale), {
+          description: t("message.bookingDeleted", locale),
+        });
+        await loadBookings(token);
+      } catch (error) {
+        console.error("Failed to delete booking:", error);
+        toast.error(t("common.error", locale), {
+          description:
+            error instanceof Error ? error.message : t("message.error", locale),
+        });
+      } finally {
+        setDeleteId(null);
+      }
+    },
+    [locale, loadBookings, session],
+  );
 
   const filteredBookings = bookings.filter((booking) => {
     if (!searchQuery) return true;
@@ -96,7 +118,7 @@ export default function BookingsPage() {
     );
   });
 
-  if (loading) {
+  if (loading || status === "loading") {
     return (
       <div className="container mx-auto px-4 py-8">
         <Skeleton className="mb-6 h-10 w-64" />
@@ -112,17 +134,39 @@ export default function BookingsPage() {
     );
   }
 
+  if (status === "unauthenticated") {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <Card>
+          <CardContent className="py-12 text-center">
+            <h3 className="mb-2 text-lg font-semibold">
+              {t("common.loginRequired", locale)}
+            </h3>
+            <p className="text-muted-foreground mb-4 text-sm">
+              {t("bookings.loginMessage", locale)}
+            </p>
+            <Button asChild>
+              <Link href="/login">{t("nav.login", locale)}</Link>
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-3xl font-bold">
-          {user.role === "admin"
-            ? t("bookings.allTitle", locale)
-            : t("bookings.title", locale)}
+          {t(isAdmin ? "bookings.allTitle" : "bookings.title", locale)}
         </h1>
-        <Button asChild>
-          <Link href="/exhibitions">{t("exhibitions.bookBooth", locale)}</Link>
-        </Button>
+        {!isAdmin && (
+          <Button asChild>
+            <Link href="/exhibitions">
+              {t("exhibitions.bookBooth", locale)}
+            </Link>
+          </Button>
+        )}
       </div>
 
       <Card>
@@ -150,11 +194,13 @@ export default function BookingsPage() {
               <p className="text-muted-foreground mb-4 text-sm">
                 {t("bookings.createFirst", locale)}
               </p>
-              <Button asChild>
-                <Link href="/exhibitions">
-                  {t("exhibitions.bookBooth", locale)}
-                </Link>
-              </Button>
+              {!isAdmin && (
+                <Button asChild>
+                  <Link href="/exhibitions">
+                    {t("exhibitions.bookBooth", locale)}
+                  </Link>
+                </Button>
+              )}
             </div>
           ) : (
             <div className="overflow-x-auto">
@@ -165,9 +211,6 @@ export default function BookingsPage() {
                     <TableHead>{t("bookings.exhibition", locale)}</TableHead>
                     <TableHead>{t("bookings.boothType", locale)}</TableHead>
                     <TableHead>{t("bookings.amount", locale)}</TableHead>
-                    {user.role === "admin" && (
-                      <TableHead>{t("bookings.owner", locale)}</TableHead>
-                    )}
                     <TableHead>{t("bookings.createdAt", locale)}</TableHead>
                     <TableHead className="text-right">
                       {t("bookings.actions", locale)}
@@ -180,8 +223,6 @@ export default function BookingsPage() {
                       typeof booking.exhibition === "object"
                         ? booking.exhibition
                         : null;
-                    const owner =
-                      typeof booking.user === "object" ? booking.user : null;
 
                     return (
                       <TableRow key={booking._id}>
@@ -202,10 +243,10 @@ export default function BookingsPage() {
                         </TableCell>
                         <TableCell>
                           <Badge
-                            variant={
+                            className={
                               booking.boothType === "big"
-                                ? "default"
-                                : "secondary"
+                                ? "bg-sky-600 hover:bg-sky-700"
+                                : "bg-emerald-600 hover:bg-emerald-700"
                             }
                           >
                             {t(
@@ -215,20 +256,6 @@ export default function BookingsPage() {
                           </Badge>
                         </TableCell>
                         <TableCell>{booking.amount}</TableCell>
-                        {user.role === "admin" && (
-                          <TableCell>
-                            {owner ? (
-                              <div>
-                                <div className="font-medium">{owner.name}</div>
-                                <div className="text-muted-foreground text-sm">
-                                  {owner.email}
-                                </div>
-                              </div>
-                            ) : (
-                              "-"
-                            )}
-                          </TableCell>
-                        )}
                         <TableCell>
                           {format(new Date(booking.createdAt), "MMM dd, yyyy")}
                         </TableCell>

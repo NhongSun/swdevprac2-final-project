@@ -27,6 +27,8 @@ export const translations = {
     "exhibition.duration": "Duration",
     "exhibition.description": "Description",
     "exhibition.days": "days",
+    "exhibition.statusPast": "This exhibition has already passed. Booking is no longer available.",
+    "exhibition.statusActive": "This exhibition has already started. Booking is no longer available.",
 
     // Create Exhibition
     "exhibition.create.title": "Create Exhibition",
@@ -75,6 +77,7 @@ export const translations = {
     "bookings.allTitle": "All Bookings",
     "bookings.empty": "No bookings yet",
     "bookings.createFirst": "Create your first booking",
+    "bookings.loginMessage": "Please log in to view your bookings",
     "bookings.id": "Booking ID",
     "bookings.exhibition": "Exhibition",
     "bookings.boothType": "Booth Type",
@@ -130,6 +133,7 @@ export const translations = {
     "common.confirm": "Confirm",
     "common.back": "Back",
     "common.save": "Save",
+    "common.loginRequired": "Login Required",
 
     // Messages
     "message.bookingCreated": "Booking created successfully",
@@ -142,6 +146,10 @@ export const translations = {
     "message.quotaExceeded": "Quota exceeded or total per user > 6",
     "message.notFound": "Booking or Exhibition not found",
     "message.notAuthorized": "Not authorized",
+    "message.loginSuccess": "Login successful",
+    "message.loginError": "Invalid email or password",
+    "message.registerSuccess": "Registration successful",
+    "message.registerError": "Something went wrong. Please try again.",
 
     // Role
     "role.admin": "Admin",
@@ -174,6 +182,8 @@ export const translations = {
     "exhibition.duration": "ระยะเวลา",
     "exhibition.description": "รายละเอียด",
     "exhibition.days": "วัน",
+    "exhibition.statusPast": "นิทรรศการนี้ผ่านไปแล้ว ไม่สามารถจองได้อีกต่อไป",
+    "exhibition.statusActive": "นิทรรศการนี้เริ่มแล้ว ไม่สามารถจองได้อีกต่อไป",
 
     // Create Exhibition
     "exhibition.create.title": "สร้างนิทรรศการ",
@@ -220,6 +230,7 @@ export const translations = {
     "bookings.allTitle": "การจองทั้งหมด",
     "bookings.empty": "ยังไม่มีการจอง",
     "bookings.createFirst": "สร้างการจองแรกของคุณ",
+    "bookings.loginMessage": "กรุณาเข้าสู่ระบบเพื่อดูการจองของคุณ",
     "bookings.id": "รหัสการจอง",
     "bookings.exhibition": "นิทรรศการ",
     "bookings.boothType": "ประเภทบูธ",
@@ -274,6 +285,7 @@ export const translations = {
     "common.confirm": "ยืนยัน",
     "common.back": "กลับ",
     "common.save": "บันทึก",
+    "common.loginRequired": "โปรดเข้าสู่ระบบ",
 
     // Messages
     "message.bookingCreated": "สร้างการจองสำเร็จ",
@@ -286,6 +298,10 @@ export const translations = {
     "message.quotaExceeded": "เกินโควต้าหรือรวมต่อผู้ใช้ > 6",
     "message.notFound": "ไม่พบการจองหรือนิทรรศการ",
     "message.notAuthorized": "ไม่ได้รับอนุญาต",
+    "message.loginSuccess": "เข้าสู่ระบบสำเร็จ",
+    "message.loginError": "อีเมลหรือรหัสผ่านไม่ถูกต้อง",
+    "message.registerSuccess": "สมัครบัญชีสำเร็จ",
+    "message.registerError": "เกิดข้อผิดพลาด กรุณาลองอีกครั้ง",
 
     // Role
     "role.admin": "ผู้ดูแลระบบ",
@@ -308,4 +324,20 @@ export function t(
   }
 
   return text;
+}
+
+export function getLocaleFromCookies(cookieHeader: string | null): Locale {
+  if (!cookieHeader) return "en";
+  
+  const cookies = cookieHeader.split(";").reduce(
+    (acc, cookie) => {
+      const [key, value] = cookie.trim().split("=");
+      acc[key] = value;
+      return acc;
+    },
+    {} as Record<string, string>,
+  );
+
+  const locale = cookies["NEXT_LOCALE"];
+  return locale === "th" ? "th" : "en";
 }

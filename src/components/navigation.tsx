@@ -35,7 +35,7 @@ export function Navigation() {
     { href: "/exhibitions", label: t("nav.exhibitions", locale) },
     {
       href: "/bookings",
-      label: t("nav.myBookings", locale),
+      label: t(isAdmin ? "nav.allBookings" : "nav.myBookings", locale),
     },
     // navitems for admin
     ...(isAdmin
@@ -51,8 +51,6 @@ export function Navigation() {
   const handleLogout = async () => {
     await signOut({ callbackUrl: "/" });
   };
-  9;
-
   return (
     <nav className="bg-card/95 sticky top-0 z-50 border-b backdrop-blur-sm">
       <div className="container mx-auto px-4">

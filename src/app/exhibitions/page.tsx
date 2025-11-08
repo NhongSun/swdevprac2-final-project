@@ -11,19 +11,23 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { exhibitionApi } from "@/lib/api";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/locale-context";
-import { exhibitionApi } from "@/lib/mock-api";
 import type { Exhibition } from "@/lib/types";
+import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Calendar, MapPin } from "lucide-react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 export default function ExhibitionsPage() {
   const { locale } = useLocale();
+  const { data: session } = useSession();
   const [exhibitions, setExhibitions] = useState<Exhibition[]>([]);
   const [loading, setLoading] = useState(true);
+  const isAdmin = session?.user?.role === "admin";
 
   useEffect(() => {
     async function loadExhibitions() {
@@ -105,7 +109,7 @@ export default function ExhibitionsPage() {
             exhibition.durationDay,
           );
           const statusColors = {
-            upcoming: "default",
+            upcoming: "outline",
             active: "default",
             past: "secondary",
           } as const;
@@ -117,7 +121,13 @@ export default function ExhibitionsPage() {
                   <CardTitle className="text-xl text-balance">
                     {exhibition.name}
                   </CardTitle>
-                  <Badge variant={statusColors[status]}>
+                  <Badge 
+                    variant={statusColors[status]}
+                    className={cn({
+                      "bg-green-600 hover:bg-green-700": status === "active",
+                      "border-foreground/50": status === "upcoming",
+                    })}
+                  >
                     {t(`exhibitions.${status}`, locale)}
                   </Badge>
                 </div>
@@ -147,11 +157,19 @@ export default function ExhibitionsPage() {
                     {t("exhibitions.viewDetails", locale)}
                   </Link>
                 </Button>
-                <Button asChild className="flex-1" disabled={status === "past"}>
-                  <Link href={`/bookings/new?exhibitionId=${exhibition._id}`}>
-                    {t("exhibitions.bookBooth", locale)}
-                  </Link>
-                </Button>
+                {!isAdmin && (
+                  status !== "upcoming" ? (
+                    <Button className="flex-1" disabled>
+                      {t("exhibitions.bookBooth", locale)}
+                    </Button>
+                  ) : (
+                    <Button asChild className="flex-1">
+                      <Link href={`/bookings/new?exhibitionId=${exhibition._id}`}>
+                        {t("exhibitions.bookBooth", locale)}
+                      </Link>
+                    </Button>
+                  )
+                )}
               </CardFooter>
             </Card>
           );
