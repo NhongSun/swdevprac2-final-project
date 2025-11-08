@@ -41,8 +41,7 @@ export default function CreateExhibition() {
       status === "unauthenticated" ||
       (session && session.user.role != "admin")
     ) {
-      router.replace("/");
-      toast.error("You do not have permission to access this page.");
+      router.back();
     }
   }, [status, session, router]);
 

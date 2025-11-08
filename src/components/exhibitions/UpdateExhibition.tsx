@@ -92,8 +92,7 @@ export default function UpdateExhibition() {
       status === "unauthenticated" ||
       (session && session.user.role !== "admin")
     ) {
-      router.replace("/");
-      toast.error("You do not have permission to access this page.");
+      router.back();
       return;
     }
 
