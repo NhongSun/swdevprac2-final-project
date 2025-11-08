@@ -4,6 +4,7 @@ import type {
   ApiMessageResponse,
   Booking,
   CreateBookingInput,
+  CreateExhibitionFormData,
   Exhibition,
   UpdateBookingInput,
 } from "./types";
@@ -110,15 +111,21 @@ function resolveEntityId(
 }
 
 export const exhibitionApi = {
-  async getAll(): Promise<Exhibition[]> {
-    const response = await request<ApiListResponse<Exhibition>>("/exhibitions");
+  async getAll(token: string): Promise<Exhibition[]> {
+    const response = await request<ApiListResponse<Exhibition>>(
+      "/exhibitions",
+      {
+        token,
+      },
+    );
     return response.data ?? [];
   },
 
-  async getById(id: string): Promise<Exhibition | null> {
+  async getById(id: string, token: string): Promise<Exhibition | null> {
     try {
       const response = await request<ApiItemResponse<Exhibition>>(
         `/exhibitions/${id}`,
+        { token },
       );
       return response.data;
     } catch (error) {
@@ -127,6 +134,44 @@ export const exhibitionApi = {
       }
       throw error;
     }
+  },
+
+  async create(
+    input: CreateExhibitionFormData,
+    token: string,
+  ): Promise<Exhibition> {
+    const response = await request<ApiItemResponse<Exhibition>>(
+      "/exhibitions",
+      {
+        method: "POST",
+        body: JSON.stringify(input),
+        token,
+      },
+    );
+    return response.data;
+  },
+
+  async update(
+    id: string,
+    input: CreateExhibitionFormData,
+    token: string,
+  ): Promise<Exhibition> {
+    const response = await request<ApiItemResponse<Exhibition>>(
+      `/exhibitions/${id}`,
+      {
+        method: "PUT",
+        body: JSON.stringify(input),
+        token,
+      },
+    );
+    return response.data;
+  },
+
+  async delete(id: string, token: string): Promise<void> {
+    await request<ApiMessageResponse>(`/exhibitions/${id}`, {
+      method: "DELETE",
+      token,
+    });
   },
 };
 

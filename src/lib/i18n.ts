@@ -27,8 +27,10 @@ export const translations = {
     "exhibition.duration": "Duration",
     "exhibition.description": "Description",
     "exhibition.days": "days",
-    "exhibition.statusPast": "This exhibition has already passed. Booking is no longer available.",
-    "exhibition.statusActive": "This exhibition has already started. Booking is no longer available.",
+    "exhibition.statusPast":
+      "This exhibition has already passed. Booking is no longer available.",
+    "exhibition.statusActive":
+      "This exhibition has already started. Booking is no longer available.",
 
     // Create Exhibition
     "exhibition.create.title": "Create Exhibition",
@@ -52,6 +54,10 @@ export const translations = {
     "exhibition.edit.form.submit": "Update Exhibition",
     "exhibition.edit.form.submiting": "Updating...",
     "exhibition.edit.form.cancel": "Cancel",
+
+    // Delete Exhibition
+    "exhibition.deleteConfirm":
+      "Are you sure you want to delete this exhibition?",
 
     // Booking Form
     "booking.create": "Create Booking",
@@ -208,6 +214,9 @@ export const translations = {
     "exhibition.edit.form.submiting": "กำลังอัปเดต...",
     "exhibition.edit.form.cancel": "ยกเลิก",
 
+    // Delete Exhibition
+    "exhibition.deleteConfirm": "คุณแน่ใจหรือไม่ว่าต้องการลบนิทรรศการนี้",
+
     // Booking Form
     "booking.create": "สร้างการจอง",
     "booking.edit": "แก้ไขการจอง",
@@ -328,7 +337,7 @@ export function t(
 
 export function getLocaleFromCookies(cookieHeader: string | null): Locale {
   if (!cookieHeader) return "en";
-  
+
   const cookies = cookieHeader.split(";").reduce(
     (acc, cookie) => {
       const [key, value] = cookie.trim().split("=");

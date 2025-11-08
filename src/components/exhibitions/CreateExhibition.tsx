@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { createExhibition } from "@/lib/exhibitions";
+import { exhibitionApi } from "@/lib/api";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/locale-context";
 import type { CreateExhibitionFormData } from "@/lib/types";
@@ -85,7 +85,7 @@ export default function CreateExhibition() {
 
     setLoading(true);
     try {
-      await createExhibition(formData, session.user.token);
+      await exhibitionApi.create(formData, session.user.token);
 
       toast.success("Exhibition created successfully!");
       router.push("/exhibitions");

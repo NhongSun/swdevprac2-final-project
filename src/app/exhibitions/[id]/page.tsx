@@ -29,6 +29,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function ExhibitionDetailPage() {
   const params = useParams();
@@ -36,16 +37,21 @@ export default function ExhibitionDetailPage() {
   const { data: session } = useSession();
   const [exhibition, setExhibition] = useState<Exhibition | null>(null);
   const [loading, setLoading] = useState(true);
-
-  const { data: session } = useSession();
   const isAdmin = session?.user?.role === "admin";
 
   const router = useRouter();
 
   useEffect(() => {
     async function loadExhibition() {
+      if (!session?.user.token) {
+        setLoading(false);
+        return;
+      }
       try {
-        const data = await exhibitionApi.getById(params.id as string);
+        const data = await exhibitionApi.getById(
+          params.id as string,
+          session.user.token,
+        );
         setExhibition(data);
       } catch (error) {
         console.error("Failed to load exhibition:", error);
@@ -54,8 +60,32 @@ export default function ExhibitionDetailPage() {
       }
     }
 
-    loadExhibition();
-  }, [params.id]);
+    if (session) {
+      loadExhibition();
+    }
+  }, [params.id, session]);
+
+  const handleDeleteExhibition = async () => {
+    if (!session?.user.token || !exhibition) return;
+
+    if (!confirm(t("exhibition.deleteConfirm", locale))) {
+      return;
+    }
+
+    try {
+      await exhibitionApi.delete(exhibition._id, session.user.token);
+
+      toast.success(t("common.success", locale), {
+        description: t("message.exhibitionDeleted", locale),
+      });
+      router.push("/exhibitions");
+    } catch (error) {
+      toast.error(t("common.error", locale), {
+        description:
+          error instanceof Error ? error.message : t("message.error", locale),
+      });
+    }
+  };
 
   if (loading) {
     return (

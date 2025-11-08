@@ -8,10 +8,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
-import { updateExhibition } from "@/lib/exhibitions";
+import { exhibitionApi } from "@/lib/api";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/locale-context";
-import { exhibitionApi } from "@/lib/mock-api";
 import type { CreateExhibitionFormData, Exhibition } from "@/lib/types";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { useSession } from "next-auth/react";
@@ -42,8 +41,14 @@ export default function UpdateExhibition() {
   });
 
   const loadExhibition = useCallback(async () => {
+    if (!session?.user.token) return;
     try {
-      const data = await exhibitionApi.getById(params.id as string);
+      const data = await exhibitionApi.getById(
+        params.id as string,
+        session.user.token,
+      );
+
+      console.log("data", data);
 
       if (!data) {
         toast.error(t("common.error", locale), {
@@ -68,7 +73,7 @@ export default function UpdateExhibition() {
         durationDay: data.durationDay || 0,
         smallBoothQuota: data.smallBoothQuota || 0,
         bigBoothQuota: data.bigBoothQuota || 0,
-        posterPicture: "", // Exhibition type doesn't have posterPicture, so default to empty
+        posterPicture: data.posterPicture || "",
       });
     } catch (error) {
       console.error("Failed to load exhibition:", error);
@@ -79,7 +84,7 @@ export default function UpdateExhibition() {
     } finally {
       setLoading(false);
     }
-  }, [params.id, locale, router]);
+  }, [params.id, locale, router, session]);
 
   useEffect(() => {
     if (
@@ -144,7 +149,11 @@ export default function UpdateExhibition() {
 
     setSubmitting(true);
     try {
-      await updateExhibition(params.id as string, formData, session.user.token);
+      await exhibitionApi.update(
+        params.id as string,
+        formData,
+        session.user.token,
+      );
 
       toast.success(t("common.success", locale), {
         description: t("message.exhibitionUpdated", locale),

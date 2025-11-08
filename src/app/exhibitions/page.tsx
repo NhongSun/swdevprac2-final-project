@@ -18,8 +18,8 @@ import type { Exhibition } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Calendar, MapPin } from "lucide-react";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function ExhibitionsPage() {
@@ -31,8 +31,12 @@ export default function ExhibitionsPage() {
 
   useEffect(() => {
     async function loadExhibitions() {
+      if (!session?.user.token) {
+        setLoading(false);
+        return;
+      }
       try {
-        const data = await exhibitionApi.getAll();
+        const data = await exhibitionApi.getAll(session.user.token);
         setExhibitions(data);
       } catch (error) {
         console.error("Failed to load exhibitions:", error);
@@ -41,8 +45,10 @@ export default function ExhibitionsPage() {
       }
     }
 
-    loadExhibitions();
-  }, []);
+    if (session) {
+      loadExhibitions();
+    }
+  }, [session]);
 
   const getExhibitionStatus = (startDate: string, durationDay?: number) => {
     const start = new Date(startDate);
@@ -121,7 +127,7 @@ export default function ExhibitionsPage() {
                   <CardTitle className="text-xl text-balance">
                     {exhibition.name}
                   </CardTitle>
-                  <Badge 
+                  <Badge
                     variant={statusColors[status]}
                     className={cn({
                       "bg-green-600 hover:bg-green-700": status === "active",
@@ -157,19 +163,20 @@ export default function ExhibitionsPage() {
                     {t("exhibitions.viewDetails", locale)}
                   </Link>
                 </Button>
-                {!isAdmin && (
-                  status !== "upcoming" ? (
+                {!isAdmin &&
+                  (status !== "upcoming" ? (
                     <Button className="flex-1" disabled>
                       {t("exhibitions.bookBooth", locale)}
                     </Button>
                   ) : (
                     <Button asChild className="flex-1">
-                      <Link href={`/bookings/new?exhibitionId=${exhibition._id}`}>
+                      <Link
+                        href={`/bookings/new?exhibitionId=${exhibition._id}`}
+                      >
                         {t("exhibitions.bookBooth", locale)}
                       </Link>
                     </Button>
-                  )
-                )}
+                  ))}
               </CardFooter>
             </Card>
           );
