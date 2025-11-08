@@ -261,6 +261,15 @@ export default function CreateExhibition() {
 
               {/* Buttons */}
               <div className="flex gap-3 pt-6">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => router.back()}
+                  disabled={loading}
+                  className="flex-1"
+                >
+                  {t("exhibition.create.form.cancel", locale)}
+                </Button>
                 <Button type="submit" disabled={loading} className="flex-1">
                   {loading ? (
                     <>
@@ -270,15 +279,6 @@ export default function CreateExhibition() {
                   ) : (
                     t("exhibition.create.form.submit", locale)
                   )}
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => router.back()}
-                  disabled={loading}
-                  className="flex-1"
-                >
-                  {t("exhibition.create.form.cancel", locale)}
                 </Button>
               </div>
             </form>

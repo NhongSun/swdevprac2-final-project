@@ -333,6 +333,15 @@ export default function UpdateExhibition() {
 
               {/* Buttons */}
               <div className="flex gap-3 pt-6">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => router.back()}
+                  disabled={submitting}
+                  className="flex-1"
+                >
+                  {t("exhibition.create.form.cancel", locale)}
+                </Button>
                 <Button type="submit" disabled={submitting} className="flex-1">
                   {submitting ? (
                     <>
@@ -342,15 +351,6 @@ export default function UpdateExhibition() {
                   ) : (
                     t("exhibition.edit.form.submit", locale)
                   )}
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => router.back()}
-                  disabled={submitting}
-                  className="flex-1"
-                >
-                  {t("exhibition.create.form.cancel", locale)}
                 </Button>
               </div>
             </form>
