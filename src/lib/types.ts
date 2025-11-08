@@ -43,3 +43,14 @@ export type UpdateBookingInput = {
   boothType: "small" | "big";
   amount: number;
 };
+
+export type CreateExhibitionFormData = {
+  name: string;
+  description: string;
+  venue: string;
+  startDate: string;
+  durationDay: number;
+  smallBoothQuota: number;
+  bigBoothQuota: number;
+  posterPicture: string;
+};

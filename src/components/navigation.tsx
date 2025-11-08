@@ -1,4 +1,5 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -28,6 +29,7 @@ export function Navigation() {
   const { locale, setLocale } = useLocale();
   const { data: session } = useSession();
   const isMobile = useIsMobile();
+  const isAdmin = session?.user?.role === "admin";
 
   const navItems = [
     { href: "/exhibitions", label: t("nav.exhibitions", locale) },
@@ -35,13 +37,21 @@ export function Navigation() {
       href: "/bookings",
       label: t("nav.myBookings", locale),
     },
+    // navitems for admin
+    ...(isAdmin
+      ? [
+          {
+            href: "/exhibitions/new",
+            label: t("nav.createExhibition", locale),
+          },
+        ]
+      : []),
   ];
 
   const handleLogout = async () => {
     await signOut({ callbackUrl: "/" });
   };
-
-  const isAdmin = session?.user?.role === "admin";
+  9;
 
   return (
     <nav className="bg-card/95 sticky top-0 z-50 border-b backdrop-blur-sm">
