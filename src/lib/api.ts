@@ -111,21 +111,15 @@ function resolveEntityId(
 }
 
 export const exhibitionApi = {
-  async getAll(token: string): Promise<Exhibition[]> {
-    const response = await request<ApiListResponse<Exhibition>>(
-      "/exhibitions",
-      {
-        token,
-      },
-    );
+  async getAll(): Promise<Exhibition[]> {
+    const response = await request<ApiListResponse<Exhibition>>("/exhibitions");
     return response.data ?? [];
   },
 
-  async getById(id: string, token: string): Promise<Exhibition | null> {
+  async getById(id: string): Promise<Exhibition | null> {
     try {
       const response = await request<ApiItemResponse<Exhibition>>(
         `/exhibitions/${id}`,
-        { token },
       );
       return response.data;
     } catch (error) {

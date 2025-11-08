@@ -42,14 +42,8 @@ export default function UpdateExhibition() {
   });
 
   const loadExhibition = useCallback(async () => {
-    if (!session?.user.token) return;
     try {
-      const data = await exhibitionApi.getById(
-        params.id as string,
-        session.user.token,
-      );
-
-      console.log("data", data);
+      const data = await exhibitionApi.getById(params.id as string);
 
       if (!data) {
         toast.error(t("common.error", locale), {
@@ -85,7 +79,7 @@ export default function UpdateExhibition() {
     } finally {
       setLoading(false);
     }
-  }, [params.id, locale, router, session]);
+  }, [params.id, locale, router]);
 
   useEffect(() => {
     if (

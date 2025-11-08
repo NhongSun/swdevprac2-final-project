@@ -31,12 +31,12 @@ export default function ExhibitionsPage() {
 
   useEffect(() => {
     async function loadExhibitions() {
-      if (!session?.user.token) {
-        setLoading(false);
-        return;
-      }
+      // if (!session?.user.token) {
+      //   setLoading(false);
+      //   return;
+      // }
       try {
-        const data = await exhibitionApi.getAll(session.user.token);
+        const data = await exhibitionApi.getAll();
         setExhibitions(data);
       } catch (error) {
         console.error("Failed to load exhibitions:", error);
@@ -45,10 +45,8 @@ export default function ExhibitionsPage() {
       }
     }
 
-    if (session) {
-      loadExhibitions();
-    }
-  }, [session]);
+    loadExhibitions();
+  }, []);
 
   const getExhibitionStatus = (startDate: string, durationDay?: number) => {
     const start = new Date(startDate);

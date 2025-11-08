@@ -73,7 +73,7 @@ function NewBookingForm() {
       try {
         setLoading(true);
         const [exhibitionData, booked] = await Promise.all([
-          exhibitionApi.getById(exhibitionId, token),
+          exhibitionApi.getById(exhibitionId),
           getTotalBookedForUserAndExhibition(userId, exhibitionId, token),
         ]);
 

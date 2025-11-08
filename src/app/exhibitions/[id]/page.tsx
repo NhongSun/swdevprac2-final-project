@@ -43,15 +43,8 @@ export default function ExhibitionDetailPage() {
 
   useEffect(() => {
     async function loadExhibition() {
-      if (!session?.user.token) {
-        setLoading(false);
-        return;
-      }
       try {
-        const data = await exhibitionApi.getById(
-          params.id as string,
-          session.user.token,
-        );
+        const data = await exhibitionApi.getById(params.id as string);
         setExhibition(data);
       } catch (error) {
         console.error("Failed to load exhibition:", error);
@@ -60,10 +53,8 @@ export default function ExhibitionDetailPage() {
       }
     }
 
-    if (session) {
-      loadExhibition();
-    }
-  }, [params.id, session]);
+    loadExhibition();
+  }, [params.id]);
 
   const handleDeleteExhibition = async () => {
     if (!session?.user.token || !exhibition) return;
