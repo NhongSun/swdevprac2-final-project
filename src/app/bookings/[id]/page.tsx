@@ -20,7 +20,10 @@ import { bookingApi } from "@/lib/api";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/locale-context";
 import type { Booking } from "@/lib/types";
-import { format } from "date-fns";
+import {
+  formatDateShortMonth,
+  formatDateShortMonthWithTime,
+} from "@/lib/utils";
 import {
   AlertCircle,
   ArrowLeft,
@@ -227,7 +230,11 @@ export default function BookingDetailPage() {
                 {t("bookingDetail.boothType", locale)}
               </p>
               <Badge
-                className={booking.boothType === "big" ? "bg-sky-600 hover:bg-sky-700" : "bg-emerald-600 hover:bg-emerald-700"}
+                className={
+                  booking.boothType === "big"
+                    ? "bg-sky-600 hover:bg-sky-700"
+                    : "bg-emerald-600 hover:bg-emerald-700"
+                }
               >
                 {t(`booking.boothType.${booking.boothType}`, locale)}
               </Badge>
@@ -256,14 +263,14 @@ export default function BookingDetailPage() {
               <p className="text-muted-foreground mb-1 text-sm">
                 {t("bookingDetail.createdAt", locale)}
               </p>
-              <p>{format(new Date(booking.createdAt), "MMM dd, yyyy HH:mm")}</p>
+              <p>{formatDateShortMonthWithTime(booking.createdAt, locale)}</p>
             </div>
 
             <div>
               <p className="text-muted-foreground mb-1 text-sm">
                 {t("bookingDetail.updatedAt", locale)}
               </p>
-              <p>{format(new Date(booking.updatedAt), "MMM dd, yyyy HH:mm")}</p>
+              <p>{formatDateShortMonthWithTime(booking.updatedAt, locale)}</p>
             </div>
           </div>
 
@@ -278,7 +285,7 @@ export default function BookingDetailPage() {
                   <div className="text-muted-foreground flex flex-col gap-1 text-sm">
                     <div className="flex items-center gap-2">
                       <Calendar className="h-4 w-4" />
-                      {format(new Date(exhibition.startDate), "MMM dd, yyyy")}
+                      {formatDateShortMonth(exhibition.startDate, locale)}
                       {exhibition.durationDay &&
                         ` (${exhibition.durationDay} ${t("exhibition.days", locale)})`}
                     </div>

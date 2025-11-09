@@ -1,6 +1,8 @@
 import { clsx, type ClassValue } from "clsx";
 import { isAfter, isSameDay, startOfDay } from "date-fns";
 import { twMerge } from "tailwind-merge";
+import type { Locale } from "./i18n";
+import { t } from "./i18n";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -79,4 +81,107 @@ export function validateStartDateForm(date: string): boolean {
     // If date parsing fails, return false
     return false;
   }
+}
+
+/**
+ * Maps month index (0-11) to translation key for month names
+ */
+const monthKeys: Record<number, string> = {
+  0: "month.jan",
+  1: "month.feb",
+  2: "month.mar",
+  3: "month.apr",
+  4: "month.may",
+  5: "month.jun",
+  6: "month.jul",
+  7: "month.aug",
+  8: "month.sep",
+  9: "month.oct",
+  10: "month.nov",
+  11: "month.dec",
+};
+
+/**
+ * Formats a date with translated month names
+ * @param date - The date string or Date object to format
+ * @param locale - The locale to use for translations
+ * @param format - Format style: "full" for full month names, "short" for abbreviated (default: "short")
+ * @param includeTime - Whether to include time (HH:mm) in the output (default: false)
+ * @returns Formatted date string with translated month
+ */
+export function formatDateWithLocale(
+  date: string | Date,
+  locale: Locale = "en",
+  format: "full" | "short" = "short",
+  includeTime: boolean = false,
+): string {
+  const dateObj = typeof date === "string" ? new Date(date) : date;
+  const month = dateObj.getMonth();
+  const day = dateObj.getDate();
+  const year = dateObj.getFullYear();
+
+  const monthKey = `${monthKeys[month]}.${format}`;
+  const monthName = t(monthKey, locale);
+
+  let formatted = `${monthName} ${day.toString().padStart(2, "0")}, ${year}`;
+
+  if (includeTime) {
+    const hours = dateObj.getHours().toString().padStart(2, "0");
+    const minutes = dateObj.getMinutes().toString().padStart(2, "0");
+    formatted += ` ${hours}:${minutes}`;
+  }
+
+  return formatted;
+}
+
+/**
+ * Formats a date with full month name (e.g., "January 08, 2026" or "มกราคม 08, 2026")
+ * @param date - The date string or Date object to format
+ * @param locale - The locale to use for translations
+ * @returns Formatted date string with full translated month
+ */
+export function formatDateFullMonth(
+  date: string | Date,
+  locale: Locale = "en",
+): string {
+  return formatDateWithLocale(date, locale, "full");
+}
+
+/**
+ * Formats a date with short month name (e.g., "Jan 08, 2026" or "ม.ค. 08, 2026")
+ * @param date - The date string or Date object to format
+ * @param locale - The locale to use for translations
+ * @returns Formatted date string with short translated month
+ */
+export function formatDateShortMonth(
+  date: string | Date,
+  locale: Locale = "en",
+): string {
+  return formatDateWithLocale(date, locale, "short");
+}
+
+/**
+ * Formats a date with short month name and time (e.g., "Jan 08, 2026 14:30" or "ม.ค. 08, 2026 14:30")
+ * @param date - The date string or Date object to format
+ * @param locale - The locale to use for translations
+ * @returns Formatted date string with short translated month and time
+ */
+export function formatDateShortMonthWithTime(
+  date: string | Date,
+  locale: Locale = "en",
+): string {
+  return formatDateWithLocale(date, locale, "short", true);
+}
+
+/**
+ * Formats a date with full month name and time (e.g., "January 08, 2026 14:30" or "มกราคม 08, 2026 14:30")
+ * @param date - The date string or Date object to format
+ * @param locale - The locale to use for translations
+ * @returns Formatted date string with full translated month and time
+ */
+export function formatDateFullMonthWithTime(
+  date: string | Date,
+  locale: Locale = "en",
+): string {
+  return formatDateWithLocale(date, locale, "full", true);
 }
