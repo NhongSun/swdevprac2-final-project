@@ -14,8 +14,7 @@ import { exhibitionApi } from "@/lib/api";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/locale-context";
 import type { Exhibition } from "@/lib/types";
-import { getExhibitionStatus } from "@/lib/utils";
-import { format } from "date-fns";
+import { formatDateFullMonth, getExhibitionStatus } from "@/lib/utils";
 import {
   AlertCircle,
   ArrowLeft,
@@ -165,7 +164,7 @@ export default function ExhibitionDetailPage() {
               <div>
                 <p className="font-medium">{t("exhibition.dates", locale)}</p>
                 <p className="text-muted-foreground text-sm">
-                  {format(new Date(exhibition.startDate), "MMMM dd, yyyy")}
+                  {formatDateFullMonth(exhibition.startDate, locale)}
                 </p>
               </div>
             </div>

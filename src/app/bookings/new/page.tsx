@@ -23,7 +23,7 @@ import {
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/locale-context";
 import type { CreateBookingInput, Exhibition } from "@/lib/types";
-import { format } from "date-fns";
+import { formatDateShortMonth } from "@/lib/utils";
 import { AlertCircle, ArrowLeft, Calendar, MapPin } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -197,7 +197,7 @@ function NewBookingForm() {
                   <div className="text-muted-foreground flex flex-col gap-1 text-sm">
                     <div className="flex items-center gap-2">
                       <Calendar className="h-4 w-4" />
-                      {format(new Date(exhibition.startDate), "MMM dd, yyyy")}
+                      {formatDateShortMonth(exhibition.startDate, locale)}
                       {exhibition.durationDay &&
                         ` (${exhibition.durationDay} ${t("exhibition.days", locale)})`}
                     </div>

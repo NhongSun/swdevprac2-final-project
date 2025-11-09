@@ -15,8 +15,7 @@ import { exhibitionApi } from "@/lib/api";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/locale-context";
 import type { Exhibition } from "@/lib/types";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
+import { cn, formatDateShortMonth } from "@/lib/utils";
 import { Calendar, MapPin } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -31,10 +30,6 @@ export default function ExhibitionsPage() {
 
   useEffect(() => {
     async function loadExhibitions() {
-      // if (!session?.user.token) {
-      //   setLoading(false);
-      //   return;
-      // }
       try {
         const data = await exhibitionApi.getAll();
         setExhibitions(data);
@@ -137,7 +132,7 @@ export default function ExhibitionsPage() {
                 </div>
                 <CardDescription className="flex items-center gap-2">
                   <Calendar className="h-4 w-4" />
-                  {format(new Date(exhibition.startDate), "MMM dd, yyyy")}
+                  {formatDateShortMonth(exhibition.startDate, locale)}
                   {exhibition.durationDay &&
                     ` (${exhibition.durationDay} ${t("exhibition.days", locale)})`}
                 </CardDescription>

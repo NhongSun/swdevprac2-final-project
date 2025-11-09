@@ -163,6 +163,34 @@ export const translations = {
     "role.admin": "Admin",
     "role.member": "Member",
     "role.switch": "Switch Role",
+
+    // Months - Full
+    "month.jan.full": "January",
+    "month.feb.full": "February",
+    "month.mar.full": "March",
+    "month.apr.full": "April",
+    "month.may.full": "May",
+    "month.jun.full": "June",
+    "month.jul.full": "July",
+    "month.aug.full": "August",
+    "month.sep.full": "September",
+    "month.oct.full": "October",
+    "month.nov.full": "November",
+    "month.dec.full": "December",
+
+    // Months - Short
+    "month.jan.short": "Jan",
+    "month.feb.short": "Feb",
+    "month.mar.short": "Mar",
+    "month.apr.short": "Apr",
+    "month.may.short": "May",
+    "month.jun.short": "Jun",
+    "month.jul.short": "Jul",
+    "month.aug.short": "Aug",
+    "month.sep.short": "Sep",
+    "month.oct.short": "Oct",
+    "month.nov.short": "Nov",
+    "month.dec.short": "Dec",
   },
   th: {
     // Navigation
@@ -320,6 +348,34 @@ export const translations = {
     "role.admin": "ผู้ดูแลระบบ",
     "role.member": "สมาชิก",
     "role.switch": "สลับบทบาท",
+
+    // Months - Full
+    "month.jan.full": "มกราคม",
+    "month.feb.full": "กุมภาพันธ์",
+    "month.mar.full": "มีนาคม",
+    "month.apr.full": "เมษายน",
+    "month.may.full": "พฤษภาคม",
+    "month.jun.full": "มิถุนายน",
+    "month.jul.full": "กรกฎาคม",
+    "month.aug.full": "สิงหาคม",
+    "month.sep.full": "กันยายน",
+    "month.october": "ตุลาคม",
+    "month.nov.full": "พฤศจิกายน",
+    "month.dec.full": "ธันวาคม",
+
+    // Months - Short
+    "month.jan.short": "ม.ค.",
+    "month.feb.short": "ก.พ.",
+    "month.mar.short": "มี.ค.",
+    "month.apr.short": "เม.ย.",
+    "month.may.short": "พ.ค.",
+    "month.jun.short": "มิ.ย.",
+    "month.jul.short": "ก.ค.",
+    "month.aug.short": "ส.ค.",
+    "month.sep.short": "ก.ย.",
+    "month.oct.short": "ต.ค.",
+    "month.nov.short": "พ.ย.",
+    "month.dec.short": "ธ.ค.",
   },
 };
 

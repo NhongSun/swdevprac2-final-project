@@ -27,10 +27,10 @@ import { bookingApi } from "@/lib/api";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/locale-context";
 import type { Booking } from "@/lib/types";
-import { format } from "date-fns";
+import { formatDateShortMonth } from "@/lib/utils";
 import { Calendar, Eye, Pencil, Search, Trash2 } from "lucide-react";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -257,7 +257,7 @@ export default function BookingsPage() {
                         </TableCell>
                         <TableCell>{booking.amount}</TableCell>
                         <TableCell>
-                          {format(new Date(booking.createdAt), "MMM dd, yyyy")}
+                          {formatDateShortMonth(booking.createdAt, locale)}
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex items-center justify-end gap-2">
