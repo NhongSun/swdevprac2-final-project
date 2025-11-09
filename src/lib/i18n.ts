@@ -359,7 +359,7 @@ export const translations = {
     "month.jul.full": "กรกฎาคม",
     "month.aug.full": "สิงหาคม",
     "month.sep.full": "กันยายน",
-    "month.october": "ตุลาคม",
+    "month.oct.full": "ตุลาคม",
     "month.nov.full": "พฤศจิกายน",
     "month.dec.full": "ธันวาคม",
 
@@ -384,13 +384,11 @@ export function t(
   locale: Locale = "en",
   params?: Record<string, string | number>,
 ): string {
-  let text =
-    translations[locale][key as keyof (typeof translations)[typeof locale]] ||
-    key;
+  let text = translations[locale][key as keyof typeof translations.en] || key;
 
   if (params) {
-    Object.entries(params).forEach(([paramKey, paramValue]) => {
-      text = text.replaceAll(`{${paramKey}}`, String(paramValue));
+    Object.entries(params).forEach(([key, value]) => {
+      text = text.replace(`{${key}}`, String(value));
     });
   }
 
