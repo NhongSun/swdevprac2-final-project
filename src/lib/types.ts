@@ -89,3 +89,14 @@ export type ApiErrorResponse = {
   message?: string;
   error?: string;
 };
+
+export type CreateExhibitionFormData = {
+  name: string;
+  description: string;
+  venue: string;
+  startDate: string;
+  durationDay: number;
+  smallBoothQuota: number;
+  bigBoothQuota: number;
+  posterPicture: string;
+};

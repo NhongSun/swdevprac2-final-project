@@ -6,6 +6,7 @@ export const translations = {
     "nav.exhibitions": "Exhibitions",
     "nav.myBookings": "My Bookings",
     "nav.allBookings": "All Bookings",
+    "nav.createExhibition": "Create Exhibition",
     "nav.profile": "Profile",
     "nav.login": "Login",
     "nav.logout": "Logout",
@@ -26,8 +27,39 @@ export const translations = {
     "exhibition.duration": "Duration",
     "exhibition.description": "Description",
     "exhibition.days": "days",
-    "exhibition.statusPast": "This exhibition has already passed. Booking is no longer available.",
-    "exhibition.statusActive": "This exhibition has already started. Booking is no longer available.",
+    "exhibition.statusPast":
+      "This exhibition has already passed. Booking is no longer available.",
+    "exhibition.statusActive":
+      "This exhibition has already started. Booking is no longer available.",
+
+    // Create Exhibition
+    "exhibition.create.title": "Create Exhibition",
+    "exhibition.create.description": "Add a new exhibition to this platform",
+    "exhibition.create.form.submit": "Create Exhibition",
+    "exhibition.create.form.submiting": "Creating...",
+    "exhibition.create.form.cancel": "Cancel",
+
+    "exhibition.form.name": "Exhibition Name",
+    "exhibition.form.description": "Description",
+    "exhibition.form.venue": "Venue",
+    "exhibition.form.startDate": "Start Date",
+    "exhibition.form.duration": "Duration (Days)",
+    "exhibition.form.smallBoothQuota": "Small Booth Quota",
+    "exhibition.form.bigBoothQuota": "Big Booth Quota",
+    "exhibition.form.image": "Poster Image URL",
+    "exhibition.form.requiredFields": "Please fill in all required fields",
+    "exhibition.form.startDateFuture": "Start date must be in the future",
+
+    // Edit Exhibition
+    "exhibition.edit.title": "Edit Exhibition",
+    "exhibition.edit.description": "Update exhibition information",
+    "exhibition.edit.form.submit": "Update Exhibition",
+    "exhibition.edit.form.submiting": "Updating...",
+    "exhibition.edit.form.cancel": "Cancel",
+
+    // Delete Exhibition
+    "exhibition.deleteConfirm":
+      "Are you sure you want to delete this exhibition?",
 
     // Booking Form
     "booking.create": "Create Booking",
@@ -115,6 +147,9 @@ export const translations = {
     "message.bookingCreated": "Booking created successfully",
     "message.bookingUpdated": "Booking updated successfully",
     "message.bookingDeleted": "Booking deleted successfully",
+    "message.exhibitionCreated": "Exhibition created successfully",
+    "message.exhibitionUpdated": "Exhibition updated successfully",
+    "message.exhibitionDeleted": "Exhibition deleted successfully",
     "message.error": "An error occurred. Please try again.",
     "message.quotaExceeded": "Quota exceeded or total per user > 6",
     "message.notFound": "Booking or Exhibition not found",
@@ -134,6 +169,7 @@ export const translations = {
     "nav.exhibitions": "นิทรรศการ",
     "nav.myBookings": "การจองของฉัน",
     "nav.allBookings": "การจองทั้งหมด",
+    "nav.createExhibition": "สร้างนิทรรศการ",
     "nav.profile": "โปรไฟล์",
     "nav.login": "เข้าสู่ระบบ",
     "nav.logout": "ออกจากระบบ",
@@ -156,6 +192,34 @@ export const translations = {
     "exhibition.days": "วัน",
     "exhibition.statusPast": "นิทรรศการนี้ผ่านไปแล้ว ไม่สามารถจองได้อีกต่อไป",
     "exhibition.statusActive": "นิทรรศการนี้เริ่มแล้ว ไม่สามารถจองได้อีกต่อไป",
+
+    // Create Exhibition
+    "exhibition.create.title": "สร้างนิทรรศการ",
+    "exhibition.create.description": "เพิ่มนิทรรศการใหม่ในแพลตฟอร์มนี้",
+    "exhibition.create.form.submit": "สร้างนิทรรศการ",
+    "exhibition.create.form.submiting": "กำลังสร้าง...",
+    "exhibition.create.form.cancel": "ยกเลิก",
+
+    "exhibition.form.name": "ชื่อนิทรรศการ",
+    "exhibition.form.description": "รายละเอียด",
+    "exhibition.form.venue": "สถานที่",
+    "exhibition.form.startDate": "วันเริ่มงาน",
+    "exhibition.form.duration": "ระยะเวลา (วัน)",
+    "exhibition.form.smallBoothQuota": "โควต้าบูธขนาดเล็ก",
+    "exhibition.form.bigBoothQuota": "โควต้าบูธขนาดใหญ่",
+    "exhibition.form.image": "URL โปสเตอร์",
+    "exhibition.form.requiredFields": "กรุณากรอกข้อมูลที่จำเป็นให้ครบ",
+    "exhibition.form.startDateFuture": "กรุณาเลือกวันเริ่มงานที่ยังไม่ถึง",
+
+    // Edit Exhibition
+    "exhibition.edit.title": "แก้ไขนิทรรศการ",
+    "exhibition.edit.description": "อัปเดตข้อมูลนิทรรศการ",
+    "exhibition.edit.form.submit": "อัปเดตนิทรรศการ",
+    "exhibition.edit.form.submiting": "กำลังอัปเดต...",
+    "exhibition.edit.form.cancel": "ยกเลิก",
+
+    // Delete Exhibition
+    "exhibition.deleteConfirm": "คุณแน่ใจหรือไม่ว่าต้องการลบนิทรรศการนี้",
 
     // Booking Form
     "booking.create": "สร้างการจอง",
@@ -240,6 +304,9 @@ export const translations = {
     "message.bookingCreated": "สร้างการจองสำเร็จ",
     "message.bookingUpdated": "อัปเดตการจองสำเร็จ",
     "message.bookingDeleted": "ลบการจองสำเร็จ",
+    "message.exhibitionCreated": "สร้างนิทรรศการสำเร็จ",
+    "message.exhibitionUpdated": "อัปเดตนิทรรศการสำเร็จ",
+    "message.exhibitionDeleted": "ลบนิทรรศการสำเร็จ",
     "message.error": "เกิดข้อผิดพลาด กรุณาลองอีกครั้ง",
     "message.quotaExceeded": "เกินโควต้าหรือรวมต่อผู้ใช้ > 6",
     "message.notFound": "ไม่พบการจองหรือนิทรรศการ",
@@ -274,7 +341,7 @@ export function t(
 
 export function getLocaleFromCookies(cookieHeader: string | null): Locale {
   if (!cookieHeader) return "en";
-  
+
   const cookies = cookieHeader.split(";").reduce(
     (acc, cookie) => {
       const [key, value] = cookie.trim().split("=");

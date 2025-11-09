@@ -1,4 +1,5 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -36,12 +37,20 @@ export function Navigation() {
       href: "/bookings",
       label: t(isAdmin ? "nav.allBookings" : "nav.myBookings", locale),
     },
+    // navitems for admin
+    ...(isAdmin
+      ? [
+          {
+            href: "/exhibitions/new",
+            label: t("nav.createExhibition", locale),
+          },
+        ]
+      : []),
   ];
 
   const handleLogout = async () => {
     await signOut({ callbackUrl: "/" });
   };
-
   return (
     <nav className="bg-card/95 sticky top-0 z-50 border-b backdrop-blur-sm">
       <div className="container mx-auto px-4">
