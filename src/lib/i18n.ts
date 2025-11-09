@@ -384,11 +384,13 @@ export function t(
   locale: Locale = "en",
   params?: Record<string, string | number>,
 ): string {
-  let text = translations[locale][key as keyof typeof translations.en] || key;
+  let text =
+    translations[locale][key as keyof (typeof translations)[typeof locale]] ||
+    key;
 
   if (params) {
-    Object.entries(params).forEach(([key, value]) => {
-      text = text.replace(`{${key}}`, String(value));
+    Object.entries(params).forEach(([paramKey, paramValue]) => {
+      text = text.replaceAll(`{${paramKey}}`, String(paramValue));
     });
   }
 
