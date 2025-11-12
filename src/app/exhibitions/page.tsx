@@ -134,7 +134,11 @@ export default function ExhibitionsPage() {
                   <Calendar className="h-4 w-4" />
                   {formatDateShortMonth(exhibition.startDate, locale)}
                   {exhibition.durationDay &&
-                    ` (${exhibition.durationDay} ${t("exhibition.days", locale)})`}
+                    ` (${exhibition.durationDay} ${
+                      exhibition.durationDay > 1
+                        ? t("exhibition.days", locale)
+                        : t("exhibition.day", locale)
+                    })`}
                 </CardDescription>
               </CardHeader>
 
