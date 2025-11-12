@@ -211,14 +211,16 @@ export default function ExhibitionDetailPage() {
             )}
           </div>
 
-          <div>
-            <p className="text-muted-foreground mb-2 text-sm font-medium">
-              {t("exhibition.description", locale)}
-            </p>
-            <p className="text-foreground text-base leading-relaxed">
-              {exhibition.description}
-            </p>
-          </div>
+          {exhibition.description && (
+            <div>
+              <p className="text-muted-foreground mb-2 text-sm font-medium">
+                {t("exhibition.description", locale)}
+              </p>
+              <p className="text-foreground text-base leading-relaxed">
+                {exhibition.description}
+              </p>
+            </div>
+          )}
 
           {status === "past" && (
             <Alert className="bg-background">
