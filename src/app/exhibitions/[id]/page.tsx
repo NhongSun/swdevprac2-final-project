@@ -1,5 +1,4 @@
 "use client";
-
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { SafeImage } from "@/components/ui/safe-image";
 import { Skeleton } from "@/components/ui/skeleton";
 import { exhibitionApi } from "@/lib/api";
 import { t } from "@/lib/i18n";
@@ -21,14 +21,12 @@ import {
   Calendar,
   Clock,
   MapPin,
-  SquarePen,
-  Trash2,
+  Pencil,
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
 
 export default function ExhibitionDetailPage() {
   const params = useParams();
@@ -37,8 +35,6 @@ export default function ExhibitionDetailPage() {
   const [exhibition, setExhibition] = useState<Exhibition | null>(null);
   const [loading, setLoading] = useState(true);
   const isAdmin = session?.user?.role === "admin";
-
-  const router = useRouter();
 
   useEffect(() => {
     async function loadExhibition() {
@@ -54,28 +50,6 @@ export default function ExhibitionDetailPage() {
 
     loadExhibition();
   }, [params.id]);
-
-  const handleDeleteExhibition = async () => {
-    if (!session?.user.token || !exhibition) return;
-
-    if (!confirm(t("exhibition.deleteConfirm", locale))) {
-      return;
-    }
-
-    try {
-      await exhibitionApi.delete(exhibition._id, session.user.token);
-
-      toast.success(t("common.success", locale), {
-        description: t("message.exhibitionDeleted", locale),
-      });
-      router.push("/exhibitions");
-    } catch (error) {
-      toast.error(t("common.error", locale), {
-        description:
-          error instanceof Error ? error.message : t("message.error", locale),
-      });
-    }
-  };
 
   if (loading) {
     return (
@@ -125,36 +99,41 @@ export default function ExhibitionDetailPage() {
         </Link>
       </Button>
 
-      <Card>
+      <Card className="overflow-hidden pt-0!">
+        {exhibition.posterPicture && (
+          <div className="bg-muted relative aspect-video w-full overflow-hidden">
+            <SafeImage
+              src={exhibition.posterPicture}
+              alt={exhibition.name}
+              className="h-full w-full object-cover"
+            />
+          </div>
+        )}
+
         <CardHeader>
-          <div className="flex flex-row items-center justify-between">
-            <CardTitle className="text-3xl text-balance">
-              {exhibition.name}
-            </CardTitle>
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex-1">
+              <CardTitle className="text-3xl text-balance">
+                {exhibition.name}
+              </CardTitle>
+              <CardDescription className="text-base">
+                {t("exhibition.details", locale)}
+              </CardDescription>
+            </div>
             {isAdmin && (
-              <div className="flex gap-4">
-                <Button
-                  variant="ghost"
-                  className="hover:text-primary cursor-pointer p-0! hover:bg-transparent"
-                  onClick={() =>
-                    router.push(`/exhibitions/${exhibition._id}/edit`)
-                  }
-                >
-                  <SquarePen />
-                </Button>
-                <Button
-                  variant="ghost"
-                  className="cursor-pointer p-0! hover:bg-transparent hover:text-red-800"
-                  onClick={() => handleDeleteExhibition()}
-                >
-                  <Trash2 color="#b51717" />
-                </Button>
-              </div>
+              <Button
+                asChild
+                variant="outline"
+                size="sm"
+                className="shrink-0 bg-transparent"
+              >
+                <Link href={`/exhibitions/${exhibition._id}/edit`}>
+                  <Pencil className="mr-2 h-4 w-4" />
+                  {t("common.edit", locale)}
+                </Link>
+              </Button>
             )}
           </div>
-          <CardDescription className="text-base">
-            {t("exhibition.details", locale)}
-          </CardDescription>
         </CardHeader>
 
         <CardContent className="space-y-6">
@@ -196,16 +175,14 @@ export default function ExhibitionDetailPage() {
             )}
           </div>
 
-          {exhibition.description && (
-            <div>
-              <h3 className="mb-2 font-medium">
-                {t("exhibition.description", locale)}
-              </h3>
-              <p className="text-muted-foreground text-sm leading-relaxed text-pretty">
-                {exhibition.description}
-              </p>
-            </div>
-          )}
+          <div>
+            <p className="text-muted-foreground mb-2 text-sm font-medium">
+              {t("exhibition.description", locale)}
+            </p>
+            <p className="text-foreground text-base leading-relaxed">
+              {exhibition.description}
+            </p>
+          </div>
 
           {status === "past" && (
             <Alert className="bg-background">
