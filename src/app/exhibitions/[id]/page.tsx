@@ -33,11 +33,14 @@ import { toast } from "sonner";
 export default function ExhibitionDetailPage() {
   const params = useParams();
   const { locale } = useLocale();
-  const { data: session } = useSession();
+  const router = useRouter();
+
   const [exhibition, setExhibition] = useState<Exhibition | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const { data: session } = useSession();
   const isAdmin = session?.user?.role === "admin";
-  const router = useRouter();
+  const isMember = session?.user?.role === "member";
 
   useEffect(() => {
     async function loadExhibition() {
@@ -240,7 +243,7 @@ export default function ExhibitionDetailPage() {
             </Alert>
           )}
 
-          {!isAdmin && (
+          {isMember && (
             <div className="flex gap-3 pt-4">
               {status !== "upcoming" ? (
                 <Button size="lg" className="flex-1" disabled>

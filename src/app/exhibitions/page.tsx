@@ -26,7 +26,7 @@ export default function ExhibitionsPage() {
   const { data: session } = useSession();
   const [exhibitions, setExhibitions] = useState<Exhibition[]>([]);
   const [loading, setLoading] = useState(true);
-  const isAdmin = session?.user?.role === "admin";
+  const isMember = session?.user?.role === "member";
 
   useEffect(() => {
     async function loadExhibitions() {
@@ -160,7 +160,7 @@ export default function ExhibitionsPage() {
                     {t("exhibitions.viewDetails", locale)}
                   </Link>
                 </Button>
-                {!isAdmin &&
+                {isMember &&
                   (status !== "upcoming" ? (
                     <Button className="flex-1" disabled>
                       {t("exhibitions.bookBooth", locale)}
