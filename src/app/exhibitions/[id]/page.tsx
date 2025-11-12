@@ -1,5 +1,4 @@
 "use client";
-
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { SafeImage } from "@/components/ui/safe-image";
 import { Skeleton } from "@/components/ui/skeleton";
 import { exhibitionApi } from "@/lib/api";
 import { t } from "@/lib/i18n";
@@ -33,12 +33,14 @@ import { toast } from "sonner";
 export default function ExhibitionDetailPage() {
   const params = useParams();
   const { locale } = useLocale();
-  const { data: session } = useSession();
+  const router = useRouter();
+
   const [exhibition, setExhibition] = useState<Exhibition | null>(null);
   const [loading, setLoading] = useState(true);
-  const isAdmin = session?.user?.role === "admin";
 
-  const router = useRouter();
+  const { data: session } = useSession();
+  const isAdmin = session?.user?.role === "admin";
+  const isMember = session?.user?.role === "member";
 
   useEffect(() => {
     async function loadExhibition() {
@@ -125,12 +127,28 @@ export default function ExhibitionDetailPage() {
         </Link>
       </Button>
 
-      <Card>
+      <Card className="overflow-hidden pt-0!">
+        {exhibition.posterPicture && (
+          <div className="bg-muted relative aspect-video w-full overflow-hidden">
+            <SafeImage
+              src={exhibition.posterPicture}
+              alt={exhibition.name}
+              className="h-full w-full object-cover"
+            />
+          </div>
+        )}
+
         <CardHeader>
-          <div className="flex flex-row items-center justify-between">
-            <CardTitle className="text-3xl text-balance">
-              {exhibition.name}
-            </CardTitle>
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex-1">
+              <CardTitle className="text-3xl text-balance">
+                {exhibition.name}
+              </CardTitle>
+              <CardDescription className="text-base">
+                {t("exhibition.details", locale)}
+              </CardDescription>
+            </div>
+
             {isAdmin && (
               <div className="flex gap-4">
                 <Button
@@ -152,9 +170,6 @@ export default function ExhibitionDetailPage() {
               </div>
             )}
           </div>
-          <CardDescription className="text-base">
-            {t("exhibition.details", locale)}
-          </CardDescription>
         </CardHeader>
 
         <CardContent className="space-y-6">
@@ -177,7 +192,10 @@ export default function ExhibitionDetailPage() {
                     {t("exhibition.duration", locale)}
                   </p>
                   <p className="text-muted-foreground text-sm">
-                    {exhibition.durationDay} {t("exhibition.days", locale)}
+                    {exhibition.durationDay}{" "}
+                    {exhibition.durationDay > 1
+                      ? t("exhibition.days", locale)
+                      : t("exhibition.day", locale)}
                   </p>
                 </div>
               </div>
@@ -198,10 +216,10 @@ export default function ExhibitionDetailPage() {
 
           {exhibition.description && (
             <div>
-              <h3 className="mb-2 font-medium">
+              <p className="text-muted-foreground mb-2 text-sm font-medium">
                 {t("exhibition.description", locale)}
-              </h3>
-              <p className="text-muted-foreground text-sm leading-relaxed text-pretty">
+              </p>
+              <p className="text-foreground text-base leading-relaxed">
                 {exhibition.description}
               </p>
             </div>
@@ -225,7 +243,7 @@ export default function ExhibitionDetailPage() {
             </Alert>
           )}
 
-          {!isAdmin && (
+          {isMember && (
             <div className="flex gap-3 pt-4">
               {status !== "upcoming" ? (
                 <Button size="lg" className="flex-1" disabled>

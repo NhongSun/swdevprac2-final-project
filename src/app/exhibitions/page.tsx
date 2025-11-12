@@ -26,7 +26,7 @@ export default function ExhibitionsPage() {
   const { data: session } = useSession();
   const [exhibitions, setExhibitions] = useState<Exhibition[]>([]);
   const [loading, setLoading] = useState(true);
-  const isAdmin = session?.user?.role === "admin";
+  const isMember = session?.user?.role === "member";
 
   useEffect(() => {
     async function loadExhibitions() {
@@ -134,7 +134,11 @@ export default function ExhibitionsPage() {
                   <Calendar className="h-4 w-4" />
                   {formatDateShortMonth(exhibition.startDate, locale)}
                   {exhibition.durationDay &&
-                    ` (${exhibition.durationDay} ${t("exhibition.days", locale)})`}
+                    ` (${exhibition.durationDay} ${
+                      exhibition.durationDay > 1
+                        ? t("exhibition.days", locale)
+                        : t("exhibition.day", locale)
+                    })`}
                 </CardDescription>
               </CardHeader>
 
@@ -156,7 +160,7 @@ export default function ExhibitionsPage() {
                     {t("exhibitions.viewDetails", locale)}
                   </Link>
                 </Button>
-                {!isAdmin &&
+                {isMember &&
                   (status !== "upcoming" ? (
                     <Button className="flex-1" disabled>
                       {t("exhibitions.bookBooth", locale)}

@@ -26,6 +26,7 @@ export const translations = {
     "exhibition.dates": "Dates",
     "exhibition.duration": "Duration",
     "exhibition.description": "Description",
+    "exhibition.day": "day",
     "exhibition.days": "days",
     "exhibition.statusPast":
       "This exhibition has already passed. Booking is no longer available.",
@@ -217,6 +218,7 @@ export const translations = {
     "exhibition.dates": "วันที่",
     "exhibition.duration": "ระยะเวลา",
     "exhibition.description": "รายละเอียด",
+    "exhibition.day": "วัน",
     "exhibition.days": "วัน",
     "exhibition.statusPast": "นิทรรศการนี้ผ่านไปแล้ว ไม่สามารถจองได้อีกต่อไป",
     "exhibition.statusActive": "นิทรรศการนี้เริ่มแล้ว ไม่สามารถจองได้อีกต่อไป",
