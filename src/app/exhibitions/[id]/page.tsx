@@ -21,12 +21,14 @@ import {
   Calendar,
   Clock,
   MapPin,
-  Pencil,
+  SquarePen,
+  Trash2,
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function ExhibitionDetailPage() {
   const params = useParams();
@@ -35,6 +37,7 @@ export default function ExhibitionDetailPage() {
   const [exhibition, setExhibition] = useState<Exhibition | null>(null);
   const [loading, setLoading] = useState(true);
   const isAdmin = session?.user?.role === "admin";
+  const router = useRouter();
 
   useEffect(() => {
     async function loadExhibition() {
@@ -50,6 +53,28 @@ export default function ExhibitionDetailPage() {
 
     loadExhibition();
   }, [params.id]);
+
+  const handleDeleteExhibition = async () => {
+    if (!session?.user.token || !exhibition) return;
+
+    if (!confirm(t("exhibition.deleteConfirm", locale))) {
+      return;
+    }
+
+    try {
+      await exhibitionApi.delete(exhibition._id, session.user.token);
+
+      toast.success(t("common.success", locale), {
+        description: t("message.exhibitionDeleted", locale),
+      });
+      router.push("/exhibitions");
+    } catch (error) {
+      toast.error(t("common.error", locale), {
+        description:
+          error instanceof Error ? error.message : t("message.error", locale),
+      });
+    }
+  };
 
   if (loading) {
     return (
@@ -120,18 +145,26 @@ export default function ExhibitionDetailPage() {
                 {t("exhibition.details", locale)}
               </CardDescription>
             </div>
+
             {isAdmin && (
-              <Button
-                asChild
-                variant="outline"
-                size="sm"
-                className="shrink-0 bg-transparent"
-              >
-                <Link href={`/exhibitions/${exhibition._id}/edit`}>
-                  <Pencil className="mr-2 h-4 w-4" />
-                  {t("common.edit", locale)}
-                </Link>
-              </Button>
+              <div className="flex gap-4">
+                <Button
+                  variant="ghost"
+                  className="hover:text-primary cursor-pointer p-0! hover:bg-transparent"
+                  onClick={() =>
+                    router.push(`/exhibitions/${exhibition._id}/edit`)
+                  }
+                >
+                  <SquarePen />
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="cursor-pointer p-0! hover:bg-transparent hover:text-red-800"
+                  onClick={() => handleDeleteExhibition()}
+                >
+                  <Trash2 color="#b51717" />
+                </Button>
+              </div>
             )}
           </div>
         </CardHeader>
