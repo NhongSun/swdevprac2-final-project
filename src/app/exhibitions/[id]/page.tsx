@@ -156,7 +156,10 @@ export default function ExhibitionDetailPage() {
                     {t("exhibition.duration", locale)}
                   </p>
                   <p className="text-muted-foreground text-sm">
-                    {exhibition.durationDay} {t("exhibition.days", locale)}
+                    {exhibition.durationDay}{" "}
+                    {exhibition.durationDay > 1
+                      ? t("exhibition.days", locale)
+                      : t("exhibition.day", locale)}
                   </p>
                 </div>
               </div>
