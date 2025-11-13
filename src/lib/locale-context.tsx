@@ -12,10 +12,10 @@ const LocaleContext = createContext<LocaleContextType | undefined>(undefined);
 
 export const LOCALE_COOKIE_NAME = "NEXT_LOCALE";
 
-export function LocaleProvider({ 
+export function LocaleProvider({
   children,
-  initialLocale = "en" 
-}: { 
+  initialLocale = "en",
+}: {
   children: ReactNode;
   initialLocale?: Locale;
 }) {

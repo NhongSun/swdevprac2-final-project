@@ -1,7 +1,7 @@
 import { Navigation } from "@/components/navigation";
 import { Toaster } from "@/components/ui/sonner";
-import { LocaleProvider } from "@/lib/locale-context";
 import { getLocaleFromCookies } from "@/lib/i18n";
+import { LocaleProvider } from "@/lib/locale-context";
 import type { Metadata } from "next";
 import { getServerSession } from "next-auth/next";
 import { IBM_Plex_Sans_Thai } from "next/font/google";
@@ -35,7 +35,9 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${ibmPlexSansThai.variable} font-sans flex min-h-dvh flex-col`}>
+      <body
+        className={`${ibmPlexSansThai.variable} flex min-h-dvh flex-col font-sans`}
+      >
         <NextAuthProvider session={nextAuthSession}>
           <LocaleProvider initialLocale={initialLocale}>
             <Navigation />

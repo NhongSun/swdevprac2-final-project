@@ -1,5 +1,16 @@
 "use client";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -37,6 +48,7 @@ export default function ExhibitionDetailPage() {
 
   const [exhibition, setExhibition] = useState<Exhibition | null>(null);
   const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState(false);
 
   const { data: session } = useSession();
   const isAdmin = session?.user?.role === "admin";
@@ -60,11 +72,8 @@ export default function ExhibitionDetailPage() {
   const handleDeleteExhibition = async () => {
     if (!session?.user.token || !exhibition) return;
 
-    if (!confirm(t("exhibition.deleteConfirm", locale))) {
-      return;
-    }
-
     try {
+      setDeleting(true);
       await exhibitionApi.delete(exhibition._id, session.user.token);
 
       toast.success(t("common.success", locale), {
@@ -76,6 +85,8 @@ export default function ExhibitionDetailPage() {
         description:
           error instanceof Error ? error.message : t("message.error", locale),
       });
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -160,13 +171,40 @@ export default function ExhibitionDetailPage() {
                 >
                   <SquarePen />
                 </Button>
-                <Button
-                  variant="ghost"
-                  className="cursor-pointer p-0! hover:bg-transparent hover:text-red-800"
-                  onClick={() => handleDeleteExhibition()}
-                >
-                  <Trash2 color="#b51717" />
-                </Button>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      className="cursor-pointer p-0! hover:bg-transparent hover:text-red-800"
+                    >
+                      <Trash2 color="#b51717" />
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        {t("exhibition.deleteConfirm", locale)}
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        {t("exhibition.deleteWarning", locale)}
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>
+                        {t("booking.cancel", locale)}
+                      </AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={handleDeleteExhibition}
+                        disabled={deleting}
+                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                      >
+                        {deleting
+                          ? t("common.loading", locale)
+                          : t("bookings.delete", locale)}
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
             )}
           </div>
@@ -226,7 +264,7 @@ export default function ExhibitionDetailPage() {
           )}
 
           {status === "past" && (
-            <Alert className="bg-background">
+            <Alert className="border-amber-400 bg-amber-50">
               <AlertCircle className="h-4 w-4" />
               <AlertDescription>
                 {t("exhibition.statusPast", locale)}
@@ -235,7 +273,7 @@ export default function ExhibitionDetailPage() {
           )}
 
           {status === "active" && (
-            <Alert className="bg-background">
+            <Alert className="border-amber-400 bg-amber-50">
               <AlertCircle className="h-4 w-4" />
               <AlertDescription>
                 {t("exhibition.statusActive", locale)}

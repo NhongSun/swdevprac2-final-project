@@ -30,6 +30,7 @@ export default function UpdateExhibition() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [exhibition, setExhibition] = useState<Exhibition | null>(null);
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [formData, setFormData] = useState<CreateExhibitionFormData>({
     name: "",
     description: "",
@@ -127,22 +128,76 @@ export default function UpdateExhibition() {
           ? Math.max(0, Number.parseInt(value) || 0)
           : value,
     }));
+    // Clear error for this field when user starts typing
+    if (errors[name]) {
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
+  };
+
+  const validateForm = (): boolean => {
+    const newErrors: Record<string, string> = {};
+
+    // Name validation
+    if (!formData.name.trim()) {
+      newErrors.name = t("exhibition.form.nameRequired", locale);
+    }
+
+    // Description validation
+    if (!formData.description.trim()) {
+      newErrors.description = t("exhibition.form.descriptionRequired", locale);
+    }
+
+    // Venue validation
+    if (!formData.venue.trim()) {
+      newErrors.venue = t("exhibition.form.venueRequired", locale);
+    }
+
+    // Start date validation
+    if (!formData.startDate) {
+      newErrors.startDate = t("exhibition.form.startDateRequired", locale);
+    } else if (!validateStartDateForm(formData.startDate)) {
+      newErrors.startDate = t("exhibition.form.startDateFuture", locale);
+    }
+
+    // Duration validation
+    if (formData.durationDay < 1) {
+      newErrors.durationDay = t("exhibition.form.durationMinimum", locale);
+    }
+
+    // Small booth quota validation
+    if (formData.smallBoothQuota < 0) {
+      newErrors.smallBoothQuota = t(
+        "exhibition.form.smallBoothQuotaMinimum",
+        locale,
+      );
+    }
+
+    // Big booth quota validation
+    if (formData.bigBoothQuota < 0) {
+      newErrors.bigBoothQuota = t(
+        "exhibition.form.bigBoothQuotaMinimum",
+        locale,
+      );
+    }
+
+    // Poster picture validation
+    if (!formData.posterPicture.trim()) {
+      newErrors.posterPicture = t("exhibition.form.posterRequired", locale);
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (
-      !formData.name.trim() ||
-      !formData.venue.trim() ||
-      !formData.startDate
-    ) {
+    if (!validateForm()) {
       toast.error(t("exhibition.form.requiredFields", locale));
-      return;
-    }
-
-    if (!validateStartDateForm(formData.startDate)) {
-      toast.error(t("exhibition.form.startDateFuture", locale));
       return;
     }
 
@@ -202,14 +257,20 @@ export default function UpdateExhibition() {
                   value={formData.name}
                   onChange={handleInputChange}
                   required
-                  className="bg-input"
+                  className={`${
+                    errors.name ? "border-destructive" : ""
+                  }`}
                 />
+                {errors.name && (
+                  <p className="text-destructive text-sm">{errors.name}</p>
+                )}
               </div>
 
               {/* Description */}
               <div className="space-y-2">
                 <Label htmlFor="description" className="text-sm font-medium">
                   {t("exhibition.form.description", locale)}
+                  <span className="text-destructive">*</span>
                 </Label>
                 <Textarea
                   id="description"
@@ -218,8 +279,16 @@ export default function UpdateExhibition() {
                   onChange={handleInputChange}
                   placeholder="Describe your exhibition..."
                   rows={4}
-                  className="bg-input resize-none"
+                  className={`bg-background placeholder:text-muted-foreground/50 resize-none ${
+                    errors.description ? "border-destructive" : ""
+                  }`}
+                  required
                 />
+                {errors.description && (
+                  <p className="text-destructive text-sm">
+                    {errors.description}
+                  </p>
+                )}
               </div>
 
               {/* Venue */}
@@ -234,8 +303,13 @@ export default function UpdateExhibition() {
                   value={formData.venue}
                   onChange={handleInputChange}
                   required
-                  className="bg-input"
+                  className={`${
+                    errors.venue ? "border-destructive" : ""
+                  }`}
                 />
+                {errors.venue && (
+                  <p className="text-destructive text-sm">{errors.venue}</p>
+                )}
               </div>
 
               {/* Date and Duration Row */}
@@ -252,21 +326,38 @@ export default function UpdateExhibition() {
                     value={formData.startDate}
                     onChange={handleInputChange}
                     required
-                    className="bg-input"
+                    className={`${
+                      errors.startDate ? "border-destructive" : ""
+                    }`}
                   />
+                  {errors.startDate && (
+                    <p className="text-destructive text-sm">
+                      {errors.startDate}
+                    </p>
+                  )}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="durationDay" className="text-sm font-medium">
                     {t("exhibition.form.duration", locale)}
+                    <span className="text-destructive">*</span>
                   </Label>
                   <Input
                     id="durationDay"
                     name="durationDay"
                     type="number"
+                    min="1"
                     value={formData.durationDay}
                     onChange={handleInputChange}
-                    className="bg-input"
+                    required
+                    className={`${
+                      errors.durationDay ? "border-destructive" : ""
+                    }`}
                   />
+                  {errors.durationDay && (
+                    <p className="text-destructive text-sm">
+                      {errors.durationDay}
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -278,15 +369,25 @@ export default function UpdateExhibition() {
                     className="text-sm font-medium"
                   >
                     {t("exhibition.form.smallBoothQuota", locale)}
+                    <span className="text-destructive">*</span>
                   </Label>
                   <Input
                     id="smallBoothQuota"
                     name="smallBoothQuota"
                     type="number"
+                    min="0"
                     value={formData.smallBoothQuota}
                     onChange={handleInputChange}
-                    className="bg-input"
+                    required
+                    className={`${
+                      errors.smallBoothQuota ? "border-destructive" : ""
+                    }`}
                   />
+                  {errors.smallBoothQuota && (
+                    <p className="text-destructive text-sm">
+                      {errors.smallBoothQuota}
+                    </p>
+                  )}
                 </div>
                 <div className="space-y-2">
                   <Label
@@ -294,15 +395,25 @@ export default function UpdateExhibition() {
                     className="text-sm font-medium"
                   >
                     {t("exhibition.form.bigBoothQuota", locale)}
+                    <span className="text-destructive">*</span>
                   </Label>
                   <Input
                     id="bigBoothQuota"
                     name="bigBoothQuota"
                     type="number"
+                    min="0"
                     value={formData.bigBoothQuota}
                     onChange={handleInputChange}
-                    className="bg-input"
+                    required
+                    className={`${
+                      errors.bigBoothQuota ? "border-destructive" : ""
+                    }`}
                   />
+                  {errors.bigBoothQuota && (
+                    <p className="text-destructive text-sm">
+                      {errors.bigBoothQuota}
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -310,6 +421,7 @@ export default function UpdateExhibition() {
               <div className="space-y-2">
                 <Label htmlFor="posterPicture" className="text-sm font-medium">
                   {t("exhibition.form.image", locale)}
+                  <span className="text-destructive">*</span>
                 </Label>
                 <Input
                   id="posterPicture"
@@ -317,8 +429,16 @@ export default function UpdateExhibition() {
                   value={formData.posterPicture}
                   onChange={handleInputChange}
                   placeholder="e.g., https://example.com/poster.jpg"
-                  className="bg-input"
+                  required
+                  className={`${
+                    errors.posterPicture ? "border-destructive" : ""
+                  }`}
                 />
+                {errors.posterPicture && (
+                  <p className="text-destructive text-sm">
+                    {errors.posterPicture}
+                  </p>
+                )}
                 {formData.posterPicture && (
                   <div className="border-border relative mt-4 h-40 w-full overflow-hidden rounded-lg border">
                     <SafeImage

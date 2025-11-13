@@ -45,6 +45,7 @@ export default function EditBookingPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const token = session?.user?.token ?? "";
+  const userRole = session?.user?.role ?? "";
   const bookingId = useMemo(() => {
     const id = params.id;
     return Array.isArray(id) ? id[0] : id;
@@ -227,9 +228,13 @@ export default function EditBookingPage() {
           <CardTitle className="text-2xl">
             {t("booking.edit", locale)}
           </CardTitle>
-          <CardDescription>
-            {t("booking.remaining", locale, { count: totalBooked.toString() })}
-          </CardDescription>
+          {userRole !== "admin" && (
+            <CardDescription>
+              {t("booking.remaining", locale, {
+                count: totalBooked.toString(),
+              })}
+            </CardDescription>
+          )}
         </CardHeader>
 
         <CardContent>
@@ -315,11 +320,13 @@ export default function EditBookingPage() {
               {errors.amount && (
                 <p className="text-destructive text-sm">{errors.amount}</p>
               )}
-              <p className="text-muted-foreground text-sm">
-                {t("booking.remaining", locale, {
-                  count: totalBooked.toString(),
-                })}
-              </p>
+              {userRole !== "admin" && (
+                <p className="text-muted-foreground text-sm">
+                  {t("booking.remaining", locale, {
+                    count: totalBooked.toString(),
+                  })}
+                </p>
+              )}
             </div>
 
             {/* Actions */}

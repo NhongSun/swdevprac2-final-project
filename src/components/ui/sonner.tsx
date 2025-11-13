@@ -8,7 +8,8 @@ const Toaster = () => {
       position="top-center"
       toastOptions={{
         style: {
-          fontFamily: 'var(--font-ibm-plex-sans-thai, "IBM Plex Sans Thai", sans-serif)',
+          fontFamily:
+            'var(--font-ibm-plex-sans-thai, "IBM Plex Sans Thai", sans-serif)',
         },
       }}
       richColors

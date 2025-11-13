@@ -89,7 +89,7 @@ export default function BookingDetailPage() {
     };
 
     loadBooking();
-  }, [bookingId, status, token, locale]);
+  }, [bookingId, status, token, locale, router]);
 
   const handleDelete = useCallback(async () => {
     if (!booking) return;

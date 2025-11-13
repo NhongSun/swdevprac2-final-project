@@ -50,6 +50,14 @@ export const translations = {
     "exhibition.form.image": "Poster Image URL",
     "exhibition.form.requiredFields": "Please fill in all required fields",
     "exhibition.form.startDateFuture": "Start date must be in the future",
+    "exhibition.form.nameRequired": "Exhibition name is required",
+    "exhibition.form.descriptionRequired": "Description is required",
+    "exhibition.form.venueRequired": "Venue is required",
+    "exhibition.form.startDateRequired": "Start date is required",
+    "exhibition.form.durationMinimum": "Duration must be at least 1 day",
+    "exhibition.form.smallBoothQuotaMinimum": "Small booth quota cannot be negative",
+    "exhibition.form.bigBoothQuotaMinimum": "Big booth quota cannot be negative",
+    "exhibition.form.posterRequired": "Poster picture URL is required",
 
     // Edit Exhibition
     "exhibition.edit.title": "Edit Exhibition",
@@ -61,6 +69,7 @@ export const translations = {
     // Delete Exhibition
     "exhibition.deleteConfirm":
       "Are you sure you want to delete this exhibition?",
+    "exhibition.deleteWarning": "This action cannot be undone.",
 
     // Booking Form
     "booking.create": "Create Booking",
@@ -240,6 +249,14 @@ export const translations = {
     "exhibition.form.image": "URL โปสเตอร์",
     "exhibition.form.requiredFields": "กรุณากรอกข้อมูลที่จำเป็นให้ครบ",
     "exhibition.form.startDateFuture": "กรุณาเลือกวันเริ่มงานที่ยังไม่ถึง",
+    "exhibition.form.nameRequired": "กรุณากรอกชื่อนิทรรศการ",
+    "exhibition.form.descriptionRequired": "กรุณากรอกรายละเอียด",
+    "exhibition.form.venueRequired": "กรุณากรอกสถานที่",
+    "exhibition.form.startDateRequired": "กรุณาเลือกวันเริ่มงาน",
+    "exhibition.form.durationMinimum": "ระยะเวลาต้องมีอย่างน้อย 1 วัน",
+    "exhibition.form.smallBoothQuotaMinimum": "โควต้าบูธขนาดเล็กต้องไม่ติดลบ",
+    "exhibition.form.bigBoothQuotaMinimum": "โควต้าบูธขนาดใหญ่ต้องไม่ติดลบ",
+    "exhibition.form.posterRequired": "กรุณากรอก URL โปสเตอร์",
 
     // Edit Exhibition
     "exhibition.edit.title": "แก้ไขนิทรรศการ",
@@ -250,6 +267,7 @@ export const translations = {
 
     // Delete Exhibition
     "exhibition.deleteConfirm": "คุณแน่ใจหรือไม่ว่าต้องการลบนิทรรศการนี้",
+    "exhibition.deleteWarning": "การดำเนินการนี้ไม่สามารถยกเลิกได้",
 
     // Booking Form
     "booking.create": "สร้างการจอง",
