@@ -278,7 +278,7 @@ export const translations = {
     "bookings.exhibition": "นิทรรศการ",
     "bookings.boothType": "ประเภทบูธ",
     "bookings.amount": "จำนวน",
-    "bookings.owner": "เจ้าของ",
+    "bookings.owner": "ผู้จอง",
     "bookings.createdAt": "จองวันที่",
     "bookings.actions": "การดำเนินการ",
     "bookings.view": "ดู",

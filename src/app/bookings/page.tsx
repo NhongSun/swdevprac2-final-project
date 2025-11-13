@@ -209,6 +209,9 @@ export default function BookingsPage() {
                   <TableRow>
                     <TableHead>{t("bookings.id", locale)}</TableHead>
                     <TableHead>{t("bookings.exhibition", locale)}</TableHead>
+                    {isAdmin && (
+                      <TableHead>{t("bookings.owner", locale)}</TableHead>
+                    )}
                     <TableHead>{t("bookings.boothType", locale)}</TableHead>
                     <TableHead>{t("bookings.amount", locale)}</TableHead>
                     <TableHead>{t("bookings.createdAt", locale)}</TableHead>
@@ -223,11 +226,13 @@ export default function BookingsPage() {
                       typeof booking.exhibition === "object"
                         ? booking.exhibition
                         : null;
+                    const user =
+                      typeof booking.user === "object" ? booking.user : null;
 
                     return (
                       <TableRow key={booking._id}>
                         <TableCell className="font-mono text-sm">
-                          {booking._id.slice(0, 12)}...
+                          {booking._id}
                         </TableCell>
                         <TableCell>
                           {exhibition ? (
@@ -241,6 +246,20 @@ export default function BookingsPage() {
                             "-"
                           )}
                         </TableCell>
+                        {isAdmin && (
+                          <TableCell>
+                            {user ? (
+                              <div className="flex flex-col">
+                                <span className="font-medium">{user.name}</span>
+                                <span className="text-muted-foreground text-xs">
+                                  {user.email}
+                                </span>
+                              </div>
+                            ) : (
+                              "-"
+                            )}
+                          </TableCell>
+                        )}
                         <TableCell>
                           <Badge
                             className={

@@ -51,7 +51,10 @@ export default function EditBookingPage() {
   }, [params.id]);
 
   useEffect(() => {
-    if (!bookingId || status !== "authenticated") return;
+    if (!bookingId || status !== "authenticated") {
+      router.back();
+      return;
+    }
     if (!token) {
       setLoading(false);
       toast.error(t("common.error", locale), {
