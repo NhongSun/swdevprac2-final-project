@@ -37,6 +37,7 @@ function NewBookingForm() {
   const { data: session, status } = useSession();
   const token = session?.user?.token ?? "";
   const userId = session?.user?._id ?? "";
+  const userRole = session?.user?.role ?? "";
   const { locale } = useLocale();
 
   const [exhibition, setExhibition] = useState<Exhibition | null>(null);
@@ -184,9 +185,13 @@ function NewBookingForm() {
           <CardTitle className="text-2xl">
             {t("booking.create", locale)}
           </CardTitle>
-          <CardDescription>
-            {t("booking.remaining", locale, { count: totalBooked.toString() })}
-          </CardDescription>
+          {userRole !== "admin" && (
+            <CardDescription>
+              {t("booking.remaining", locale, {
+                count: totalBooked.toString(),
+              })}
+            </CardDescription>
+          )}
         </CardHeader>
 
         <CardContent>
@@ -216,7 +221,7 @@ function NewBookingForm() {
             </div>
 
             {maxAllowed === 0 && (
-              <Alert>
+              <Alert className="border-amber-400 bg-amber-50">
                 <AlertCircle className="h-4 w-4" />
                 <AlertDescription>
                   {t("booking.maxReached", locale)}
@@ -281,11 +286,13 @@ function NewBookingForm() {
               {errors.amount && (
                 <p className="text-destructive text-sm">{errors.amount}</p>
               )}
-              <p className="text-muted-foreground text-sm">
-                {t("booking.remaining", locale, {
-                  count: totalBooked.toString(),
-                })}
-              </p>
+              {userRole !== "admin" && (
+                <p className="text-muted-foreground text-sm">
+                  {t("booking.remaining", locale, {
+                    count: totalBooked.toString(),
+                  })}
+                </p>
+              )}
             </div>
 
             {/* Actions */}
