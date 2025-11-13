@@ -53,7 +53,10 @@ function NewBookingForm() {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
-    if (status !== "authenticated") return;
+    if (status !== "authenticated") {
+      router.back();
+      return;
+    }
 
     if (!token || !userId) {
       setLoading(false);
