@@ -46,6 +46,7 @@ export default function EditBookingPage() {
 
   const token = session?.user?.token ?? "";
   const userRole = session?.user?.role ?? "";
+  const userId = session?.user?._id ?? "";
   const bookingId = useMemo(() => {
     const id = params.id;
     return Array.isArray(id) ? id[0] : id;
@@ -80,8 +81,8 @@ export default function EditBookingPage() {
         const ownerId =
           typeof data.user === "object" ? data.user._id : data.user;
 
-        const currentIsAdmin = session?.user?.role === "admin";
-        const currentUserId = session?.user?._id;
+        const currentIsAdmin = userRole === "admin";
+        const currentUserId = userId;
 
         if (!ownerId && !currentIsAdmin) {
           toast.error(t("common.error", locale), {
@@ -137,8 +138,8 @@ export default function EditBookingPage() {
     status,
     token,
     locale,
-    session?.user?.role,
-    session?.user?._id,
+    userRole,
+    userId,
     router,
   ]);
 

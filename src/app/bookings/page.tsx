@@ -42,6 +42,7 @@ export default function BookingsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const isAdmin = session?.user?.role === "admin";
+  const token = session?.user?.token;
 
   const loadBookings = useCallback(
     async (userToken: string) => {
@@ -63,23 +64,21 @@ export default function BookingsPage() {
   );
 
   useEffect(() => {
-    if (status === "authenticated" && session?.user?.token) {
-      loadBookings(session.user.token);
+    if (status === "authenticated" && token) {
+      loadBookings(token);
     } else if (status === "unauthenticated") {
       setLoading(false);
     }
-  }, [status, session, loadBookings]);
+  }, [status, token, loadBookings]);
 
   const handleDelete = useCallback(
     async (id: string) => {
-      if (!session?.user?.token) {
+      if (!token) {
         toast.error(t("common.error", locale), {
           description: t("message.notAuthorized", locale),
         });
         return;
       }
-
-      const token = session.user.token;
 
       try {
         await bookingApi.delete(id, token);
@@ -97,7 +96,7 @@ export default function BookingsPage() {
         setDeleteId(null);
       }
     },
-    [locale, loadBookings, session],
+    [locale, loadBookings, token],
   );
 
   const filteredBookings = bookings.filter((booking) => {

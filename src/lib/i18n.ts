@@ -107,7 +107,7 @@ export const translations = {
     "bookings.edit": "Edit",
     "bookings.delete": "Delete",
     "bookings.filter": "Filter",
-    "bookings.search": "Search by ID or email",
+    "bookings.search": "Search by ID or exhibition name",
 
     // Booking Detail
     "bookingDetail.title": "Booking Details",
@@ -303,7 +303,7 @@ export const translations = {
     "bookings.edit": "แก้ไข",
     "bookings.delete": "ลบ",
     "bookings.filter": "กรอง",
-    "bookings.search": "ค้นหาด้วยรหัสหรืออีเมล",
+    "bookings.search": "ค้นหาด้วยรหัสหรือชื่อนิทรรศการ",
 
     // Booking Detail
     "bookingDetail.title": "รายละเอียดการจอง",
