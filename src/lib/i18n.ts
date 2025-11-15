@@ -1,4 +1,4 @@
-export type Locale = "en" | "th";
+export type Locale = "en" | "th" | "ru";
 
 export const translations = {
   en: {
@@ -407,6 +407,217 @@ export const translations = {
     "month.nov.short": "พ.ย.",
     "month.dec.short": "ธ.ค.",
   },
+  ru: {
+    // Navigation
+    "nav.exhibitions": "Выставки",
+    "nav.myBookings": "Мои бронирования",
+    "nav.allBookings": "Все бронирования",
+    "nav.createExhibition": "Создать выставку",
+    "nav.profile": "Профиль",
+    "nav.login": "Войти",
+    "nav.logout": "Выйти",
+
+    // Exhibition List
+    "exhibitions.title": "Выставки",
+    "exhibitions.empty": "Нет доступных выставок",
+    "exhibitions.bookBooth": "Забронировать стенд",
+    "exhibitions.viewDetails": "Подробнее",
+    "exhibitions.upcoming": "Предстоящие",
+    "exhibitions.active": "Активные",
+    "exhibitions.past": "Прошедшие",
+
+    // Exhibition Detail
+    "exhibition.details": "Детали выставки",
+    "exhibition.venue": "Место проведения",
+    "exhibition.dates": "Даты",
+    "exhibition.duration": "Продолжительность",
+    "exhibition.description": "Описание",
+    "exhibition.day": "день",
+    "exhibition.days": "дней",
+    "exhibition.statusPast":
+      "Эта выставка уже прошла. Бронирование больше недоступно.",
+    "exhibition.statusActive":
+      "Эта выставка уже началась. Бронирование больше недоступно.",
+    "exhibition.statusNoQuota":
+      "Нет доступных стендов для этой выставки. Все квоты заполнены.",
+    "exhibition.smallBoothQuota": "Квота малых стендов",
+    "exhibition.bigBoothQuota": "Квота больших стендов",
+
+    // Create Exhibition
+    "exhibition.create.title": "Создать выставку",
+    "exhibition.create.description": "Добавить новую выставку на платформу",
+    "exhibition.create.form.submit": "Создать выставку",
+    "exhibition.create.form.submiting": "Создание...",
+    "exhibition.create.form.cancel": "Отмена",
+
+    "exhibition.form.name": "Название выставки",
+    "exhibition.form.description": "Описание",
+    "exhibition.form.venue": "Место проведения",
+    "exhibition.form.startDate": "Дата начала",
+    "exhibition.form.duration": "Продолжительность (дней)",
+    "exhibition.form.smallBoothQuota": "Квота малых стендов",
+    "exhibition.form.bigBoothQuota": "Квота больших стендов",
+    "exhibition.form.image": "URL постера",
+    "exhibition.form.requiredFields":
+      "Пожалуйста, заполните все обязательные поля",
+    "exhibition.form.startDateFuture": "Дата начала должна быть в будущем",
+    "exhibition.form.nameRequired": "Название выставки обязательно",
+    "exhibition.form.descriptionRequired": "Описание обязательно",
+    "exhibition.form.venueRequired": "Место проведения обязательно",
+    "exhibition.form.startDateRequired": "Дата начала обязательна",
+    "exhibition.form.durationMinimum":
+      "Продолжительность должна быть не менее 1 дня",
+    "exhibition.form.smallBoothQuotaMinimum":
+      "Квота малых стендов не может быть отрицательной",
+    "exhibition.form.bigBoothQuotaMinimum":
+      "Квота больших стендов не может быть отрицательной",
+    "exhibition.form.posterRequired": "URL постера обязателен",
+
+    // Edit Exhibition
+    "exhibition.edit.title": "Редактировать выставку",
+    "exhibition.edit.description": "Обновить информацию о выставке",
+    "exhibition.edit.form.submit": "Обновить выставку",
+    "exhibition.edit.form.submiting": "Обновление...",
+    "exhibition.edit.form.cancel": "Отмена",
+
+    // Delete Exhibition
+    "exhibition.deleteConfirm": "Вы уверены, что хотите удалить эту выставку?",
+    "exhibition.deleteWarning": "Это действие нельзя отменить.",
+
+    // Booking Form
+    "booking.create": "Создать бронирование",
+    "booking.edit": "Редактировать бронирование",
+    "booking.exhibition": "Выставка",
+    "booking.boothType": "Тип стенда",
+    "booking.boothType.small": "Малый",
+    "booking.boothType.big": "Большой",
+    "booking.amount": "Количество",
+    "booking.notes": "Примечания",
+    "booking.contactTel": "Контактный телефон",
+    "booking.submit": "Отправить",
+    "booking.cancel": "Отмена",
+    "booking.maxReached":
+      "Вы достигли максимума в 6 стендов для этой выставки.",
+    "booking.remaining":
+      "Вы забронировали {count} из 6 стендов для этой выставки.",
+    "booking.selectType": "Выберите тип стенда",
+    "booking.amountRequired": "Количество должно быть от 1 до {max}",
+
+    // Booking List
+    "bookings.title": "Мои бронирования",
+    "bookings.allTitle": "Все бронирования",
+    "bookings.empty": "Пока нет бронирований",
+    "bookings.createFirst": "Создайте ваше первое бронирование",
+    "bookings.loginMessage":
+      "Пожалуйста, войдите, чтобы просмотреть ваши бронирования",
+    "bookings.id": "ID бронирования",
+    "bookings.exhibition": "Выставка",
+    "bookings.boothType": "Тип стенда",
+    "bookings.amount": "Количество",
+    "bookings.owner": "Владелец",
+    "bookings.createdAt": "Забронировано",
+    "bookings.actions": "Действия",
+    "bookings.view": "Просмотр",
+    "bookings.edit": "Редактировать",
+    "bookings.delete": "Удалить",
+    "bookings.filter": "Фильтр",
+    "bookings.search": "Поиск по ID или названию выставки",
+
+    // Booking Detail
+    "bookingDetail.title": "Детали бронирования",
+    "bookingDetail.id": "ID бронирования",
+    "bookingDetail.exhibition": "Выставка",
+    "bookingDetail.boothType": "Тип стенда",
+    "bookingDetail.amount": "Количество",
+    "bookingDetail.owner": "Владелец",
+    "bookingDetail.createdAt": "Забронировано",
+    "bookingDetail.updatedAt": "Последнее редактирование",
+    "bookingDetail.deleteConfirm":
+      "Вы уверены, что хотите удалить это бронирование?",
+    "bookingDetail.deleteWarning": "Это действие нельзя отменить.",
+
+    // Register
+    "register.title": "Регистрация",
+    "register.name": "Имя",
+    "register.email": "Email",
+    "register.tel": "Телефон",
+    "register.password": "Пароль",
+    "register.submit": "Зарегистрироваться",
+    "register.submiting": "Регистрация...",
+    "register.adminDesc": "Зарегистрироваться как администратор",
+    "register.role": "Роль",
+    "register.role.member": "Участник",
+    "register.role.admin": "Администратор",
+
+    // Login
+    "login.title": "Вход",
+    "login.email": "Email",
+    "login.password": "Пароль",
+    "login.submit": "Войти",
+    "login.submiting": "Вход...",
+    "login.noAccount": "Нет аккаунта?",
+    "login.registerHere": "Зарегистрируйтесь здесь",
+
+    // Common
+    "common.loading": "Загрузка...",
+    "common.error": "Ошибка",
+    "common.success": "Успешно",
+    "common.confirm": "Подтвердить",
+    "common.back": "Назад",
+    "common.save": "Сохранить",
+    "common.loginRequired": "Требуется вход",
+
+    // Messages
+    "message.bookingCreated": "Бронирование успешно создано",
+    "message.bookingUpdated": "Бронирование успешно обновлено",
+    "message.bookingDeleted": "Бронирование успешно удалено",
+    "message.exhibitionCreated": "Выставка успешно создана",
+    "message.exhibitionUpdated": "Выставка успешно обновлена",
+    "message.exhibitionDeleted": "Выставка успешно удалена",
+    "message.error": "Произошла ошибка. Пожалуйста, попробуйте снова.",
+    "message.quotaExceeded":
+      "Квота превышена или общее количество на пользователя > 6",
+    "message.notFound": "Бронирование или выставка не найдены",
+    "message.notAuthorized": "Не авторизован",
+    "message.loginSuccess": "Вход выполнен успешно",
+    "message.loginError": "Неверный email или пароль",
+    "message.registerSuccess": "Регистрация прошла успешно",
+    "message.registerError":
+      "Что-то пошло не так. Пожалуйста, попробуйте снова.",
+
+    // Role
+    "role.admin": "Администратор",
+    "role.member": "Участник",
+    "role.switch": "Переключить роль",
+
+    // Months - Full
+    "month.jan.full": "Январь",
+    "month.feb.full": "Февраль",
+    "month.mar.full": "Март",
+    "month.apr.full": "Апрель",
+    "month.may.full": "Май",
+    "month.jun.full": "Июнь",
+    "month.jul.full": "Июль",
+    "month.aug.full": "Август",
+    "month.sep.full": "Сентябрь",
+    "month.oct.full": "Октябрь",
+    "month.nov.full": "Ноябрь",
+    "month.dec.full": "Декабрь",
+
+    // Months - Short
+    "month.jan.short": "Янв",
+    "month.feb.short": "Фев",
+    "month.mar.short": "Мар",
+    "month.apr.short": "Апр",
+    "month.may.short": "Май",
+    "month.jun.short": "Июн",
+    "month.jul.short": "Июл",
+    "month.aug.short": "Авг",
+    "month.sep.short": "Сен",
+    "month.oct.short": "Окт",
+    "month.nov.short": "Ноя",
+    "month.dec.short": "Дек",
+  },
 };
 
 export function t(
@@ -438,5 +649,7 @@ export function getLocaleFromCookies(cookieHeader: string | null): Locale {
   );
 
   const locale = cookies["NEXT_LOCALE"];
-  return locale === "th" ? "th" : "en";
+  if (locale === "th") return "th";
+  if (locale === "ru") return "ru";
+  return "en";
 }

@@ -88,7 +88,10 @@ export function Navigation() {
                   English {locale === "en" && "✓"}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setLocale("th")}>
-                  ไทย {locale === "th" && "✓"}
+                  Thai {locale === "th" && "✓"}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setLocale("ru")}>
+                  Russian {locale === "ru" && "✓"}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
