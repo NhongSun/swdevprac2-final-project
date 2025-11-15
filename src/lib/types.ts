@@ -95,8 +95,8 @@ export type CreateExhibitionFormData = {
   description: string;
   venue: string;
   startDate: string;
-  durationDay: number;
-  smallBoothQuota: number;
-  bigBoothQuota: number;
+  durationDay: number | string;
+  smallBoothQuota: number | string;
+  bigBoothQuota: number | string;
   posterPicture: string;
 };

@@ -125,7 +125,9 @@ export default function UpdateExhibition() {
         name === "durationDay" ||
         name === "smallBoothQuota" ||
         name === "bigBoothQuota"
-          ? Math.max(0, Number.parseInt(value) || 0)
+          ? value === ""
+            ? ""
+            : Math.max(0, Number.parseInt(value) || 0)
           : value,
     }));
     // Clear error for this field when user starts typing
@@ -164,12 +166,20 @@ export default function UpdateExhibition() {
     }
 
     // Duration validation
-    if (formData.durationDay < 1) {
+    const durationDay =
+      typeof formData.durationDay === "string"
+        ? Number.parseInt(formData.durationDay) || 0
+        : formData.durationDay;
+    if (durationDay < 1) {
       newErrors.durationDay = t("exhibition.form.durationMinimum", locale);
     }
 
     // Small booth quota validation
-    if (formData.smallBoothQuota < 0) {
+    const smallBoothQuota =
+      typeof formData.smallBoothQuota === "string"
+        ? Number.parseInt(formData.smallBoothQuota) || 0
+        : formData.smallBoothQuota;
+    if (smallBoothQuota < 0) {
       newErrors.smallBoothQuota = t(
         "exhibition.form.smallBoothQuotaMinimum",
         locale,
@@ -177,7 +187,11 @@ export default function UpdateExhibition() {
     }
 
     // Big booth quota validation
-    if (formData.bigBoothQuota < 0) {
+    const bigBoothQuota =
+      typeof formData.bigBoothQuota === "string"
+        ? Number.parseInt(formData.bigBoothQuota) || 0
+        : formData.bigBoothQuota;
+    if (bigBoothQuota < 0) {
       newErrors.bigBoothQuota = t(
         "exhibition.form.bigBoothQuotaMinimum",
         locale,
@@ -203,9 +217,25 @@ export default function UpdateExhibition() {
 
     setSubmitting(true);
     try {
+      // Convert string values to numbers before submitting
+      const submitData = {
+        ...formData,
+        durationDay:
+          typeof formData.durationDay === "string"
+            ? Number.parseInt(formData.durationDay) || 0
+            : formData.durationDay,
+        smallBoothQuota:
+          typeof formData.smallBoothQuota === "string"
+            ? Number.parseInt(formData.smallBoothQuota) || 0
+            : formData.smallBoothQuota,
+        bigBoothQuota:
+          typeof formData.bigBoothQuota === "string"
+            ? Number.parseInt(formData.bigBoothQuota) || 0
+            : formData.bigBoothQuota,
+      };
       await exhibitionApi.update(
         params.id as string,
-        formData,
+        submitData,
         session.user.token,
       );
 
@@ -257,9 +287,7 @@ export default function UpdateExhibition() {
                   value={formData.name}
                   onChange={handleInputChange}
                   required
-                  className={`${
-                    errors.name ? "border-destructive" : ""
-                  }`}
+                  className={`${errors.name ? "border-destructive" : ""}`}
                 />
                 {errors.name && (
                   <p className="text-destructive text-sm">{errors.name}</p>
@@ -303,9 +331,7 @@ export default function UpdateExhibition() {
                   value={formData.venue}
                   onChange={handleInputChange}
                   required
-                  className={`${
-                    errors.venue ? "border-destructive" : ""
-                  }`}
+                  className={`${errors.venue ? "border-destructive" : ""}`}
                 />
                 {errors.venue && (
                   <p className="text-destructive text-sm">{errors.venue}</p>
@@ -346,7 +372,9 @@ export default function UpdateExhibition() {
                     name="durationDay"
                     type="number"
                     min="1"
-                    value={formData.durationDay}
+                    value={
+                      formData.durationDay === "" ? "" : formData.durationDay
+                    }
                     onChange={handleInputChange}
                     required
                     className={`${
@@ -376,7 +404,11 @@ export default function UpdateExhibition() {
                     name="smallBoothQuota"
                     type="number"
                     min="0"
-                    value={formData.smallBoothQuota}
+                    value={
+                      formData.smallBoothQuota === ""
+                        ? ""
+                        : formData.smallBoothQuota
+                    }
                     onChange={handleInputChange}
                     required
                     className={`${
@@ -402,7 +434,11 @@ export default function UpdateExhibition() {
                     name="bigBoothQuota"
                     type="number"
                     min="0"
-                    value={formData.bigBoothQuota}
+                    value={
+                      formData.bigBoothQuota === ""
+                        ? ""
+                        : formData.bigBoothQuota
+                    }
                     onChange={handleInputChange}
                     required
                     className={`${
