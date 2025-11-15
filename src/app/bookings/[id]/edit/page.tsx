@@ -306,7 +306,7 @@ export default function EditBookingPage() {
                 type="number"
                 min={1}
                 max={maxAllowed}
-                value={formData.amount === "" ? "" : String(formData.amount)}
+                value={formData.amount}
                 onChange={(e) =>
                   setFormData({
                     ...formData,

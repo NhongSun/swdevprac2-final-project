@@ -372,9 +372,7 @@ export default function UpdateExhibition() {
                     name="durationDay"
                     type="number"
                     min="1"
-                    value={
-                      formData.durationDay === "" ? "" : formData.durationDay
-                    }
+                    value={formData.durationDay}
                     onChange={handleInputChange}
                     required
                     className={`${
@@ -404,11 +402,7 @@ export default function UpdateExhibition() {
                     name="smallBoothQuota"
                     type="number"
                     min="0"
-                    value={
-                      formData.smallBoothQuota === ""
-                        ? ""
-                        : formData.smallBoothQuota
-                    }
+                    value={formData.smallBoothQuota}
                     onChange={handleInputChange}
                     required
                     className={`${
@@ -434,11 +428,7 @@ export default function UpdateExhibition() {
                     name="bigBoothQuota"
                     type="number"
                     min="0"
-                    value={
-                      formData.bigBoothQuota === ""
-                        ? ""
-                        : formData.bigBoothQuota
-                    }
+                    value={formData.bigBoothQuota}
                     onChange={handleInputChange}
                     required
                     className={`${

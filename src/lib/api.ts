@@ -206,7 +206,6 @@ export const bookingApi = {
       body: JSON.stringify(payload),
       token,
     });
-    console.log(response);
     return response.data;
   },
 

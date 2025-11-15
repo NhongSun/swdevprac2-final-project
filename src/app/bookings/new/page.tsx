@@ -211,25 +211,6 @@ function NewBookingForm() {
             <div className="space-y-2">
               <Label>{t("booking.exhibition", locale)}</Label>
               <Card className="bg-background pt-0">
-                {/* <CardContent className="pt-6">
-                  <h3 className="mb-2 font-semibold">{exhibition.name}</h3>
-                  <div className="text-muted-foreground flex flex-col gap-1 text-sm">
-                    <div className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4" />
-                      {formatDateShortMonth(exhibition.startDate, locale)}
-                      {exhibition.durationDay &&
-                        ` (${exhibition.durationDay} ${t("exhibition.days", locale)})`}
-                    </div>
-                    {exhibition.venue && (
-                      <div className="flex items-center gap-2">
-                        <MapPin className="h-4 w-4" />
-                        {exhibition.venue}
-                      </div>
-                    )}
-                    <div>Small Booth Quota: {exhibition.smallBoothQuota}</div>
-                    <div>Big Booth Quota: {exhibition.bigBoothQuota}</div>
-                  </div>
-                </CardContent> */}
                 <CardContent className="pt-6">
                   <h3 className="mb-4 font-semibold">{exhibition.name}</h3>
                   <div className="text-muted-foreground flex flex-col gap-3 text-sm">
@@ -332,7 +313,7 @@ function NewBookingForm() {
                 type="number"
                 min={1}
                 max={maxAllowed}
-                value={formData.amount === "" ? "" : String(formData.amount)}
+                value={formData.amount}
                 onChange={(e) =>
                   setFormData({
                     ...formData,
