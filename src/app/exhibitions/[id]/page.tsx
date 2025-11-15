@@ -29,9 +29,11 @@ import { formatDateFullMonth, getExhibitionStatus } from "@/lib/utils";
 import {
   AlertCircle,
   ArrowLeft,
+  Boxes,
   Calendar,
   Clock,
   MapPin,
+  Square,
   SquarePen,
   Trash2,
 } from "lucide-react";
@@ -128,6 +130,14 @@ export default function ExhibitionDetailPage() {
     exhibition.startDate,
     exhibition.durationDay,
   );
+
+  // Check if there's no quota left
+  const hasNoQuota =
+    exhibition.smallBoothQuota === 0 && exhibition.bigBoothQuota === 0;
+
+  const bothQuotasUndefined =
+    exhibition.smallBoothQuota === undefined &&
+    exhibition.bigBoothQuota === undefined;
 
   return (
     <div className="container mx-auto max-w-4xl px-4 py-8">
@@ -252,6 +262,39 @@ export default function ExhibitionDetailPage() {
             )}
           </div>
 
+          {/* Booth Quotas */}
+          {(exhibition.smallBoothQuota !== undefined ||
+            exhibition.bigBoothQuota !== undefined) && (
+            <div className="grid gap-2 sm:grid-cols-2">
+              {exhibition.smallBoothQuota !== undefined && (
+                <div className="bg-muted rounded-md p-3">
+                  <div className="mb-1 flex items-center gap-2">
+                    <Square className="h-4 w-4" />
+                    <span className="text-xs font-semibold uppercase">
+                      {t("exhibition.smallBoothQuota", locale)}
+                    </span>
+                  </div>
+                  <p className="text-lg font-bold">
+                    {exhibition.smallBoothQuota}
+                  </p>
+                </div>
+              )}
+              {exhibition.bigBoothQuota !== undefined && (
+                <div className="bg-muted rounded-md p-3">
+                  <div className="mb-1 flex items-center gap-2">
+                    <Boxes className="h-4 w-4" />
+                    <span className="text-xs font-semibold uppercase">
+                      {t("exhibition.bigBoothQuota", locale)}
+                    </span>
+                  </div>
+                  <p className="text-lg font-bold">
+                    {exhibition.bigBoothQuota}
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+
           {exhibition.description && (
             <div>
               <p className="text-muted-foreground mb-2 text-sm font-medium">
@@ -281,9 +324,18 @@ export default function ExhibitionDetailPage() {
             </Alert>
           )}
 
+          {status === "upcoming" && hasNoQuota && !bothQuotasUndefined && (
+            <Alert className="border-amber-400 bg-amber-50">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>
+                {t("exhibition.statusNoQuota", locale)}
+              </AlertDescription>
+            </Alert>
+          )}
+
           {isMember && (
             <div className="flex gap-3 pt-4">
-              {status !== "upcoming" ? (
+              {status !== "upcoming" || hasNoQuota ? (
                 <Button size="lg" className="flex-1" disabled>
                   {t("exhibitions.bookBooth", locale)}
                 </Button>

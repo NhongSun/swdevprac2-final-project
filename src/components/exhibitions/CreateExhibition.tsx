@@ -64,7 +64,9 @@ export default function CreateExhibition() {
         name === "durationDay" ||
         name === "smallBoothQuota" ||
         name === "bigBoothQuota"
-          ? Math.max(0, Number.parseInt(value) || 0)
+          ? value === ""
+            ? ""
+            : Math.max(0, Number.parseInt(value) || 0)
           : value,
     }));
     // Clear error for this field when user starts typing
@@ -103,12 +105,20 @@ export default function CreateExhibition() {
     }
 
     // Duration validation
-    if (formData.durationDay < 1) {
+    const durationDay =
+      typeof formData.durationDay === "string"
+        ? Number.parseInt(formData.durationDay) || 0
+        : formData.durationDay;
+    if (durationDay < 1) {
       newErrors.durationDay = t("exhibition.form.durationMinimum", locale);
     }
 
     // Small booth quota validation
-    if (formData.smallBoothQuota < 0) {
+    const smallBoothQuota =
+      typeof formData.smallBoothQuota === "string"
+        ? Number.parseInt(formData.smallBoothQuota) || 0
+        : formData.smallBoothQuota;
+    if (smallBoothQuota < 0) {
       newErrors.smallBoothQuota = t(
         "exhibition.form.smallBoothQuotaMinimum",
         locale,
@@ -116,7 +126,11 @@ export default function CreateExhibition() {
     }
 
     // Big booth quota validation
-    if (formData.bigBoothQuota < 0) {
+    const bigBoothQuota =
+      typeof formData.bigBoothQuota === "string"
+        ? Number.parseInt(formData.bigBoothQuota) || 0
+        : formData.bigBoothQuota;
+    if (bigBoothQuota < 0) {
       newErrors.bigBoothQuota = t(
         "exhibition.form.bigBoothQuotaMinimum",
         locale,
@@ -143,7 +157,23 @@ export default function CreateExhibition() {
 
     setLoading(true);
     try {
-      await exhibitionApi.create(formData, session.user.token);
+      // Convert string values to numbers before submitting
+      const submitData = {
+        ...formData,
+        durationDay:
+          typeof formData.durationDay === "string"
+            ? Number.parseInt(formData.durationDay) || 0
+            : formData.durationDay,
+        smallBoothQuota:
+          typeof formData.smallBoothQuota === "string"
+            ? Number.parseInt(formData.smallBoothQuota) || 0
+            : formData.smallBoothQuota,
+        bigBoothQuota:
+          typeof formData.bigBoothQuota === "string"
+            ? Number.parseInt(formData.bigBoothQuota) || 0
+            : formData.bigBoothQuota,
+      };
+      await exhibitionApi.create(submitData, session.user.token);
 
       toast.success("Exhibition created successfully!");
       router.push("/exhibitions");
@@ -325,9 +355,7 @@ export default function CreateExhibition() {
                     value={formData.bigBoothQuota}
                     onChange={handleInputChange}
                     required
-                    className={
-                      errors.bigBoothQuota ? "border-destructive" : ""
-                    }
+                    className={errors.bigBoothQuota ? "border-destructive" : ""}
                   />
                   {errors.bigBoothQuota && (
                     <p className="text-destructive text-sm">

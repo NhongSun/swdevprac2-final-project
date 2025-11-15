@@ -133,15 +133,7 @@ export default function EditBookingPage() {
     };
 
     loadBooking();
-  }, [
-    bookingId,
-    status,
-    token,
-    locale,
-    userRole,
-    userId,
-    router,
-  ]);
+  }, [bookingId, status, token, locale, userRole, userId, router]);
 
   const maxAllowed = Math.max(0, 6 - totalBooked);
 
@@ -152,7 +144,11 @@ export default function EditBookingPage() {
       newErrors.boothType = t("booking.selectType", locale);
     }
 
-    if (formData.amount < 1 || formData.amount > maxAllowed) {
+    const amount =
+      typeof formData.amount === "string"
+        ? Number.parseInt(formData.amount) || 0
+        : formData.amount;
+    if (amount < 1 || amount > maxAllowed) {
       newErrors.amount = t("booking.amountRequired", locale, {
         max: maxAllowed.toString(),
       });
@@ -314,7 +310,10 @@ export default function EditBookingPage() {
                 onChange={(e) =>
                   setFormData({
                     ...formData,
-                    amount: Number.parseInt(e.target.value) || 1,
+                    amount:
+                      e.target.value === ""
+                        ? ""
+                        : Number.parseInt(e.target.value) || 1,
                   })
                 }
               />

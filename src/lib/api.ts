@@ -193,9 +193,17 @@ export const bookingApi = {
   },
 
   async create(input: CreateBookingInput, token: string): Promise<Booking> {
+    // Convert amount to number before sending to API
+    const payload = {
+      ...input,
+      amount:
+        typeof input.amount === "string"
+          ? Number.parseInt(input.amount) || 1
+          : input.amount,
+    };
     const response = await request<ApiItemResponse<Booking>>("/booking", {
       method: "POST",
-      body: JSON.stringify(input),
+      body: JSON.stringify(payload),
       token,
     });
     return response.data;
@@ -206,9 +214,17 @@ export const bookingApi = {
     input: UpdateBookingInput,
     token: string,
   ): Promise<Booking> {
+    // Convert amount to number before sending to API
+    const payload = {
+      ...input,
+      amount:
+        typeof input.amount === "string"
+          ? Number.parseInt(input.amount) || 1
+          : input.amount,
+    };
     const response = await request<ApiItemResponse<Booking>>(`/booking/${id}`, {
       method: "PUT",
-      body: JSON.stringify(input),
+      body: JSON.stringify(payload),
       token,
     });
     return response.data;
