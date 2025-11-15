@@ -27,10 +27,10 @@ import { formatDateShortMonth } from "@/lib/utils";
 import {
   AlertCircle,
   ArrowLeft,
-  Boxes,
   Calendar,
+  CircleChevronDown,
+  CircleChevronUp,
   MapPin,
-  Square,
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -230,7 +230,7 @@ function NewBookingForm() {
                       {exhibition.smallBoothQuota !== undefined && (
                         <div className="bg-muted rounded-md p-3">
                           <div className="mb-1 flex items-center gap-2">
-                            <Square className="h-4 w-4" />
+                            <CircleChevronDown className="h-4 w-4" />
                             <span className="text-xs font-semibold uppercase">
                               {t("exhibition.smallBoothQuota", locale)}
                             </span>
@@ -243,7 +243,7 @@ function NewBookingForm() {
                       {exhibition.bigBoothQuota !== undefined && (
                         <div className="bg-muted rounded-md p-3">
                           <div className="mb-1 flex items-center gap-2">
-                            <Boxes className="h-4 w-4" />
+                            <CircleChevronUp className="h-4 w-4" />
                             <span className="text-xs font-semibold uppercase">
                               {t("exhibition.bigBoothQuota", locale)}
                             </span>

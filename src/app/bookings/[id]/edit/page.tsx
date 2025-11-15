@@ -19,7 +19,13 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/locale-context";
 import type { Booking, UpdateBookingInput } from "@/lib/types";
 import { formatDateShortMonth } from "@/lib/utils";
-import { ArrowLeft, Calendar, MapPin } from "lucide-react";
+import {
+  ArrowLeft,
+  Calendar,
+  CircleChevronDown,
+  CircleChevronUp,
+  MapPin,
+} from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -257,6 +263,30 @@ export default function EditBookingPage() {
                         </div>
                       )}
                     </div>
+                    <div className="mt-2 grid grid-cols-2 gap-2">
+                      <div className="bg-muted rounded-md p-3">
+                        <div className="mb-1 flex items-center gap-2">
+                          <CircleChevronDown className="h-4 w-4" />
+                          <span className="text-xs font-semibold uppercase">
+                            {t("exhibition.smallBoothQuota", locale)}
+                          </span>
+                        </div>
+                        <p className="text-lg font-bold">
+                          {exhibition.smallBoothQuota}
+                        </p>
+                      </div>
+                      <div className="bg-muted rounded-md p-3">
+                        <div className="mb-1 flex items-center gap-2">
+                          <CircleChevronUp className="h-4 w-4" />
+                          <span className="text-xs font-semibold uppercase">
+                            {t("exhibition.bigBoothQuota", locale)}
+                          </span>
+                        </div>
+                        <p className="text-lg font-bold">
+                          {exhibition.bigBoothQuota}
+                        </p>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
               </div>
@@ -306,7 +336,7 @@ export default function EditBookingPage() {
                 type="number"
                 min={1}
                 max={maxAllowed}
-                value={formData.amount}
+                value={formData.amount === "" ? "" : String(formData.amount)}
                 onChange={(e) =>
                   setFormData({
                     ...formData,
