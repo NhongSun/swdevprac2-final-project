@@ -24,7 +24,14 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/locale-context";
 import type { CreateBookingInput, Exhibition } from "@/lib/types";
 import { formatDateShortMonth } from "@/lib/utils";
-import { AlertCircle, ArrowLeft, Calendar, MapPin } from "lucide-react";
+import {
+  AlertCircle,
+  ArrowLeft,
+  Boxes,
+  Calendar,
+  MapPin,
+  Square,
+} from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -200,7 +207,7 @@ function NewBookingForm() {
             <div className="space-y-2">
               <Label>{t("booking.exhibition", locale)}</Label>
               <Card className="bg-background pt-0">
-                <CardContent className="pt-6">
+                {/* <CardContent className="pt-6">
                   <h3 className="mb-2 font-semibold">{exhibition.name}</h3>
                   <div className="text-muted-foreground flex flex-col gap-1 text-sm">
                     <div className="flex items-center gap-2">
@@ -215,6 +222,53 @@ function NewBookingForm() {
                         {exhibition.venue}
                       </div>
                     )}
+                    <div>Small Booth Quota: {exhibition.smallBoothQuota}</div>
+                    <div>Big Booth Quota: {exhibition.bigBoothQuota}</div>
+                  </div>
+                </CardContent> */}
+                <CardContent className="pt-6">
+                  <h3 className="mb-4 font-semibold">{exhibition.name}</h3>
+                  <div className="text-muted-foreground flex flex-col gap-3 text-sm">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4" />
+                      {formatDateShortMonth(exhibition.startDate, locale)}
+                      {exhibition.durationDay &&
+                        ` (${exhibition.durationDay} ${t("exhibition.days", locale)})`}
+                    </div>
+                    {exhibition.venue && (
+                      <div className="flex items-center gap-2">
+                        <MapPin className="h-4 w-4" />
+                        {exhibition.venue}
+                      </div>
+                    )}
+                    <div className="mt-2 grid grid-cols-2 gap-2">
+                      {exhibition.smallBoothQuota !== undefined && (
+                        <div className="bg-muted rounded-md p-3">
+                          <div className="mb-1 flex items-center gap-2">
+                            <Square className="h-4 w-4" />
+                            <span className="text-xs font-semibold uppercase">
+                              {t("exhibition.smallBoothQuota", locale)}
+                            </span>
+                          </div>
+                          <p className="text-lg font-bold">
+                            {exhibition.smallBoothQuota}
+                          </p>
+                        </div>
+                      )}
+                      {exhibition.bigBoothQuota !== undefined && (
+                        <div className="bg-muted rounded-md p-3">
+                          <div className="mb-1 flex items-center gap-2">
+                            <Boxes className="h-4 w-4" />
+                            <span className="text-xs font-semibold uppercase">
+                              {t("exhibition.bigBoothQuota", locale)}
+                            </span>
+                          </div>
+                          <p className="text-lg font-bold">
+                            {exhibition.bigBoothQuota}
+                          </p>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </CardContent>
               </Card>

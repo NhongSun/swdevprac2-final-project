@@ -32,6 +32,8 @@ export const translations = {
       "This exhibition has already passed. Booking is no longer available.",
     "exhibition.statusActive":
       "This exhibition has already started. Booking is no longer available.",
+    "exhibition.smallBoothQuota": "Small Booth Quota",
+    "exhibition.bigBoothQuota": "Big Booth Quota",
 
     // Create Exhibition
     "exhibition.create.title": "Create Exhibition",
@@ -231,6 +233,8 @@ export const translations = {
     "exhibition.days": "วัน",
     "exhibition.statusPast": "นิทรรศการนี้ผ่านไปแล้ว ไม่สามารถจองได้อีกต่อไป",
     "exhibition.statusActive": "นิทรรศการนี้เริ่มแล้ว ไม่สามารถจองได้อีกต่อไป",
+    "exhibition.smallBoothQuota": "โควต้าบูธขนาดเล็ก",
+    "exhibition.bigBoothQuota": "โควต้าบูธขนาดใหญ่",
 
     // Create Exhibition
     "exhibition.create.title": "สร้างนิทรรศการ",
