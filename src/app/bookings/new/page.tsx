@@ -121,7 +121,11 @@ function NewBookingForm() {
       newErrors.boothType = t("booking.selectType", locale);
     }
 
-    if (formData.amount < 1 || formData.amount > maxAllowed) {
+    const amount =
+      typeof formData.amount === "string"
+        ? Number.parseInt(formData.amount) || 0
+        : formData.amount;
+    if (amount < 1 || amount > maxAllowed) {
       newErrors.amount = t("booking.amountRequired", locale, {
         max: maxAllowed.toString(),
       });
@@ -328,11 +332,14 @@ function NewBookingForm() {
                 type="number"
                 min={1}
                 max={maxAllowed}
-                value={formData.amount}
+                value={formData.amount === "" ? "" : String(formData.amount)}
                 onChange={(e) =>
                   setFormData({
                     ...formData,
-                    amount: Number.parseInt(e.target.value) || 1,
+                    amount:
+                      e.target.value === ""
+                        ? ""
+                        : Number.parseInt(e.target.value) || 1,
                   })
                 }
                 disabled={maxAllowed === 0}

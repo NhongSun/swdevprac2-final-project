@@ -57,13 +57,13 @@ export type Booking = {
 export type CreateBookingInput = {
   exhibition: string;
   boothType: "small" | "big";
-  amount: number;
+  amount: number | string;
 };
 
 // Update booking input
 export type UpdateBookingInput = {
   boothType: "small" | "big";
-  amount: number;
+  amount: number | string;
 };
 
 export type ApiListResponse<T> = {
