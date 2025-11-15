@@ -1,4 +1,4 @@
-export type Locale = "en" | "th" | "ru";
+export type Locale = "en" | "th" | "ru" | "zh";
 
 export const translations = {
   en: {
@@ -618,6 +618,204 @@ export const translations = {
     "month.nov.short": "Ноя",
     "month.dec.short": "Дек",
   },
+  zh: {
+    // Navigation
+    "nav.exhibitions": "展览",
+    "nav.myBookings": "我的预订",
+    "nav.allBookings": "所有预订",
+    "nav.createExhibition": "创建展览",
+    "nav.profile": "个人资料",
+    "nav.login": "登录",
+    "nav.logout": "退出",
+
+    // Exhibition List
+    "exhibitions.title": "展览",
+    "exhibitions.empty": "暂无展览",
+    "exhibitions.bookBooth": "预订展位",
+    "exhibitions.viewDetails": "查看详情",
+    "exhibitions.upcoming": "即将开始",
+    "exhibitions.active": "进行中",
+    "exhibitions.past": "已结束",
+
+    // Exhibition Detail
+    "exhibition.details": "展览详情",
+    "exhibition.venue": "地点",
+    "exhibition.dates": "日期",
+    "exhibition.duration": "持续时间",
+    "exhibition.description": "描述",
+    "exhibition.day": "天",
+    "exhibition.days": "天",
+    "exhibition.statusPast": "此展览已结束。预订不再可用。",
+    "exhibition.statusActive": "此展览已开始。预订不再可用。",
+    "exhibition.statusNoQuota": "此展览没有可用的展位。所有配额已满。",
+    "exhibition.smallBoothQuota": "小展位配额",
+    "exhibition.bigBoothQuota": "大展位配额",
+
+    // Create Exhibition
+    "exhibition.create.title": "创建展览",
+    "exhibition.create.description": "在此平台上添加新展览",
+    "exhibition.create.form.submit": "创建展览",
+    "exhibition.create.form.submiting": "创建中...",
+    "exhibition.create.form.cancel": "取消",
+
+    "exhibition.form.name": "展览名称",
+    "exhibition.form.description": "描述",
+    "exhibition.form.venue": "地点",
+    "exhibition.form.startDate": "开始日期",
+    "exhibition.form.duration": "持续时间（天）",
+    "exhibition.form.smallBoothQuota": "小展位配额",
+    "exhibition.form.bigBoothQuota": "大展位配额",
+    "exhibition.form.image": "海报图片URL",
+    "exhibition.form.requiredFields": "请填写所有必填字段",
+    "exhibition.form.startDateFuture": "开始日期必须在未来",
+    "exhibition.form.nameRequired": "展览名称必填",
+    "exhibition.form.descriptionRequired": "描述必填",
+    "exhibition.form.venueRequired": "地点必填",
+    "exhibition.form.startDateRequired": "开始日期必填",
+    "exhibition.form.durationMinimum": "持续时间至少为1天",
+    "exhibition.form.smallBoothQuotaMinimum": "小展位配额不能为负数",
+    "exhibition.form.bigBoothQuotaMinimum": "大展位配额不能为负数",
+    "exhibition.form.posterRequired": "海报图片URL必填",
+
+    // Edit Exhibition
+    "exhibition.edit.title": "编辑展览",
+    "exhibition.edit.description": "更新展览信息",
+    "exhibition.edit.form.submit": "更新展览",
+    "exhibition.edit.form.submiting": "更新中...",
+    "exhibition.edit.form.cancel": "取消",
+
+    // Delete Exhibition
+    "exhibition.deleteConfirm": "您确定要删除此展览吗？",
+    "exhibition.deleteWarning": "此操作无法撤销。",
+
+    // Booking Form
+    "booking.create": "创建预订",
+    "booking.edit": "编辑预订",
+    "booking.exhibition": "展览",
+    "booking.boothType": "展位类型",
+    "booking.boothType.small": "小",
+    "booking.boothType.big": "大",
+    "booking.amount": "数量",
+    "booking.notes": "备注",
+    "booking.contactTel": "联系电话",
+    "booking.submit": "提交",
+    "booking.cancel": "取消",
+    "booking.maxReached": "您已达到此展览最多6个展位的限制。",
+    "booking.remaining": "您已为此展览预订了 {count} 个展位，共6个。",
+    "booking.selectType": "选择展位类型",
+    "booking.amountRequired": "数量必须在1到{max}之间",
+
+    // Booking List
+    "bookings.title": "我的预订",
+    "bookings.allTitle": "所有预订",
+    "bookings.empty": "暂无预订",
+    "bookings.createFirst": "创建您的第一个预订",
+    "bookings.loginMessage": "请登录以查看您的预订",
+    "bookings.id": "预订ID",
+    "bookings.exhibition": "展览",
+    "bookings.boothType": "展位类型",
+    "bookings.amount": "数量",
+    "bookings.owner": "所有者",
+    "bookings.createdAt": "预订时间",
+    "bookings.actions": "操作",
+    "bookings.view": "查看",
+    "bookings.edit": "编辑",
+    "bookings.delete": "删除",
+    "bookings.filter": "筛选",
+    "bookings.search": "按ID或展览名称搜索",
+
+    // Booking Detail
+    "bookingDetail.title": "预订详情",
+    "bookingDetail.id": "预订ID",
+    "bookingDetail.exhibition": "展览",
+    "bookingDetail.boothType": "展位类型",
+    "bookingDetail.amount": "数量",
+    "bookingDetail.owner": "所有者",
+    "bookingDetail.createdAt": "预订时间",
+    "bookingDetail.updatedAt": "最后编辑",
+    "bookingDetail.deleteConfirm": "您确定要删除此预订吗？",
+    "bookingDetail.deleteWarning": "此操作无法撤销。",
+
+    // Register
+    "register.title": "注册",
+    "register.name": "姓名",
+    "register.email": "邮箱",
+    "register.tel": "电话",
+    "register.password": "密码",
+    "register.submit": "注册",
+    "register.submiting": "注册中...",
+    "register.adminDesc": "注册为管理员账户",
+    "register.role": "角色",
+    "register.role.member": "会员",
+    "register.role.admin": "管理员",
+
+    // Login
+    "login.title": "登录",
+    "login.email": "邮箱",
+    "login.password": "密码",
+    "login.submit": "登录",
+    "login.submiting": "登录中...",
+    "login.noAccount": "没有账户？",
+    "login.registerHere": "在此注册",
+
+    // Common
+    "common.loading": "加载中...",
+    "common.error": "错误",
+    "common.success": "成功",
+    "common.confirm": "确认",
+    "common.back": "返回",
+    "common.save": "保存",
+    "common.loginRequired": "需要登录",
+
+    // Messages
+    "message.bookingCreated": "预订创建成功",
+    "message.bookingUpdated": "预订更新成功",
+    "message.bookingDeleted": "预订删除成功",
+    "message.exhibitionCreated": "展览创建成功",
+    "message.exhibitionUpdated": "展览更新成功",
+    "message.exhibitionDeleted": "展览删除成功",
+    "message.error": "发生错误。请重试。",
+    "message.quotaExceeded": "配额已超出或每用户总数 > 6",
+    "message.notFound": "未找到预订或展览",
+    "message.notAuthorized": "未授权",
+    "message.loginSuccess": "登录成功",
+    "message.loginError": "邮箱或密码错误",
+    "message.registerSuccess": "注册成功",
+    "message.registerError": "出现问题。请重试。",
+
+    // Role
+    "role.admin": "管理员",
+    "role.member": "会员",
+    "role.switch": "切换角色",
+
+    // Months - Full
+    "month.jan.full": "一月",
+    "month.feb.full": "二月",
+    "month.mar.full": "三月",
+    "month.apr.full": "四月",
+    "month.may.full": "五月",
+    "month.jun.full": "六月",
+    "month.jul.full": "七月",
+    "month.aug.full": "八月",
+    "month.sep.full": "九月",
+    "month.oct.full": "十月",
+    "month.nov.full": "十一月",
+    "month.dec.full": "十二月",
+
+    // Months - Short
+    "month.jan.short": "1月",
+    "month.feb.short": "2月",
+    "month.mar.short": "3月",
+    "month.apr.short": "4月",
+    "month.may.short": "5月",
+    "month.jun.short": "6月",
+    "month.jul.short": "7月",
+    "month.aug.short": "8月",
+    "month.sep.short": "9月",
+    "month.oct.short": "10月",
+    "month.nov.short": "11月",
+    "month.dec.short": "12月",
+  },
 };
 
 export function t(
@@ -651,5 +849,6 @@ export function getLocaleFromCookies(cookieHeader: string | null): Locale {
   const locale = cookies["NEXT_LOCALE"];
   if (locale === "th") return "th";
   if (locale === "ru") return "ru";
+  if (locale === "zh") return "zh";
   return "en";
 }

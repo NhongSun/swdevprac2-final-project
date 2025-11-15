@@ -93,6 +93,9 @@ export function Navigation() {
                 <DropdownMenuItem onClick={() => setLocale("ru")}>
                   Russian {locale === "ru" && "✓"}
                 </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setLocale("zh")}>
+                  Chinese {locale === "zh" && "✓"}
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
 
