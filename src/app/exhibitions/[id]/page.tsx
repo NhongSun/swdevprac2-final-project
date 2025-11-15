@@ -29,9 +29,11 @@ import { formatDateFullMonth, getExhibitionStatus } from "@/lib/utils";
 import {
   AlertCircle,
   ArrowLeft,
+  Boxes,
   Calendar,
   Clock,
   MapPin,
+  Square,
   SquarePen,
   Trash2,
 } from "lucide-react";
@@ -257,6 +259,39 @@ export default function ExhibitionDetailPage() {
               </div>
             )}
           </div>
+
+          {/* Booth Quotas */}
+          {(exhibition.smallBoothQuota !== undefined ||
+            exhibition.bigBoothQuota !== undefined) && (
+            <div className="grid gap-2 sm:grid-cols-2">
+              {exhibition.smallBoothQuota !== undefined && (
+                <div className="bg-muted rounded-md p-3">
+                  <div className="mb-1 flex items-center gap-2">
+                    <Square className="h-4 w-4" />
+                    <span className="text-xs font-semibold uppercase">
+                      {t("exhibition.smallBoothQuota", locale)}
+                    </span>
+                  </div>
+                  <p className="text-lg font-bold">
+                    {exhibition.smallBoothQuota}
+                  </p>
+                </div>
+              )}
+              {exhibition.bigBoothQuota !== undefined && (
+                <div className="bg-muted rounded-md p-3">
+                  <div className="mb-1 flex items-center gap-2">
+                    <Boxes className="h-4 w-4" />
+                    <span className="text-xs font-semibold uppercase">
+                      {t("exhibition.bigBoothQuota", locale)}
+                    </span>
+                  </div>
+                  <p className="text-lg font-bold">
+                    {exhibition.bigBoothQuota}
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
 
           {exhibition.description && (
             <div>
