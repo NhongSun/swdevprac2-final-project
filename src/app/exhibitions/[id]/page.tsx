@@ -129,6 +129,12 @@ export default function ExhibitionDetailPage() {
     exhibition.durationDay,
   );
 
+  // Check if there's no quota left
+  const hasNoQuota =
+    (exhibition.smallBoothQuota === undefined ||
+      exhibition.smallBoothQuota === 0) &&
+    (exhibition.bigBoothQuota === undefined || exhibition.bigBoothQuota === 0);
+
   return (
     <div className="container mx-auto max-w-4xl px-4 py-8">
       <Button asChild variant="ghost" className="mb-6">
@@ -281,9 +287,18 @@ export default function ExhibitionDetailPage() {
             </Alert>
           )}
 
+          {status === "upcoming" && hasNoQuota && (
+            <Alert className="border-amber-400 bg-amber-50">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>
+                {t("exhibition.statusNoQuota", locale)}
+              </AlertDescription>
+            </Alert>
+          )}
+
           {isMember && (
             <div className="flex gap-3 pt-4">
-              {status !== "upcoming" ? (
+              {status !== "upcoming" || hasNoQuota ? (
                 <Button size="lg" className="flex-1" disabled>
                   {t("exhibitions.bookBooth", locale)}
                 </Button>

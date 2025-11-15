@@ -113,6 +113,13 @@ export default function ExhibitionsPage() {
             past: "secondary",
           } as const;
 
+          // Check if there's no quota left
+          const hasNoQuota =
+            (exhibition.smallBoothQuota === undefined ||
+              exhibition.smallBoothQuota === 0) &&
+            (exhibition.bigBoothQuota === undefined ||
+              exhibition.bigBoothQuota === 0);
+
           return (
             <Card key={exhibition._id} className="flex flex-col">
               <CardHeader>
@@ -161,7 +168,7 @@ export default function ExhibitionsPage() {
                   </Link>
                 </Button>
                 {isMember &&
-                  (status !== "upcoming" ? (
+                  (status !== "upcoming" || hasNoQuota ? (
                     <Button className="flex-1" disabled>
                       {t("exhibitions.bookBooth", locale)}
                     </Button>

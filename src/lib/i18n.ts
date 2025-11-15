@@ -32,6 +32,8 @@ export const translations = {
       "This exhibition has already passed. Booking is no longer available.",
     "exhibition.statusActive":
       "This exhibition has already started. Booking is no longer available.",
+    "exhibition.statusNoQuota":
+      "No booths are available for this exhibition. All booth quotas have been filled.",
     "exhibition.smallBoothQuota": "Small Booth Quota",
     "exhibition.bigBoothQuota": "Big Booth Quota",
 
@@ -57,8 +59,10 @@ export const translations = {
     "exhibition.form.venueRequired": "Venue is required",
     "exhibition.form.startDateRequired": "Start date is required",
     "exhibition.form.durationMinimum": "Duration must be at least 1 day",
-    "exhibition.form.smallBoothQuotaMinimum": "Small booth quota cannot be negative",
-    "exhibition.form.bigBoothQuotaMinimum": "Big booth quota cannot be negative",
+    "exhibition.form.smallBoothQuotaMinimum":
+      "Small booth quota cannot be negative",
+    "exhibition.form.bigBoothQuotaMinimum":
+      "Big booth quota cannot be negative",
     "exhibition.form.posterRequired": "Poster picture URL is required",
 
     // Edit Exhibition
@@ -233,6 +237,8 @@ export const translations = {
     "exhibition.days": "วัน",
     "exhibition.statusPast": "นิทรรศการนี้ผ่านไปแล้ว ไม่สามารถจองได้อีกต่อไป",
     "exhibition.statusActive": "นิทรรศการนี้เริ่มแล้ว ไม่สามารถจองได้อีกต่อไป",
+    "exhibition.statusNoQuota":
+      "ไม่มีบูธว่างสำหรับนิทรรศการนี้ โควต้าทั้งหมดถูกจองครบแล้ว",
     "exhibition.smallBoothQuota": "โควต้าบูธขนาดเล็ก",
     "exhibition.bigBoothQuota": "โควต้าบูธขนาดใหญ่",
 

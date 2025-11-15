@@ -198,6 +198,7 @@ export const bookingApi = {
       body: JSON.stringify(input),
       token,
     });
+    console.log(response);
     return response.data;
   },
 
