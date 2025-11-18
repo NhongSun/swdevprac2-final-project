@@ -96,6 +96,9 @@ export function Navigation() {
                 <DropdownMenuItem onClick={() => setLocale("zh")}>
                   Chinese {locale === "zh" && "✓"}
                 </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setLocale("it")}>
+                  Italian {locale === "it" && "✓"}
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
 

@@ -1,4 +1,4 @@
-export type Locale = "en" | "th" | "ru" | "zh";
+export type Locale = "en" | "th" | "ru" | "zh" | "it";
 
 export const translations = {
   en: {
@@ -816,6 +816,215 @@ export const translations = {
     "month.nov.short": "11月",
     "month.dec.short": "12月",
   },
+  it: {
+    // Navigation
+    "nav.exhibitions": "Mostre",
+    "nav.myBookings": "Le mie prenotazioni",
+    "nav.allBookings": "Tutte le prenotazioni",
+    "nav.createExhibition": "Crea mostra",
+    "nav.profile": "Profilo",
+    "nav.login": "Accedi",
+    "nav.logout": "Esci",
+
+    // Exhibition List
+    "exhibitions.title": "Mostre",
+    "exhibitions.empty": "Nessuna mostra disponibile",
+    "exhibitions.bookBooth": "Prenota stand",
+    "exhibitions.viewDetails": "Visualizza dettagli",
+    "exhibitions.upcoming": "In arrivo",
+    "exhibitions.active": "Attive",
+    "exhibitions.past": "Passate",
+
+    // Exhibition Detail
+    "exhibition.details": "Dettagli mostra",
+    "exhibition.venue": "Luogo",
+    "exhibition.dates": "Date",
+    "exhibition.duration": "Durata",
+    "exhibition.description": "Descrizione",
+    "exhibition.day": "giorno",
+    "exhibition.days": "giorni",
+    "exhibition.statusPast":
+      "Questa mostra è già terminata. La prenotazione non è più disponibile.",
+    "exhibition.statusActive":
+      "Questa mostra è già iniziata. La prenotazione non è più disponibile.",
+    "exhibition.statusNoQuota":
+      "Non ci sono stand disponibili per questa mostra. Tutte le quote sono state riempite.",
+    "exhibition.smallBoothQuota": "Quota stand piccoli",
+    "exhibition.bigBoothQuota": "Quota stand grandi",
+
+    // Create Exhibition
+    "exhibition.create.title": "Crea mostra",
+    "exhibition.create.description":
+      "Aggiungi una nuova mostra a questa piattaforma",
+    "exhibition.create.form.submit": "Crea mostra",
+    "exhibition.create.form.submiting": "Creazione...",
+    "exhibition.create.form.cancel": "Annulla",
+
+    "exhibition.form.name": "Nome mostra",
+    "exhibition.form.description": "Descrizione",
+    "exhibition.form.venue": "Luogo",
+    "exhibition.form.startDate": "Data di inizio",
+    "exhibition.form.duration": "Durata (giorni)",
+    "exhibition.form.smallBoothQuota": "Quota stand piccoli",
+    "exhibition.form.bigBoothQuota": "Quota stand grandi",
+    "exhibition.form.image": "URL poster",
+    "exhibition.form.requiredFields":
+      "Si prega di compilare tutti i campi obbligatori",
+    "exhibition.form.startDateFuture":
+      "La data di inizio deve essere nel futuro",
+    "exhibition.form.nameRequired": "Il nome della mostra è obbligatorio",
+    "exhibition.form.descriptionRequired": "La descrizione è obbligatoria",
+    "exhibition.form.venueRequired": "Il luogo è obbligatorio",
+    "exhibition.form.startDateRequired": "La data di inizio è obbligatoria",
+    "exhibition.form.durationMinimum":
+      "La durata deve essere di almeno 1 giorno",
+    "exhibition.form.smallBoothQuotaMinimum":
+      "La quota stand piccoli non può essere negativa",
+    "exhibition.form.bigBoothQuotaMinimum":
+      "La quota stand grandi non può essere negativa",
+    "exhibition.form.posterRequired": "L'URL del poster è obbligatorio",
+
+    // Edit Exhibition
+    "exhibition.edit.title": "Modifica mostra",
+    "exhibition.edit.description": "Aggiorna le informazioni sulla mostra",
+    "exhibition.edit.form.submit": "Aggiorna mostra",
+    "exhibition.edit.form.submiting": "Aggiornamento...",
+    "exhibition.edit.form.cancel": "Annulla",
+
+    // Delete Exhibition
+    "exhibition.deleteConfirm": "Sei sicuro di voler eliminare questa mostra?",
+    "exhibition.deleteWarning": "Questa azione non può essere annullata.",
+
+    // Booking Form
+    "booking.create": "Crea prenotazione",
+    "booking.edit": "Modifica prenotazione",
+    "booking.exhibition": "Mostra",
+    "booking.boothType": "Tipo di stand",
+    "booking.boothType.small": "Piccolo",
+    "booking.boothType.big": "Grande",
+    "booking.amount": "Quantità",
+    "booking.notes": "Note",
+    "booking.contactTel": "Telefono di contatto",
+    "booking.submit": "Invia",
+    "booking.cancel": "Annulla",
+    "booking.maxReached":
+      "Hai raggiunto il massimo di 6 stand per questa mostra.",
+    "booking.remaining": "Hai prenotato {count} di 6 stand per questa mostra.",
+    "booking.selectType": "Seleziona un tipo di stand",
+    "booking.amountRequired": "La quantità deve essere compresa tra 1 e {max}",
+
+    // Booking List
+    "bookings.title": "Le mie prenotazioni",
+    "bookings.allTitle": "Tutte le prenotazioni",
+    "bookings.empty": "Nessuna prenotazione ancora",
+    "bookings.createFirst": "Crea la tua prima prenotazione",
+    "bookings.loginMessage": "Accedi per visualizzare le tue prenotazioni",
+    "bookings.id": "ID prenotazione",
+    "bookings.exhibition": "Mostra",
+    "bookings.boothType": "Tipo di stand",
+    "bookings.amount": "Quantità",
+    "bookings.owner": "Proprietario",
+    "bookings.createdAt": "Prenotato il",
+    "bookings.actions": "Azioni",
+    "bookings.view": "Visualizza",
+    "bookings.edit": "Modifica",
+    "bookings.delete": "Elimina",
+    "bookings.filter": "Filtra",
+    "bookings.search": "Cerca per ID o nome mostra",
+
+    // Booking Detail
+    "bookingDetail.title": "Dettagli prenotazione",
+    "bookingDetail.id": "ID prenotazione",
+    "bookingDetail.exhibition": "Mostra",
+    "bookingDetail.boothType": "Tipo di stand",
+    "bookingDetail.amount": "Quantità",
+    "bookingDetail.owner": "Proprietario",
+    "bookingDetail.createdAt": "Prenotato il",
+    "bookingDetail.updatedAt": "Ultima modifica",
+    "bookingDetail.deleteConfirm":
+      "Sei sicuro di voler eliminare questa prenotazione?",
+    "bookingDetail.deleteWarning": "Questa azione non può essere annullata.",
+
+    // Register
+    "register.title": "Registrati",
+    "register.name": "Nome",
+    "register.email": "Email",
+    "register.tel": "Telefono",
+    "register.password": "Password",
+    "register.submit": "Registrati",
+    "register.submiting": "Registrazione...",
+    "register.adminDesc": "Registrati come account amministratore",
+    "register.role": "Ruolo",
+    "register.role.member": "Membro",
+    "register.role.admin": "Amministratore",
+
+    // Login
+    "login.title": "Accedi",
+    "login.email": "Email",
+    "login.password": "Password",
+    "login.submit": "Accedi",
+    "login.submiting": "Accesso...",
+    "login.noAccount": "Non hai un account?",
+    "login.registerHere": "Registrati qui",
+
+    // Common
+    "common.loading": "Caricamento...",
+    "common.error": "Errore",
+    "common.success": "Successo",
+    "common.confirm": "Conferma",
+    "common.back": "Indietro",
+    "common.save": "Salva",
+    "common.loginRequired": "Accesso richiesto",
+
+    // Messages
+    "message.bookingCreated": "Prenotazione creata con successo",
+    "message.bookingUpdated": "Prenotazione aggiornata con successo",
+    "message.bookingDeleted": "Prenotazione eliminata con successo",
+    "message.exhibitionCreated": "Mostra creata con successo",
+    "message.exhibitionUpdated": "Mostra aggiornata con successo",
+    "message.exhibitionDeleted": "Mostra eliminata con successo",
+    "message.error": "Si è verificato un errore. Riprova.",
+    "message.quotaExceeded": "Quota superata o totale per utente > 6",
+    "message.notFound": "Prenotazione o mostra non trovata",
+    "message.notAuthorized": "Non autorizzato",
+    "message.loginSuccess": "Accesso riuscito",
+    "message.loginError": "Email o password non validi",
+    "message.registerSuccess": "Registrazione riuscita",
+    "message.registerError": "Qualcosa è andato storto. Riprova.",
+
+    // Role
+    "role.admin": "Amministratore",
+    "role.member": "Membro",
+    "role.switch": "Cambia ruolo",
+
+    // Months - Full
+    "month.jan.full": "Gennaio",
+    "month.feb.full": "Febbraio",
+    "month.mar.full": "Marzo",
+    "month.apr.full": "Aprile",
+    "month.may.full": "Maggio",
+    "month.jun.full": "Giugno",
+    "month.jul.full": "Luglio",
+    "month.aug.full": "Agosto",
+    "month.sep.full": "Settembre",
+    "month.oct.full": "Ottobre",
+    "month.nov.full": "Novembre",
+    "month.dec.full": "Dicembre",
+
+    // Months - Short
+    "month.jan.short": "Gen",
+    "month.feb.short": "Feb",
+    "month.mar.short": "Mar",
+    "month.apr.short": "Apr",
+    "month.may.short": "Mag",
+    "month.jun.short": "Giu",
+    "month.jul.short": "Lug",
+    "month.aug.short": "Ago",
+    "month.sep.short": "Set",
+    "month.oct.short": "Ott",
+    "month.nov.short": "Nov",
+    "month.dec.short": "Dic",
+  },
 };
 
 export function t(
@@ -850,5 +1059,6 @@ export function getLocaleFromCookies(cookieHeader: string | null): Locale {
   if (locale === "th") return "th";
   if (locale === "ru") return "ru";
   if (locale === "zh") return "zh";
+  if (locale === "it") return "it";
   return "en";
 }
